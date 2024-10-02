@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.naudio.core": {
+      "version": "https://github.com/mochi-neko/simple-audio-codec-unity.git?path=/Assets/NAudio/NAudio.Core#0.2.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "fb76f048a78ef9fa4e0d00df6f184d1b7a64042b"
+    },
     "com.unity.collab-proxy": {
       "version": "2.5.2",
       "depth": 0,

@@ -1,0 +1,15 @@
+﻿{
+  "name": "com.ayutaz.voice-activity-detection",
+  "version": "0.5.0",
+  "displayName": "Voice Activity Detection",
+  "description": "A voice activity detection library for Unity.",
+  "unity": "2022.3",
+  "author": {
+    "name": "Mochineko",
+    "email": "t.o.e.4315@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:ayuta/voice-activity-detection-unity.git"
+  }
+}
