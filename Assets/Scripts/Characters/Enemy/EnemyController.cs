@@ -41,7 +41,7 @@ namespace Characters.Enemy {
             // If the enemy heard the player a set amount of times, they know where you are
             if (heardCount >= heardLimit) {
                 alert = false; // reset the alert flag
-                MoveEnemy(playerTransform);
+                MoveEnemy(playerTransform.position);
             }
         }
         
@@ -49,7 +49,7 @@ namespace Characters.Enemy {
             // If player is in sight, move to them
             if (playerInSight) {
                 alert = false; // reset the alert flag
-                MoveEnemy(playerTransform);
+                MoveEnemy(playerTransform.position);
             }
             
             // If the enemy was alerted, look for the player
@@ -84,10 +84,6 @@ namespace Characters.Enemy {
             return false;
         }
 
-        private void MoveEnemy(Transform target) {
-            MoveEnemy(target.position);
-        }
-
         private void MoveEnemy(Vector3 targetPosition) {
             direction = (targetPosition - transform.position).normalized;
             velocity = direction * speed;
@@ -109,8 +105,10 @@ namespace Characters.Enemy {
                 this.alert = true;
                 
                 heardCount++;
-                
-                Invoke(nameof(ResetAlert), alertDuration);
+
+                if (!IsInvoking(nameof(ResetAlert))) {
+                    Invoke(nameof(ResetAlert), alertDuration);
+                }
             }
         }
 
