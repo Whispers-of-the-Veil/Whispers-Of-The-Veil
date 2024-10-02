@@ -38,8 +38,8 @@ namespace Characters.Enemy {
         private void Update() {
             this.playerInSight = CheckPlayerInSight();
             
-            // If the enemy heard the player 5 times, they know where you are
-            if (heardCount == heardLimit) {
+            // If the enemy heard the player a set amount of times, they know where you are
+            if (heardCount >= heardLimit) {
                 alert = false; // reset the alert flag
                 MoveEnemy(playerTransform);
             }
