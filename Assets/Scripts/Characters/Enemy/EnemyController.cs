@@ -23,18 +23,26 @@ namespace Characters.Enemy {
         private RaycastHit hit;
         private Vector3 directionToPlayer, randomPosition;
         private int heardCount;
-        
+
         [Header("Components")]
+        [SerializeField] public GameObject alertEmote;
         private Rigidbody rb;
         
         // Start is called before the first frame update
         private void Start() {
+            this.alertEmote.SetActive(false);
             this.rb = GetComponent<Rigidbody>();
         }
 
         // Update is called once per frame
         private void Update() {
             this.playerInSight = CheckPlayerInSight();
+            
+            // If the enemy heard the player 5 times, they know where you are
+            if (heardCount == heardLimit) {
+                alert = false; // reset the alert flag
+                MoveEnemy(playerTransform);
+            }
         }
         
         private void FixedUpdate() {
@@ -47,12 +55,6 @@ namespace Characters.Enemy {
             // If the enemy was alerted, look for the player
             if (alert && !isMoving) {
                 StartCoroutine(Agitated());
-            }
-            
-            // If the enemy heard the player 5 times, they know where you are
-            if (heardCount == heardLimit) {
-                alert = false; // reset the alert flag
-                MoveEnemy(playerTransform);
             }
         }
 
@@ -73,6 +75,7 @@ namespace Characters.Enemy {
                 if (Physics.Raycast(transform.position, directionToPlayer, out hit, sightRange)) {
                     // Check if the raycast hit the player
                     if (hit.transform.CompareTag("Player")) {
+                        this.alertEmote.SetActive(false);
                         return true;
                     }
                 }
@@ -95,13 +98,18 @@ namespace Characters.Enemy {
         // Reset enemy alert state
         private void ResetAlert() {
             this.alert = false;
+            this.alertEmote.SetActive(false);
+            heardCount = 0;
         }
         
         // Players voice was detected; change states alert and passive if they are within range
         public void VoiceDetected() {
             if (Physics.CheckSphere(transform.position, hearingRange, player)) {
+                this.alertEmote.SetActive(true);
                 this.alert = true;
+                
                 heardCount++;
+                
                 Invoke(nameof(ResetAlert), alertDuration);
             }
         }
