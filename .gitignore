@@ -73,4 +73,8 @@ crashlytics-build.properties
 
 # Ignore the mac system files
 .DS_Store
-/.DS_Store/
+
+# Ignore the data directory
+Assets/Plugins/SpeechRecognition/Data/
+# Ignore the LibriSpeech Directory
+Assets/Plugins/SpeechRecognition/LibriSpeech/
