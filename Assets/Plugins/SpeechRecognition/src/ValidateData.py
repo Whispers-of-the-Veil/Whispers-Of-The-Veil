@@ -1,19 +1,13 @@
 import numpy as np
-import matplotlib.pyplot as plt
+import librosa
 
 import sys
 
 def plot_spectrogram(spectrogram, title='Spectrogram'):
     # Squeeze to remove dimensions of size 1
     spectrogram = np.squeeze(spectrogram)
-    
-    plt.figure(figsize=(10, 4))
-    plt.imshow(spectrogram.T, aspect='auto', origin='lower', cmap='jet')
-    plt.colorbar(format='%+2.0f dB')
-    plt.title(title)
-    plt.xlabel('Frames')
-    plt.ylabel('Mel Frequency Bins')
-    plt.show()
+
+    librosa.display.specshow(spectrogram, sr = sample_rate, x_axis = 'time', y_axis = 'mel')
 
 if __name__ == "__main__":
     data = np.load(sys.argv[1])  # Load the processed data
