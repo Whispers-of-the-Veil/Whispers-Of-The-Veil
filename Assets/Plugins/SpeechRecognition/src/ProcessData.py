@@ -4,33 +4,37 @@ import soundfile as sf
 import librosa
 
 import concurrent.futures
+import threading
 from tqdm import tqdm  # For progress bar
 
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 import sys
+import os
+import glob
 
 class Process:
     """
     This class contains methods to handle the audio data and transcripts
     """
-    def __init__(self): pass
+    def __init__(self):
+        self.lock = threading.Lock()  # Create a lock for thread safety
 
     # ------------------------------------------------------------------------
     #   Audio processing
     # ------------------------------------------------------------------------
 
-    def Audio(self, _audioFiles, _targetLength, batchSize = 2000):
-        melSpectrograms = []
+    def Audio(self, _audioFiles, _targetLength, _batchSize, _outFile):
+        index = 1
         
         with tqdm(total = len(_audioFiles)) as pbar:
             # Divide audio files into batches
-            for i in range(0, len(_audioFiles), batchSize):
-                batchFiles = _audioFiles[i:i + batchSize]
+            for i in range(0, len(_audioFiles), _batchSize):
+                batchFiles = _audioFiles[i:i + _batchSize]
                 
                 # Use ProcessPoolExecutor for CPU-bound tasks
-                with concurrent.futures.ThreadPoolExecutor() as executor:
+                with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
                     futureSpectrograms = {
                         executor.submit(self.BatchAudioHelper, batchFiles, _targetLength): batchFiles
                     }
@@ -38,14 +42,31 @@ class Process:
                     for future in concurrent.futures.as_completed(futureSpectrograms):
                         try:
                             spectrograms = future.result()
-                            melSpectrograms.extend(spectrograms)  # Combine results from batch
+
+                            self.SaveBatch(spectrograms, index, _outFile)
+
+                            index += 1
 
                             # Update progress bar
                             pbar.update(len(spectrograms))  
                         except Exception as e:
                             print(f"Error processing batch {futureSpectrograms[future]}: {e}")
 
-        return melSpectrograms
+    def SaveBatch(self, _spectrograms, _index, _outFile):
+        """Write spectrograms to a specified path."""
+        # Ensure the output directory exists
+        os.makedirs(_outFile, exist_ok=True)
+        
+        # Define the path for the temporary file
+        tempfile_path = os.path.join(_outFile, f'tmpfile_batch{_index}.dat')
+        
+        # Acquire lock to ensure thread-safe writing
+        with self.lock:
+            # Create a memmap array
+            batchMemmap = np.memmap(tempfile_path, dtype='float32', mode='w+', shape=(len(_spectrograms), 128, 1000))
+            
+            for j, spectrogram in enumerate(_spectrograms):
+                batchMemmap[j] = spectrogram
 
     def BatchAudioHelper(self, batchFiles, _length):
         spectrograms = []
@@ -56,6 +77,8 @@ class Process:
             normalizedSpectrogram = self.NormalizeZScore(melSpectrogram)
             paddedSpectrogram = self.PadSpectrograms(normalizedSpectrogram, _length)
             spectrograms.append(paddedSpectrogram)
+
+            del melSpectrogram, normalizedSpectrogram  # Explicitly free memory
         
         return spectrograms
     
@@ -76,7 +99,7 @@ class Process:
         # Compute magnitude and phase, use magnitude only
         magSpectrogram, _ = librosa.magphase(spectrogram)
 
-        # Convert to Mel spectrogram using the Mel scale
+         # Convert to Mel spectrogram using the Mel scale
         melScaleSpectrogram = librosa.feature.melspectrogram(S = magSpectrogram, sr = _sampleRate, center=True, pad_mode = _length)
 
         # Convert amplitude to decibels
@@ -219,6 +242,49 @@ class Process:
             indexedTranscripts.append(indexedTranscript)  # Append the list of indices to the main list
 
         return indexedTranscripts
+    
+def LoadSpectrogramsFromDatFiles(_directory):
+    """Load all .dat files from the specified directory into a single compressed NumPy array efficiently."""
+    # Get the list of .dat files in sorted order
+    files = sorted([f for f in os.listdir(_directory) if f.endswith('.dat')])
+    
+    # Initialize the memmap array for concatenation
+    firstFile = os.path.join(_directory, files[0])
+    firstMemMap = np.memmap(firstFile, dtype='float32', mode='r')
+    
+    # Determine the shape from the first file
+    numBatches = firstMemMap.shape[0]
+    
+    # Create an empty memmap for the final output
+    totalShape = (len(files) * numBatches, 128, 1000)
+    spectrograms = np.memmap('combined_spectrograms.dat', dtype = 'float32', mode = 'w+', shape = totalShape)
+
+    index = 0
+    
+    for file in files:
+        filePath = os.path.join(_directory, file)
+        
+        # Load each memmap array and copy its data to the final memmap
+        memmap_array = np.memmap(filePath, dtype='float32', mode='r')
+        num_batches = memmap_array.shape[0]
+        
+        # Reshape and assign to the final memmap array
+        spectrograms[index:index + numBatches] = memmap_array.reshape((numBatches, 128, 1000))
+        index += numBatches
+
+    return spectrograms
+
+def CleanDataFiles(directory):
+    # Create a pattern for .dat files
+    pattern = os.path.join(directory, '*.dat')
+    
+    # Find all .dat files in the specified directory
+    for file_path in glob.glob(pattern):
+        try:
+            os.remove(file_path)  # Remove the file
+            print(f"Removed: {file_path}")  # Optional: print the removed file path
+        except Exception as e:
+            print(f"Error removing {file_path}: {e}")
 
 def LoadCSV(_csvPath):
     """
@@ -245,8 +311,10 @@ if __name__ == "__main__":
         exit(1)
 
     # Config
-    targetLength = 100
+    targetLength = 1000
     seed = 42
+    batchSize = 2000
+    outFile = "tmpData"
 
     process = Process()
 
@@ -258,8 +326,7 @@ if __name__ == "__main__":
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nProcessing Audio files")
-    spectrograms = np.expand_dims(process.Audio(audioFiles, targetLength), axis = -1) # Shape: (batch_size, height, width, 1)
-    inputShape = spectrograms.shape[1:]
+    process.Audio(audioFiles, targetLength, batchSize, outFile) # Shape: (batch_size, height, width, 1)
     
     print("\nProcessing the Transcripts")
     labels, size = process.Transcript(transcript)
@@ -269,4 +336,8 @@ if __name__ == "__main__":
     # Save the Spectrogram of the audio file, shape of the spectrogram (timesteps, frequency bins, channels),
     #  the size of the output layer (number of unique characters), and the Labels
     print(f"\nSaving training data to {sys.argv[2]}")
-    np.savez_compressed(sys.argv[2], Spectrograms = spectrograms, Transcript = transcript, InputShape = inputShape, OutputSize = size, Labels = labels)
+    spectrograms = LoadSpectrogramsFromDatFiles(outFile)
+
+    np.savez_compressed(sys.argv[2], Spectrograms = spectrograms, Labels = labels, InputShape = spectrograms.shape[1:], OutputSize = size)
+
+    CleanDataFiles(outFile)

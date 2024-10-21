@@ -41,7 +41,7 @@ def ctcLoss(_yTrue, _yPred):
 
     return tf.reduce_mean(loss)
 
-def TestSentiment(_model, _spectrogram, _transcript):
+def TestSentiment(_model, _spectrogram, _label):
     try:
         # Predict the sentiment class for the spectrogram
         sentiment = _model.predict(np.expand_dims(_spectrogram, axis=0))  # Add batch dimension for prediction
@@ -51,7 +51,7 @@ def TestSentiment(_model, _spectrogram, _transcript):
         predicted_classes = predicted_classes.flatten()
 
         # Compare predicted class with transcript (assuming transcript is class label)
-        assert predicted_classes[0] == _transcript, f"Prediction {predicted_classes} does not match transcript {_transcript}"
+        assert predicted_classes[0] == _label, f"Prediction {predicted_classes} does not match Label\n {_label}"
 
     except Exception as e:
         print(f"An error occurred during testing: {e}")
@@ -64,10 +64,10 @@ if __name__ == "__main__":
     testData = np.load(sys.argv[2])
 
     testSpectrogam = testData['Spectrograms']
-    testTranscript = testData['Transcript']
+    testLabels = testData['Labels']
     
     model = load_model(sys.argv[1],  custom_objects={'ctcLoss': ctcLoss}, safe_mode = False)
 
     print("Asserting models preformance")
-    for sample, transcript in zip(testSpectrogam, testTranscript):
-        TestSentiment(model, sample, transcript)
+    for sample, label in zip(testSpectrogam, testLabels):
+        TestSentiment(model, sample, label)
