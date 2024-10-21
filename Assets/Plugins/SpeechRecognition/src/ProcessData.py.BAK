@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
-import math
+import soundfile as sf
+import librosa
+
+import concurrent.futures
+from tqdm import tqdm  # For progress bar
 
 import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -15,61 +19,49 @@ class Process:
 
     # ------------------------------------------------------------------------
     #   Audio processing
-    #       - Decode the Wav files into tensors 
-    #       - Compute a mel spectrogram from the audio tensors
-    #       - Padd the spectrograms
     # ------------------------------------------------------------------------
 
-    def Audio(self, _audioFiles, _targetLength):
-        """
-        Loads audio files, computes their Mel spectrograms, and pads/truncates them to a uniform length
+    def Audio(self, _audioFiles, _targetLength, _batchSize):
+        melSpectrograms = []
+        
+        with tqdm(total = len(_audioFiles)) as pbar:
+            # Divide audio files into batches
+            for i in range(0, len(_audioFiles), _batchSize):
+                batchFiles = _audioFiles[i:i + _batchSize]
+                
+                # Use ProcessPoolExecutor for CPU-bound tasks
+                with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
+                    futureSpectrograms = {
+                        executor.submit(self.BatchAudioHelper, batchFiles, _targetLength): batchFiles
+                    }
+                    
+                    for future in concurrent.futures.as_completed(futureSpectrograms):
+                        try:
+                            spectrograms = future.result()
+                            melSpectrograms.extend(spectrograms)  # Combine results from batch
 
-        Parameters:
-            - _audioFiles: A list of file paths for the audio files
-            - _targetLength: The target length for the spectrograms
+                            # Update progress bar
+                            pbar.update(len(spectrograms))  
+                        except Exception as e:
+                            print(f"Error processing batch {futureSpectrograms[future]}: {e}")
 
-        Returns:
-            - A NumPy array of processed audio data
-        """
-        spectrogram = []
+        return melSpectrograms
 
-        # Load and preprocess each audio file
-        for x, file in enumerate(_audioFiles):
-            audioBinary = tf.io.read_file(file)
+    def BatchAudioHelper(self, batchFiles, _length):
+        spectrograms = []
 
-            # Decode the WAV file into a tensor
-            audio, sampleRate = tf.audio.decode_wav(audioBinary)
-            audio = tf.squeeze(audio, axis = -1)  # Remove any unnecessary dimensions
-            audio = self.NormalizeAudio(audio)
+        for _file in batchFiles:
+            audioSample, sampleRate = sf.read(_file, dtype='float32')
+            melSpectrogram = self.ComputeMelSpectrogram(audioSample, sampleRate, _length)
+            normalizedSpectrogram = self.NormalizeZScore(melSpectrogram)
+            paddedSpectrogram = self.PadSpectrograms(normalizedSpectrogram, _length)
+            spectrograms.append(paddedSpectrogram)
 
-            # Extract Mel spectrogram from the audio
-            melSpectrogram = self.ComputeMelSpectrogram(audio, sampleRate)
-            normalizedMelSpectrogram = self.LogAndNormalizeMelSpectrogram(melSpectrogram)
-            paddedSpectrogram = self.PadSpectrograms([normalizedMelSpectrogram], _targetLength)[0]
-
-            # Convert the spectrogram tensor to numpy array
-            spectrogram.append(paddedSpectrogram.numpy())  
-            
-            # Display the progress
-            progressValue = ((x + 1) / len(_audioFiles)) * 100
-            if math.floor(progressValue) > math.floor((x / len(_audioFiles)) * 100):
-                print(f"{math.floor(progressValue)}%")
-
-        return spectrogram
-
-    def NormalizeAudio(self, _audio):
-        """
-        Normalizes the audio signal to have a maximum value of 1 by dividing by the maximum absolute value.
-
-        Parameters:
-            - _audio: An audio tensor
-
-        Returns:
-            The normalized audio tensor
-        """
-        return _audio / tf.reduce_max(tf.abs(_audio))
+            del melSpectrogram, normalizedSpectrogram  # Explicitly free memory
+        
+        return spectrograms
     
-    def ComputeMelSpectrogram(self, _audio, _sampleRate):
+    def ComputeMelSpectrogram(self, _audioSample, _sampleRate, _length):
         """
         Compute the Mel spectrogram of the audio signal.
         
@@ -77,96 +69,60 @@ class Process:
             - _audio: An audio tensor
             - _sampleRate: The sample rate of that audio tensor
 
-        returns:
-            A Mel Spectrogram Tensor
+        Returns:
+            - A 2D NumPy array representing the Mel spectrogram
         """
-        # Define parameters for Mel spectrogram
-        numMelBins = 64
-        frameLength = 256
-        frameStep = 128
-        
-        # Compute STFT
-        stft = tf.signal.stft(_audio, frame_length = frameLength, frame_step = frameStep)
-        spectrogram = tf.abs(stft)
-        
-        # Create a Mel filter
-        melFilter = tf.signal.linear_to_mel_weight_matrix(
-            numMelBins, 
-            spectrogram.shape[-1], 
-            _sampleRate
-        )
-        
-        # Apply Mel filter to the spectrogram
-        melSpectrogram = tf.tensordot(spectrogram, melFilter, 1)
-        melSpectrogram.set_shape(spectrogram.shape[:-1].concatenate(melFilter.shape[-1:]))
-        
+        # Compute the Short-Time Fourier Transform (STFT)
+        spectrogram = librosa.stft(_audioSample)
+
+        # Compute magnitude and phase, use magnitude only
+        magSpectrogram, _ = librosa.magphase(spectrogram)
+
+         # Convert to Mel spectrogram using the Mel scale
+        melScaleSpectrogram = librosa.feature.melspectrogram(S = magSpectrogram, sr = _sampleRate, center=True, pad_mode = _length)
+
+        # Convert amplitude to decibels
+        melSpectrogram = librosa.amplitude_to_db(melScaleSpectrogram, ref = np.min)
+
         return melSpectrogram
     
-    def LogAndNormalizeMelSpectrogram(self, _melSpectrogram):
+    def NormalizeZScore(self, _melSpectrogram):
         """
-        Nomalizes a Mel Spectrogram by computing both the LogScal and zero mean / unit variance
-
-        Parameters:
-            - melSpectrogram: The Mel spectrogram tensor.
-        
-        returns:
-            A normalized Mel Spectrogram
-        """
-        # Apply log scaling
-        logMelSpectrogram = self.LogScaleMelSpectrogram(_melSpectrogram)
-        
-        # Normalize (mean = 0, std = 1)
-        normalizedSpectrogram = self.NormalizeMelSpectrogram(logMelSpectrogram)
-        
-        return normalizedSpectrogram
-    
-    def LogScaleMelSpectrogram(self, _melSpectrogram):
-        """
-        Applies log scaling to the Mel spectrogram (adds a small value to avoid log(0)).
+        Normalizes the Mel spectrogram using z-score normalization.
         
         Parameters:
-            - melSpectrogram: The Mel spectrogram tensor.
-        
+            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+            
         Returns:
-            - The log-scaled Mel spectrogram tensor.
+            - Normalized spectrogram with mean 0 and standard deviation 1
         """
-        logMelSpectrogram = tf.math.log(_melSpectrogram + 1e-6)  # Adding a small constant to avoid log(0)
-
-        return logMelSpectrogram
-    
-    def NormalizeMelSpectrogram(self, _melSpectrogram):
-        """
-        Standardizes the Mel spectrogram to have zero mean and unit variance.
+        mean = np.mean(_melSpectrogram)
+        std = np.std(_melSpectrogram)
         
+        return (_melSpectrogram - mean) / std
+    
+    def PadSpectrograms(self, _melSpectrogram, _targetLength):
+        """
+        Pads or truncates the Mel spectrogram to the target length.
+
         Parameters:
-            - melSpectrogram: The Mel spectrogram tensor.
-        
+            - melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+            - target_length: The desired length in frames
+
         Returns:
-            - The normalized Mel spectrogram tensor.
+            - The padded or truncated spectrogram
         """
-        mean = tf.reduce_mean(_melSpectrogram)
-        stddev = tf.math.reduce_std(_melSpectrogram)
-        normalizedSpectrogram = (_melSpectrogram - mean) / stddev
+        if _melSpectrogram.shape[1] > _targetLength:
+            # Truncate the spectrogram
+            return _melSpectrogram[:, :_targetLength]
+        elif _melSpectrogram.shape[1] < _targetLength:
+            # Pad the spectrogram with zeros
+            pad_width = _targetLength - _melSpectrogram.shape[1]
 
-        return normalizedSpectrogram
-    
-    def PadSpectrograms(self, _spectrograms, _targetLength):
-        """Pad or truncate the spectrograms to ensure they all have the same length."""
-        paddedSpectrogram = []
+            return np.pad(_melSpectrogram, ((0, 0), (0, pad_width)), mode = 'constant')
+        
+        return _melSpectrogram
 
-        for spectrogram in _spectrograms:
-            if spectrogram.shape[0] < _targetLength:
-                # Pad with zeros if shorter than target_length
-                padding = tf.zeros((_targetLength - spectrogram.shape[0], spectrogram.shape[1]))
-                padded_spectrogram = tf.concat([spectrogram, padding], axis=0)
-            else:
-                # Truncate if longer than target_length
-                padded_spectrogram = spectrogram[:_targetLength]
-
-            paddedSpectrogram.append(padded_spectrogram)
-
-        return paddedSpectrogram
-    
     # ------------------------------------------------------------------------
     #   Transcript processing
     #       - Make the sure the transcripts are lower case. And all punctuation
@@ -290,11 +246,12 @@ if __name__ == "__main__":
         print("Data should have the form of: filePath, fileSize, transcript")
         exit(1)
 
-    process = Process()
-
     # Config
     targetLength = 100
     seed = 42
+    batchSize = 2000
+
+    process = Process()
 
     # Set the seed value for experiment reproducibility.
     tf.random.set_seed(seed)
@@ -303,8 +260,8 @@ if __name__ == "__main__":
     print(f"Loading data from the csv file: {sys.argv[1]}")
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
-    print("Processing Audio files")
-    spectrograms = np.expand_dims(process.Audio(audioFiles, targetLength), axis = -1) # Shape: (batch_size, height, width, 1)
+    print("\nProcessing Audio files")
+    spectrograms = np.expand_dims(process.Audio(audioFiles, targetLength, batchSize), axis = -1) # Shape: (batch_size, height, width, 1)
     inputShape = spectrograms.shape[1:]
     
     print("\nProcessing the Transcripts")
@@ -315,4 +272,4 @@ if __name__ == "__main__":
     # Save the Spectrogram of the audio file, shape of the spectrogram (timesteps, frequency bins, channels),
     #  the size of the output layer (number of unique characters), and the Labels
     print(f"\nSaving training data to {sys.argv[2]}")
-    np.savez_compressed(sys.argv[2], Spectrograms = spectrograms, Transcript = transcript, InputShape = inputShape, OutputSize = size, Labels = labels)
+    np.savez_compressed(sys.argv[2], Spectrograms = spectrograms, Labels = labels, InputShape = inputShape, OutputSize = size)
