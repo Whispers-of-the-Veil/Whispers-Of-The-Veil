@@ -78,3 +78,5 @@ crashlytics-build.properties
 Assets/Plugins/SpeechRecognition/Data/
 # Ignore the LibriSpeech Directory
 Assets/Plugins/SpeechRecognition/LibriSpeech/
+
+Assets/Plugins/SpeechRecognition/tmpData/

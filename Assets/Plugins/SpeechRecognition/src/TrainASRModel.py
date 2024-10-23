@@ -15,7 +15,7 @@ def CreateDataset(_spectrograms, _Labels, _batchSize):
 
     Parameters:
         - _spectrograms: An array of Mel Spectrograms
-        - _trainscriptData: An array of transcript data for the audio samples
+        - _Labels: An array of transcript data for the audio samples
         - _batchSize: Defines the size of the batches that the dataset will be divided by
 
     Returns:
@@ -113,6 +113,32 @@ def ctcLoss(_yTrue, _yPred):
 
     return tf.reduce_mean(loss)
 
+def LoadNPZCreateDataset(_directory, _batchSize):
+    """
+    Load in all the npz files in a given directory and compile them into a single dataset
+
+    Parameters:
+        - _directory: This is the full directory path to the npz files
+        - _batchSize: Defines the size of the batches that the dataset will be divided by
+
+    Returns:
+        A tensorflow dataset
+    """
+    datasets = []
+
+    for file in (os.listdir(_directory)):
+        data = np.load(os.path.join(_directory, file))
+        spectrograms = data['Spectrograms']
+        labels = data['Labels']
+        datasets.append(CreateDataset(spectrograms, labels, _batchSize))
+
+    # Combine all datasets into one
+    combinedDataset = datasets[0]
+    for ds in datasets[1:]:
+        combinedDataset = combinedDataset.concatenate(ds)
+
+    return combinedDataset
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -127,36 +153,27 @@ if __name__ == "__main__":
     # Config
     seed = 42
     batchSize = 64
-    numEpochs = 20
+    numEpochs = 100
     optim = 'adam'
 
     # Set the seed value for experiment reproducibility.
     tf.random.set_seed(seed)
     np.random.seed(seed)
-    
-    print("Loading processed training and validiation data")
-    trainingData = np.load(sys.argv[1]) # Load in the preprocessed training data
-    devData = np.load(sys.argv[2])      # Load in the preprocessed dev data
-    
-    # Extract the data from the npz files
-    # Training data
-    trainSpectrogam = trainingData['Spectrograms']
-    trainLabels = trainingData['Labels']
 
-    inputShape = trainingData['InputShape']
-    outputSize = int(trainingData['OutputSize'])
+    print("Initializing some data...")
 
-    # Development validation data
-    devSpectrogram = devData['Spectrograms']
-    devLabels = devData['Labels']
+    trainingDir         = sys.argv[1]
+    validationDirectory = sys.argv[2]
+    modelDir            = sys.argv[3]
 
-    # Create Data Sets from those npz files
-    print("Creating Tensorflow datasets from the processed data")
-    trainDataSet = CreateDataset(trainSpectrogam, trainLabels, batchSize)
-    devDataSet = CreateDataset(devSpectrogram, devLabels, batchSize)
+    validationDatSet = LoadNPZCreateDataset(validationDirectory, batchSize)
+
+    firstBatch = np.load(os.path.join(trainingDir, sorted(os.listdir(trainingDir))[0]))
+    inputShape = firstBatch['InputShape']
+    outputSize = int(firstBatch['OutputSize'])
 
     # Load existing model if it exists
-    if os.path.exists(sys.argv[3]):
+    if os.path.exists(modelDir):
         print(f"Loaded existing model {sys.argv[3]}")
 
         model = load_model(sys.argv[3], custom_objects = {'ctcLoss': ctcLoss}, safe_mode = False)
@@ -165,12 +182,28 @@ if __name__ == "__main__":
 
         model = BuildModel(inputShape, outputSize)
         model.compile(optimizer = optim, loss = ctcLoss)
-    
+
     reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.5, patience = 3, min_lr = 1e-6)
     early_stopping = EarlyStopping(monitor = 'val_loss', patience = 5, restore_best_weights = True)
 
-    print("Training the model")
-    model.fit(trainDataSet, validation_data = devDataSet, epochs = numEpochs, verbose = 1, callbacks = [reduce_lr, early_stopping])
+    # This will loop through and train the model on each batch file once per epoch,
+    # that way the model will see the full dataset once per epoch
+    for epoch in range(numEpochs):
+        print(f"Epoch {epoch + 1}/{numEpochs}")
 
-    model.save(sys.argv[3])                         # Save the model to the defined path
-    model.summary()                                 # Display a summary of the models archtecture
+        trainingFiles = sorted(os.listdir(trainingDir))
+        np.random.shuffle(trainingDir)
+
+        for i, file in enumerate(trainingFiles):
+            print(f"Training on batch {i}/{len(trainingFiles)}")
+
+            batchData = np.load(os.path.join(trainingDir, file))
+            trainSpectrogram = batchData['Spectrograms']
+            trainLabels = batchData['Labels']
+
+            trainDataSet = CreateDataset(trainSpectrogram, trainLabels, batchSize)
+
+            model.fit(trainDataSet, validation_data = validationDatSet, epochs = 1, verbose = 1, callbacks = [reduce_lr, early_stopping])
+
+    model.save(modelDir)
+    model.summary()
