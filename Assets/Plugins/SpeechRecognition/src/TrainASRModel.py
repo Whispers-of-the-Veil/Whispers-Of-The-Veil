@@ -8,21 +8,21 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 import sys
 import os
 
-def CreateDataset(_audioData, _transcriptData, _batchSize):
+def CreateDataset(_spectrograms, _Labels, _batchSize):
     """
     Creates a TensorFlow dataset from pairs of audio data and transcript data, 
     shuffles the data, batches it, and optimizes it for processing.
 
     Parameters:
-        - _audioData: An array of audio data samples
+        - _spectrograms: An array of Mel Spectrograms
         - _trainscriptData: An array of transcript data for the audio samples
         - _batchSize: Defines the size of the batches that the dataset will be divided by
 
     Returns:
         Returns a Tensorflow dataset
     """
-    dataSet = tf.data.Dataset.from_tensor_slices((_audioData, _transcriptData))
-    dataSet = dataSet.shuffle(buffer_size = len(_audioData))
+    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _Labels))
+    dataSet = dataSet.shuffle(buffer_size = len(_spectrograms))
     dataSet = dataSet.batch(_batchSize)
     dataSet = dataSet.prefetch(tf.data.AUTOTUNE)
 
@@ -115,14 +115,12 @@ def ctcLoss(_yTrue, _yPred):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("usage: python SpeechRecognition.py traininginput.npz devinput.npz /output/path/to/the/model.keras")
+        print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
         print("If you haven't please run the Preprocess script on the data")
         print("\nThe arguments are:")
-        print(" - The Processed Training Data")
-        print(" - The Processed Validation Data")
-        print(" - The path to the model")
-        print("     - If the path is to an existing model, the program will use that to train instead")
-        print("     - Otherwise if the path doesn't exist, it will create a new model")
+        print(" - The path to the directory containing the batches of Training Data")
+        print(" - The path to the directory containing the batches of Validation Data")
+        print(" - The path to an existing model, or the path to save the model")
 
         exit(1)
 
