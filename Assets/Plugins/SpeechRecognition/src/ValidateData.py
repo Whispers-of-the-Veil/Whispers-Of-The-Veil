@@ -32,17 +32,16 @@ if __name__ == "__main__":
     with h5py.File(sys.argv[1], 'r') as data:
         spectrograms = data['Spectrograms'][:]
         labels = data['Labels'][:]
-        inputShape = data.attrs['InputShape']
-        outputSize = data.attrs['OutputSize']
+
+
+    inputShape = spectrograms.shape
+    outputSize = labels.shape
     
     print(inputShape)
     print(outputSize)
-
-    print(spectrograms.shape)
-    print(labels.shape)
     
     # Visualize some spectrograms
-    for i in range(20):  # Visualize the first 20 spectrograms
+    for i in range(3):  # Visualize the first 20 spectrograms
         plot_spectrogram(spectrograms[i], title=f'Spectrogram of Sample {i}')  # Visually show the spectrogram
         print(f"Labels: {labels[i]}")  # Show the labels
         TestLength(labels)

@@ -301,15 +301,13 @@ def SaveNPZ(spec, label, dir_name, max_length):
         # Initialize datasets
         firstSpecFile = specFiles[0]
         with h5py.File(firstSpecFile, 'r') as specHF:
-            initialShape = (specHF['Data'].shape[1], specHF['Data'].shape[2], 1)  
-            print(initialShape)
+            initialShape = (specHF['Data'].shape[1], specHF['Data'].shape[2], 1)
             hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
         firstLabelFile = labelFiles[0]
         with h5py.File(firstLabelFile, 'r') as labelHF:
             labelShape = labelHF['Data'].shape[1:]
-            print(labelShape)
-            hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True)
+            hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
 
         # Iterate over each batch and combine them
         for spec_file, label_file in zip(specFiles, labelFiles):
@@ -332,10 +330,6 @@ def SaveNPZ(spec, label, dir_name, max_length):
             os.remove(label_file)
 
             pbar.update(1)
-        
-        # Save InputShape and OutputSize
-        hf.attrs['InputShape'] = spectrograms.shape[1:]
-        hf.attrs['OutputSize'] = labels.shape[1:]
 
         pbar.close()
 
