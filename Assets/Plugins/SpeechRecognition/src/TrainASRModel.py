@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+import h5py
 
 from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, LSTM, Dense, Bidirectional, TimeDistributed, Reshape, Dropout
 from tensorflow.keras.models import Model, load_model
@@ -8,7 +9,19 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 import sys
 import os
 
-def CreateDataset(_spectrograms, _Labels, _batchSize):
+def DataGenerator(_file):
+    """
+    Generator function that dynamically loads data from disk in batches.
+    Extracts input shape and output size from each batch.
+    """
+    with h5py.File(_file, 'r') as data:
+        spectrograms = data['Spectrograms'][:]
+        labels = data['Labels'][:]
+
+    for i in range(spectrograms.shape[0]):
+        yield tf.convert_to_tensor(spectrograms[i], labels[i])
+
+def CreateDataset(_file, _batchSize, _inputShape, _outputSize):
     """
     Creates a TensorFlow dataset from pairs of audio data and transcript data, 
     shuffles the data, batches it, and optimizes it for processing.
@@ -21,12 +34,20 @@ def CreateDataset(_spectrograms, _Labels, _batchSize):
     Returns:
         Returns a Tensorflow dataset
     """
-    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _Labels))
-    dataSet = dataSet.shuffle(buffer_size = len(_spectrograms))
-    dataSet = dataSet.batch(_batchSize)
-    dataSet = dataSet.prefetch(tf.data.AUTOTUNE)
+    dataset = tf.data.Dataset.from_generator(
+        lambda: DataGenerator(_file),
+        output_signature=(
+            tf.TensorSpec(shape = _inputShape, dtype = tf.float32),  # Correct shape for spectrograms
+            tf.TensorSpec(shape = _outputSize, dtype = tf.float32)  
+        )
+    )
 
-    return dataSet
+    dataset = dataset.cache()
+
+    dataset = dataset.shuffle(buffer_size = len(_file))
+    dataset = dataset.batch(_batchSize)
+    dataset = dataset.prefetch(tf.data.AUTOTUNE)
+    return dataset
 
 def BuildModel(_shape, _size):
     """
@@ -49,12 +70,6 @@ def BuildModel(_shape, _size):
 
     conv2 = Conv2D(filters = 64, kernel_size = (3, 3), activation = 'relu', padding = 'same')(pool1)
     pool2 = MaxPooling2D(pool_size = (2, 2))(conv2) # Downsamples the feature maps by a factor of 2
-
-    # Use Lambda layer with explicit output_shape
-    # reshaped = Lambda(
-    #     lambda x: tf.reshape(x, (-1, tf.shape(x)[1], tf.shape(x)[2] * tf.shape(x)[3])),
-    #     output_shape=lambda s: (s[0], s[1], s[2] * s[3])
-    # )(pool2)
     
     # Get the shape of pool2 for static reshaping
     pool_shape = pool2.shape  # (None, height, width, channels)
@@ -113,32 +128,6 @@ def ctcLoss(_yTrue, _yPred):
 
     return tf.reduce_mean(loss)
 
-def LoadNPZCreateDataset(_directory, _batchSize):
-    """
-    Load in all the npz files in a given directory and compile them into a single dataset
-
-    Parameters:
-        - _directory: This is the full directory path to the npz files
-        - _batchSize: Defines the size of the batches that the dataset will be divided by
-
-    Returns:
-        A tensorflow dataset
-    """
-    datasets = []
-
-    for file in (os.listdir(_directory)):
-        data = np.load(os.path.join(_directory, file))
-        spectrograms = data['Spectrograms']
-        labels = data['Labels']
-        datasets.append(CreateDataset(spectrograms, labels, _batchSize))
-
-    # Combine all datasets into one
-    combinedDataset = datasets[0]
-    for ds in datasets[1:]:
-        combinedDataset = combinedDataset.concatenate(ds)
-
-    return combinedDataset
-
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -153,7 +142,7 @@ if __name__ == "__main__":
     # Config
     seed = 42
     batchSize = 64
-    numEpochs = 100
+    numEpochs = 10
     optim = 'adam'
 
     # Set the seed value for experiment reproducibility.
@@ -161,16 +150,15 @@ if __name__ == "__main__":
     np.random.seed(seed)
 
     print("Initializing some data...")
-
-    trainingDir         = sys.argv[1]
-    validationDirectory = sys.argv[2]
     modelDir            = sys.argv[3]
 
-    validationDatSet = LoadNPZCreateDataset(validationDirectory, batchSize)
+    # Get input shape and output size from the first batch\
+    with h5py.File(sys.argv[1], 'r') as data:
+        inputShape = data.attrs['InputShape']
+        outputSize = data.attrs['OutputSize']
 
-    firstBatch = np.load(os.path.join(trainingDir, sorted(os.listdir(trainingDir))[0]))
-    inputShape = firstBatch['InputShape']
-    outputSize = int(firstBatch['OutputSize'])
+    trainDataSet = CreateDataset(sys.argv[1], batchSize, inputShape, outputSize)
+    validationDatSet = CreateDataset(sys.argv[2], batchSize, inputShape, outputSize)
 
     # Load existing model if it exists
     if os.path.exists(modelDir):
@@ -186,24 +174,13 @@ if __name__ == "__main__":
     reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.5, patience = 3, min_lr = 1e-6)
     early_stopping = EarlyStopping(monitor = 'val_loss', patience = 5, restore_best_weights = True)
 
-    # This will loop through and train the model on each batch file once per epoch,
-    # that way the model will see the full dataset once per epoch
-    for epoch in range(numEpochs):
-        print(f"Epoch {epoch + 1}/{numEpochs}")
-
-        trainingFiles = sorted(os.listdir(trainingDir))
-        np.random.shuffle(trainingDir)
-
-        for i, file in enumerate(trainingFiles):
-            print(f"Training on batch {i}/{len(trainingFiles)}")
-
-            batchData = np.load(os.path.join(trainingDir, file))
-            trainSpectrogram = batchData['Spectrograms']
-            trainLabels = batchData['Labels']
-
-            trainDataSet = CreateDataset(trainSpectrogram, trainLabels, batchSize)
-
-            model.fit(trainDataSet, validation_data = validationDatSet, epochs = 1, verbose = 1, callbacks = [reduce_lr, early_stopping])
+    model.fit(
+        trainDataSet.repeat(),
+        validation_data = validationDatSet.repeat(),
+        epochs          = numEpochs,
+        verbose         = 1,
+        callbacks       = [reduce_lr, early_stopping]
+    )
 
     model.save(modelDir)
     model.summary()

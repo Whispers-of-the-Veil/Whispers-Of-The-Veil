@@ -1,3 +1,4 @@
+import h5py
 import numpy as np
 import pandas as pd
 import soundfile as sf
@@ -22,27 +23,24 @@ class Process:
     def __init__(self):
         self.lock = threading.Lock()
 
-    def SaveBatch(self, _data, _index, _dir, _outFile):
+    def SaveBatch(self, data, _index, _dirName, _outFile):
         """
-        Write the provided Data into a temporary npz file
+        Write the provided data into a HDF5 file.
 
         Parameters:
-            - _data: The data that is to be saved
-            - _index: This is the particular batch number to save
-            - _dir: is the name of the new directory containing the processed data
-            - _outFile: is the filePrefix used to differentiate the .dat files
+            - data: The data that is to be saved
+            - index: This is the particular batch number to save
+            - dir_name: Name of the new directory containing the processed data
+            - out_file: File prefix used to differentiate the .dat files
         """
-        directoryPath = os.path.join(TMP_DATA_PATH, _dir)
-        os.makedirs(directoryPath, exist_ok = True)
-        filePath = os.path.join(directoryPath, f'{_outFile}_Batch{_index}.npz')
+        direcotryPath = os.path.join(TMP_DATA_PATH, _dirName)
+        os.makedirs(direcotryPath, exist_ok=True)
+        filePath = os.path.join(direcotryPath, f'{_outFile}_Batch{_index}.h5')
 
-        _data = np.array(_data)
+        with h5py.File(filePath, 'w') as hf:
+            # Save the data
+            hf.create_dataset('Data', data = data, compression = "gzip", chunks = True)
 
-        with self.lock:
-            np.savez_compressed(
-                filePath,
-                Data = _data
-            )
 
     # ------------------------------------------------------------------------
     #   Audio processing
@@ -193,7 +191,7 @@ class Process:
     #               - Pad the labels
     # ------------------------------------------------------------------------
     
-    def Transcript(self, _transcripts, _batchSize, _dir, _outFile):
+    def Transcript(self, _transcripts, _batchSize, _dir, _outFile, _maxLength):
         """
         Process each transcript in batches, saving the results to temperary .data files
         
@@ -220,8 +218,7 @@ class Process:
 
                     charToIndex = self.CreateVocabulary(cleanedTranscripts)
 
-                    maxLength = max(len(t) for t in cleanedTranscripts)
-                    labels = self.PrepareLabels(cleanedTranscripts, charToIndex, maxLength)
+                    labels = self.PrepareLabels(cleanedTranscripts, charToIndex, _maxLength)
 
                     self.SaveBatch(labels, index, _dir, _outFile)
 
@@ -230,6 +227,8 @@ class Process:
                     pbar.update(len(batch))
                 except Exception as e:
                     print(f"Error processing batch: {e}")
+
+        return 
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -284,48 +283,64 @@ class Process:
 
         return indexedTranscripts
 
-def SaveNPZ(_spec, _label, _dir):
+def SaveNPZ(spec, label, dir_name, max_length):
     """
-    Load spectrogram and label batches, and combine them into a single .npz file
-
+    Load spectrogram and label batches, and combine them into a single HDF5 file.
     Parameters:
-        - _dir: the name of the new directory to store the processed data
+        - dir_name: Name of the new directory to store the processed data
     """
-    directoryPath = os.path.join(TMP_DATA_PATH, _dir)
-    files = sorted([f for f in os.listdir(directoryPath) if f.endswith('.npz')])
-    
-    # The number of batch files should be half the number of files in the _dir directory
-    # since both the spectrogram and labels should have the same number of batches
-    numBatches = len(files) // 2
+    directoryPath = os.path.join(TMP_DATA_PATH, dir_name)
+    specFiles = sorted([os.path.join(directoryPath, f) for f in os.listdir(directoryPath) if f.startswith(spec) and f.endswith('.h5')])
+    labelFiles = sorted([os.path.join(directoryPath, f) for f in os.listdir(directoryPath) if f.startswith(label) and f.endswith('.h5')])
 
-    # Iterate over each batch for the spectrograms and labels 
-    # and combine them into a single .npz fil
-    with tqdm(total = numBatches) as pbar:
-        for index in range(1, numBatches + 1):
-            spectrogramBatch = os.path.join(directoryPath, f'{_spec}_Batch{index}.npz')
-            labelBatch = os.path.join(directoryPath, f'{_label}_Batch{index}.npz')
+    combinedDirectoryPath = os.path.join(directoryPath, f'{dir_name}_Combined.h5')
 
-            specData = np.load(spectrogramBatch)
-            spectrograms = np.expand_dims(specData['Data'], axis = -1)
+    with h5py.File(combinedDirectoryPath, 'w') as hf:
+        pbar = tqdm(total=len(specFiles))
 
-            labelData = np.load(labelBatch)
-            labels = labelData['Data']
+        # Initialize datasets
+        firstSpecFile = specFiles[0]
+        with h5py.File(firstSpecFile, 'r') as specHF:
+            initialShape = (specHF['Data'].shape[1], specHF['Data'].shape[2], 1)  
+            print(initialShape)
+            hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
-            inputShape = spectrograms.shape[1:]
-            size = len(set(''.join(str(label) for label in labels)))
+        firstLabelFile = labelFiles[0]
+        with h5py.File(firstLabelFile, 'r') as labelHF:
+            labelShape = labelHF['Data'].shape[1:]
+            print(labelShape)
+            hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True)
 
-            np.savez_compressed(
-                f"{directoryPath}/{_dir}_Batch{index}.npz",
-                Spectrograms = spectrograms,
-                Labels       = labels,
-                InputShape   = inputShape,
-                OutputSize   = size
-            )
+        # Iterate over each batch and combine them
+        for spec_file, label_file in zip(specFiles, labelFiles):
+            with h5py.File(spec_file, 'r') as specHF:
+                spectrograms = specHF['Data'][:]
+                spectrograms = spectrograms[..., None]
 
-            os.remove(spectrogramBatch)
-            os.remove(labelBatch)
+            with h5py.File(label_file, 'r') as labelHF:
+                labels = labelHF['Data'][:]
+
+            # Append data to the combined file
+            hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
+            hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
+
+            hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
+            hf['Labels'][-labels.shape[0]:] = labels
+
+            # Remove processed files
+            os.remove(spec_file)
+            os.remove(label_file)
 
             pbar.update(1)
+        
+        # Save InputShape and OutputSize
+        hf.attrs['InputShape'] = spectrograms.shape[1:]
+        hf.attrs['OutputSize'] = labels.shape[1:]
+
+        pbar.close()
+
+
+
 
 def LoadCSV(_csvPath):
     """
@@ -353,6 +368,7 @@ if __name__ == "__main__":
 
     # Config
     targetLength    = 1000
+    maxLength       = 350
     seed            = 42
     batchSize       = 2000
 
@@ -372,9 +388,9 @@ if __name__ == "__main__":
     process.Audio(audioFiles, targetLength, batchSize, sys.argv[2], specFileName)
     
     print("\nProcessing the Transcripts")
-    process.Transcript(transcript, batchSize, sys.argv[2], transFileName)
+    process.Transcript(transcript, batchSize, sys.argv[2], transFileName, maxLength)
 
     print("\nCombining and Cleaning up temp files")
-    SaveNPZ(specFileName, transFileName, sys.argv[2])
+    SaveNPZ(specFileName, transFileName, sys.argv[2], maxLength)
 
     print(f"\nProcessed data saved to {TMP_DATA_PATH}/{sys.argv[2]}")

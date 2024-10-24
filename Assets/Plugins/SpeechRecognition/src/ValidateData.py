@@ -1,6 +1,8 @@
 import numpy as np
+import h5py
 import matplotlib.pyplot as plt
 import sys
+
 def plot_spectrogram(spectrogram, title='Spectrogram'):
     # Squeeze to remove dimensions of size 1
     spectrogram = np.squeeze(spectrogram)
@@ -26,14 +28,23 @@ def TestLength(_labels):
         print(f"An error occurred during testing: {e}")
 
 if __name__ == "__main__":
-    data = np.load(sys.argv[1])  # Load the processed data
-    spectrogram = data['Spectrograms']
-    labels = data['Labels']
-    shape = data['InputShape']
+    # Load the processed data from the HDF5 file
+    with h5py.File(sys.argv[1], 'r') as data:
+        spectrograms = data['Spectrograms'][:]
+        labels = data['Labels'][:]
+        inputShape = data.attrs['InputShape']
+        outputSize = data.attrs['OutputSize']
+    
+    print(inputShape)
+    print(outputSize)
 
+    print(spectrograms.shape)
+    print(labels.shape)
+    
     # Visualize some spectrograms
-    for i in range(20):  # Visualize the first 5 spectrograms
-        plot_spectrogram(spectrogram[i], title=f'Spectrogram of Sample {i}')                    # Visually show the spectrogram
-        print(f"Labels: {labels[i]}")                                                           # Show the labels
+    for i in range(20):  # Visualize the first 20 spectrograms
+        plot_spectrogram(spectrograms[i], title=f'Spectrogram of Sample {i}')  # Visually show the spectrogram
+        print(f"Labels: {labels[i]}")  # Show the labels
         TestLength(labels)
-        TestShape(spectrogram[i].shape[1:], spectrogram[i + 1].shape[1:])
+        TestShape(spectrograms[i].shape[1:], spectrograms[i + 1].shape[1:])
+
