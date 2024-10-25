@@ -5,7 +5,6 @@ import soundfile as sf
 import librosa
 
 import concurrent.futures
-import threading
 from tqdm import tqdm
 
 import tensorflow as tf
@@ -20,8 +19,7 @@ class Process:
     """
     This class contains methods to handle the audio data and transcripts
     """
-    def __init__(self):
-        self.lock = threading.Lock()
+    def __init__(self): pass
 
     def SaveBatch(self, data, _index, _dirName, _outFile):
         """
@@ -227,8 +225,6 @@ class Process:
                     pbar.update(len(batch))
                 except Exception as e:
                     print(f"Error processing batch: {e}")
-
-        return 
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -283,58 +279,55 @@ class Process:
 
         return indexedTranscripts
 
-def SaveNPZ(spec, label, dir_name, max_length):
+def SaveH5(_spec, _label, _dirName):
     """
     Load spectrogram and label batches, and combine them into a single HDF5 file.
     Parameters:
         - dir_name: Name of the new directory to store the processed data
     """
-    directoryPath = os.path.join(TMP_DATA_PATH, dir_name)
-    specFiles = sorted([os.path.join(directoryPath, f) for f in os.listdir(directoryPath) if f.startswith(spec) and f.endswith('.h5')])
-    labelFiles = sorted([os.path.join(directoryPath, f) for f in os.listdir(directoryPath) if f.startswith(label) and f.endswith('.h5')])
+    directoryPath = os.path.join(TMP_DATA_PATH, _dirName)
 
-    combinedDirectoryPath = os.path.join(directoryPath, f'{dir_name}_Combined.h5')
+    numFiles = len(sorted(os.listdir(directoryPath)))
+    numBatches = numFiles // 2
 
-    with h5py.File(combinedDirectoryPath, 'w') as hf:
-        pbar = tqdm(total=len(specFiles))
+    with tqdm(total = numBatches) as pbar:
+        for index in range(1, numBatches + 1):
+            fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.h5")
 
-        # Initialize datasets
-        firstSpecFile = specFiles[0]
-        with h5py.File(firstSpecFile, 'r') as specHF:
-            initialShape = (specHF['Data'].shape[1], specHF['Data'].shape[2], 1)
-            hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
+            # Read in each tmp h5 file and combine them into one
+            with h5py.File(fileName, 'w') as hf:
 
-        firstLabelFile = labelFiles[0]
-        with h5py.File(firstLabelFile, 'r') as labelHF:
-            labelShape = labelHF['Data'].shape[1:]
-            hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
+                initialShape = (128, 1000, 1)
+                hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
-        # Iterate over each batch and combine them
-        for spec_file, label_file in zip(specFiles, labelFiles):
-            with h5py.File(spec_file, 'r') as specHF:
-                spectrograms = specHF['Data'][:]
-                spectrograms = spectrograms[..., None]
+                labelShape = (350,)
+                hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
 
-            with h5py.File(label_file, 'r') as labelHF:
-                labels = labelHF['Data'][:]
+                spectrogramBatch = os.path.join(directoryPath, f'{_spec}_Batch{index}.h5')
+                labelBatch = os.path.join(directoryPath, f'{_label}_Batch{index}.h5')
 
-            # Append data to the combined file
-            hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
-            hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
+                with h5py.File(spectrogramBatch, 'r') as specHF:
+                    spectrograms = specHF['Data'][:]
+                    spectrograms = spectrograms[..., None]
 
-            hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
-            hf['Labels'][-labels.shape[0]:] = labels
+                with h5py.File(labelBatch, 'r') as labelHF:
+                    labels = labelHF['Data'][:]
 
-            # Remove processed files
-            os.remove(spec_file)
-            os.remove(label_file)
+                # Append data to the combined file
+                hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
+                hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
 
-            pbar.update(1)
+                hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
+                hf['Labels'][-labels.shape[0]:] = labels
 
-        pbar.close()
+                # Remove processed files
+                os.remove(spectrogramBatch)
+                os.remove(labelBatch)
 
+                pbar.update(1)
 
-
+                hf.create_dataset('InputShape', data = hf['Spectrograms'].shape)
+                hf.create_dataset('OutputSize', data = hf['Labels'].shape)
 
 def LoadCSV(_csvPath):
     """
@@ -364,7 +357,7 @@ if __name__ == "__main__":
     targetLength    = 1000
     maxLength       = 350
     seed            = 42
-    batchSize       = 2000
+    batchSize       = 10000
 
     # File prefix for tmp .dat files
     specFileName  = "Spectrogram"
@@ -378,13 +371,13 @@ if __name__ == "__main__":
     print(f"Loading data from the csv file: {sys.argv[1]}")
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
-    print("\nProcessing Audio files")
+    print("\nConverting Audio Files into Mel Spectrograms...")
     process.Audio(audioFiles, targetLength, batchSize, sys.argv[2], specFileName)
     
-    print("\nProcessing the Transcripts")
+    print("\nCreating Labels From the Transcripts...")
     process.Transcript(transcript, batchSize, sys.argv[2], transFileName, maxLength)
 
     print("\nCombining and Cleaning up temp files")
-    SaveNPZ(specFileName, transFileName, sys.argv[2], maxLength)
+    SaveH5(specFileName, transFileName, sys.argv[2])
 
     print(f"\nProcessed data saved to {TMP_DATA_PATH}/{sys.argv[2]}")

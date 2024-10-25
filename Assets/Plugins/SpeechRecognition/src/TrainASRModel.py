@@ -9,46 +9,6 @@ from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 import sys
 import os
 
-def DataGenerator(_file):
-    """
-    Generator function that dynamically loads data from disk in batches.
-    Extracts input shape and output size from each batch.
-    """
-    with h5py.File(_file, 'r') as data:
-        spectrograms = data['Spectrograms'][:]
-        labels = data['Labels'][:]
-
-    for i in range(spectrograms.shape[0]):
-        yield tf.convert_to_tensor(spectrograms[i], labels[i])
-
-def CreateDataset(_file, _batchSize, _inputShape, _outputSize):
-    """
-    Creates a TensorFlow dataset from pairs of audio data and transcript data, 
-    shuffles the data, batches it, and optimizes it for processing.
-
-    Parameters:
-        - _spectrograms: An array of Mel Spectrograms
-        - _Labels: An array of transcript data for the audio samples
-        - _batchSize: Defines the size of the batches that the dataset will be divided by
-
-    Returns:
-        Returns a Tensorflow dataset
-    """
-    dataset = tf.data.Dataset.from_generator(
-        lambda: DataGenerator(_file),
-        output_signature=(
-            tf.TensorSpec(shape = _inputShape, dtype = tf.float32),  # Correct shape for spectrograms
-            tf.TensorSpec(shape = _outputSize, dtype = tf.float32)  
-        )
-    )
-
-    dataset = dataset.cache()
-
-    dataset = dataset.shuffle(buffer_size = len(_file))
-    dataset = dataset.batch(_batchSize)
-    dataset = dataset.prefetch(tf.data.AUTOTUNE)
-    return dataset
-
 def BuildModel(_shape, _size):
     """
     This function constructs the main model, a combination of CNN and BiLSTM layers, to process spectrogram 
@@ -64,7 +24,7 @@ def BuildModel(_shape, _size):
     # Input layer of the model; uses the shape of the spectrogram
     inputLayer = Input(shape = _shape, name = "input")
 
-    # Create 2D convolutional layers to extract features from the spectrogram
+    # Create 2D convolutional layers to extract feavtures from the spectrogram
     conv1 = Conv2D(filters = 32, kernel_size = (3, 3), activation = 'relu', padding = 'same')(inputLayer)
     pool1 = MaxPooling2D(pool_size = (2, 2))(conv1) # Downsamples the feature maps by a factor of 2
 
@@ -85,7 +45,7 @@ def BuildModel(_shape, _size):
     lstm2 = Dropout(0.3)(lstm2)
 
     # TimeDistributed Dense layer to predict characters at each time step
-    denseOutput = TimeDistributed(Dense(units = _size, activation = 'softmax'))(lstm2)
+    denseOutput = TimeDistributed(Dense(units = _size[0], activation = 'softmax'))(lstm2)
 
     model = Model(inputs = inputLayer, outputs = denseOutput)
 
@@ -128,6 +88,33 @@ def ctcLoss(_yTrue, _yPred):
 
     return tf.reduce_mean(loss)
 
+def LoadH5(_file):
+    with h5py.File(_file, 'r') as data:
+        spectrograms = data['Spectrograms'][:]
+        labels = data['Labels'][:]
+
+    return spectrograms, labels
+
+def CreateDataset(_spectrograms, _Labels, _batchSize):
+    """
+    Creates a TensorFlow dataset from pairs of audio data and transcript data, 
+    shuffles the data, batches it, and optimizes it for processing.
+
+    Parameters:
+        - _spectrograms: An array of Mel Spectrograms
+        - _trainscriptData: An array of transcript data for the audio samples
+        - _batchSize: Defines the size of the batches that the dataset will be divided by
+
+    Returns:
+        Returns a Tensorflow dataset
+    """
+    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _Labels))
+    dataSet = dataSet.shuffle(buffer_size = len(_spectrograms))
+    dataSet = dataSet.batch(_batchSize)
+    dataSet = dataSet.prefetch(tf.data.AUTOTUNE)
+
+    return dataSet
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -143,25 +130,27 @@ if __name__ == "__main__":
     seed = 42
     batchSize = 64
     numEpochs = 10
-    optim = 'adam'
 
     # Set the seed value for experiment reproducibility.
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
     print("Initializing some data...")
-    modelDir            = sys.argv[3]
 
-    # Get input shape and output size from the first batch\
     with h5py.File(sys.argv[1], 'r') as data:
-        inputShape = data.attrs['InputShape']
-        outputSize = data.attrs['OutputSize']
+        inputShape = tuple(data['InputShape'][:])[1:]
+        outputSize = tuple(data['OutputSize'][:])[1:]
 
-    trainDataSet = CreateDataset(sys.argv[1], batchSize, inputShape, outputSize)
-    validationDatSet = CreateDataset(sys.argv[2], batchSize, inputShape, outputSize)
+    trainSpectrograms, trainLabels = LoadH5(sys.argv[1])
+    trainDataSet = CreateDataset(trainSpectrograms, trainLabels, batchSize)
+    del trainSpectrograms, trainLabels
+    
+    validSpectrograms, validLabels = LoadH5(sys.argv[2])
+    validDataSet = CreateDataset(validSpectrograms, validLabels, batchSize)
+    del validSpectrograms, validLabels
 
     # Load existing model if it exists
-    if os.path.exists(modelDir):
+    if os.path.exists(sys.argv[3]):
         print(f"Loaded existing model {sys.argv[3]}")
 
         model = load_model(sys.argv[3], custom_objects = {'ctcLoss': ctcLoss}, safe_mode = False)
@@ -169,18 +158,18 @@ if __name__ == "__main__":
         print(f"Building a new model")
 
         model = BuildModel(inputShape, outputSize)
-        model.compile(optimizer = optim, loss = ctcLoss)
+        model.compile(optimizer = 'adam', loss = ctcLoss)
 
     reduce_lr = ReduceLROnPlateau(monitor = 'val_loss', factor = 0.5, patience = 3, min_lr = 1e-6)
     early_stopping = EarlyStopping(monitor = 'val_loss', patience = 5, restore_best_weights = True)
 
     model.fit(
-        trainDataSet.repeat(),
-        validation_data = validationDatSet.repeat(),
+        trainDataSet,
+        validation_data = validDataSet,
         epochs          = numEpochs,
         verbose         = 1,
         callbacks       = [reduce_lr, early_stopping]
     )
 
-    model.save(modelDir)
+    model.save(sys.argv[3])
     model.summary()

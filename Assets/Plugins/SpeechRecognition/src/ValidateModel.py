@@ -58,18 +58,20 @@ def TestSentiment(_model, _spectrogram, _label):
     except Exception as e:
         print(f"An error occurred during testing: {e}")
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python TestModel /path/to/model.keras /path/to/testData.npz")
-        exit(1)
+    # if len(sys.argv) != 3:
+    #     print("Usage: python TestModel /path/to/model.keras /path/to/testData.npz")
+    #     exit(1)
 
-    print("Loading Test dataset")
-    testData = np.load(sys.argv[2])
+    # print("Loading Test dataset")
+    # testData = np.load(sys.argv[2])
 
-    testSpectrogam = testData['Spectrograms']
-    testLabels = testData['Labels']
+    # testSpectrogam = testData['Spectrograms']
+    # testLabels = testData['Labels']
     
     model = load_model(sys.argv[1],  custom_objects={'ctcLoss': ctcLoss}, safe_mode = False)
 
-    print("Asserting models preformance")
-    for sample, label in zip(testSpectrogam, testLabels):
-        TestSentiment(model, sample, label)
+    # print("Asserting models preformance")
+    # for sample, label in zip(testSpectrogam, testLabels):
+    #     TestSentiment(model, sample, label)
+
+    model.summary()

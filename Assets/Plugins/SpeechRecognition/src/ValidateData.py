@@ -32,10 +32,8 @@ if __name__ == "__main__":
     with h5py.File(sys.argv[1], 'r') as data:
         spectrograms = data['Spectrograms'][:]
         labels = data['Labels'][:]
-
-
-    inputShape = spectrograms.shape
-    outputSize = labels.shape
+        inputShape = tuple(data['InputShape'][:])
+        outputSize = tuple(data['OutputSize'][:])
     
     print(inputShape)
     print(outputSize)
