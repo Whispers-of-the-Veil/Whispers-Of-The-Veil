@@ -13,7 +13,9 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import sys
 import os
 
-TMP_DATA_PATH = "Data"
+from Config.Grab_Ini import ini
+
+TMP_DATA_PATH = "../Data"
 
 class Process:
     """
@@ -353,11 +355,14 @@ if __name__ == "__main__":
         print("Data should have the form of: filePath, fileSize, transcript")
         exit(1)
 
-    # Config
-    targetLength    = 1000
-    maxLength       = 350
-    seed            = 42
-    batchSize       = 10000
+    print("Loading Config")
+    generalConfig = ini().grabInfo("config.ini", "General")
+    preprocessConfig = ini().grabInfo("config.ini", "Preprocess")
+
+    seed            = int(generalConfig['seed'])
+    samplesPerBatch = int(preprocessConfig['samples_per_batch'])
+    targetLength    = int(preprocessConfig['spectrograms_target_length'])
+    maxLength       = int(preprocessConfig['labels_max_length'])
 
     # File prefix for tmp .dat files
     specFileName  = "Spectrogram"
@@ -368,14 +373,14 @@ if __name__ == "__main__":
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
-    print(f"Loading data from the csv file: {sys.argv[1]}")
+    print(f"\nLoading data from the csv file: {sys.argv[1]}")
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nConverting Audio Files into Mel Spectrograms...")
-    process.Audio(audioFiles, targetLength, batchSize, sys.argv[2], specFileName)
+    process.Audio(audioFiles, targetLength, samplesPerBatch, sys.argv[2], specFileName)
     
     print("\nCreating Labels From the Transcripts...")
-    process.Transcript(transcript, batchSize, sys.argv[2], transFileName, maxLength)
+    process.Transcript(transcript, samplesPerBatch, sys.argv[2], transFileName, maxLength)
 
     print("\nCombining and Cleaning up temp files")
     SaveH5(specFileName, transFileName, sys.argv[2])

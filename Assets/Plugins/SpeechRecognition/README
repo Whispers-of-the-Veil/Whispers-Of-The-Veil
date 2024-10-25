@@ -1,0 +1,14 @@
+Please center on the src directory before running any of the scripts. It will not see the config.ini file
+if you don't
+
+The scripts from teh Preprocess/Scripts directory can be ran directly with
+python src/Preprocess/Scripts/CreateCSVFile.py, or
+python CreateCSVFile.py
+
+If you run each script without an arg list, it will tell you what you need to provide
+
+Run the Prerpocess/Data.py script as
+python -m Prerpocess.Data <arg list>
+
+Run the Model/TrainASRModel.py as
+python -m Model.TrainASRModel <arg list>
