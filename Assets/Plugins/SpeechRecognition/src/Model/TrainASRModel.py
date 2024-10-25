@@ -50,6 +50,43 @@ def CreateDataset(_spectrograms, _Labels, _batchSize):
 
     return dataSet
 
+def ctcLoss(_yTrue, _yPred):
+    """
+    CTC Loss using TensorFlow's `tf.nn.ctc_loss`.c
+
+    Connectionist Temporal Classification (CTC) is used when the output sequences are shorter 
+    than the input sequences (audio data). It allows the model to align predictions to target 
+    labels without needing exact frame-level alignment.
+    
+    Parameters:
+        - _yTrue: Ground truth labels (sparse representation).
+        - _yPred: Model predictions (logits).
+
+    Returns:
+        Returns the mean of the computed CTC loss across the batch
+    """
+    batchSize = tf.shape(_yPred)[0]
+    timeSteps = tf.shape(_yPred)[1]
+
+    # Input and label lengths
+    inputLength = tf.fill([batchSize], timeSteps)  # Length of the predictions
+    labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)  # Non-padded labels
+
+    # Cast _yTrue to int32 if it is not already
+    _yTrue = tf.cast(_yTrue, tf.int32)
+
+    # Compute the CTC loss
+    loss = tf.nn.ctc_loss(
+        labels              =   _yTrue,
+        logits              =   _yPred,
+        label_length        =   inputLength,
+        logit_length        =   labelLength,
+        logits_time_major   =   False,
+        blank_index         =   -1              # Last class used as the blank index
+    )
+
+    return tf.reduce_mean(loss)
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -85,8 +122,10 @@ if __name__ == "__main__":
 
     shapes = LoadH5(sys.argv[1], ['InputShape', 'OutputSize'])
 
-    inputShape = tuple(shapes[0])
-    outputSize = tuple(shapes[1])
+    inputShape = tuple(shapes[0])[1:]
+    outputSize = tuple(shapes[1])[1:]
+
+    print(f"InputShape: {inputShape} | OutputSize: {outputSize}")
 
     trainingInfo = LoadH5(sys.argv[1], ['Spectrograms', 'Labels'])
     trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
@@ -102,7 +141,7 @@ if __name__ == "__main__":
 
         model = load_model(
             sys.argv[3], 
-            custom_objects = {'ctcLoss': asrmodel.ctcLoss}, 
+            custom_objects = {'ctcLoss': ctcLoss}, 
             safe_mode = False
         )
     else:
@@ -112,7 +151,7 @@ if __name__ == "__main__":
 
         model.compile(
             optimizer   = 'adam', 
-            loss        = asrmodel.ctcLoss, 
+            loss        = ctcLoss, 
             metrics     = ['accuracy']
         )
 
@@ -128,6 +167,8 @@ if __name__ == "__main__":
         patience = stopPatience, 
         restore_best_weights = True
     )
+
+    model.summary()
 
     print("\nTraining Model...")
     model.fit(

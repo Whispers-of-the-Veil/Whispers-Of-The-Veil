@@ -130,11 +130,9 @@ class Process:
         """
         # Compute the Short-Time Fourier Transform (STFT)
         spectrogram = librosa.stft(_audioSample)
-
-        # Compute magnitude and phase, use magnitude only
         magnitude, _ = librosa.magphase(spectrogram)
 
-         # Convert to Mel spectrogram using the Mel scale
+        # Convert to Mel spectrogram using the Mel scale
         melScaleSpectrogram = librosa.feature.melspectrogram(S = magnitude, sr = _sampleRate, center = True, pad_mode = _length)
 
         # Convert amplitude to decibels
@@ -191,7 +189,7 @@ class Process:
     #               - Pad the labels
     # ------------------------------------------------------------------------
     
-    def Transcript(self, _transcripts, _batchSize, _dir, _outFile, _maxLength):
+    def Transcript(self, _transcripts, _maxLength, _batchSize, _dir, _outFile):
         """
         Process each transcript in batches, saving the results to temperary .data files
         
@@ -281,7 +279,7 @@ class Process:
 
         return indexedTranscripts
 
-def SaveH5(_spec, _label, _dirName):
+def SaveH5(_spec, _label, _dirName, _length, _max):
     """
     Load spectrogram and label batches, and combine them into a single HDF5 file.
     Parameters:
@@ -299,10 +297,10 @@ def SaveH5(_spec, _label, _dirName):
             # Read in each tmp h5 file and combine them into one
             with h5py.File(fileName, 'w') as hf:
 
-                initialShape = (128, 1000, 1)
+                initialShape = (128, _length, 1)
                 hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
-                labelShape = (350,)
+                labelShape = (_max,)
                 hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
 
                 spectrogramBatch = os.path.join(directoryPath, f'{_spec}_Batch{index}.h5')
@@ -355,20 +353,20 @@ if __name__ == "__main__":
         print("Data should have the form of: filePath, fileSize, transcript")
         exit(1)
 
-    print("Loading Config")
-    generalConfig = ini().grabInfo("config.ini", "General")
-    preprocessConfig = ini().grabInfo("config.ini", "Preprocess")
+    process = Process()
 
-    seed            = int(generalConfig['seed'])
-    samplesPerBatch = int(preprocessConfig['samples_per_batch'])
-    targetLength    = int(preprocessConfig['spectrograms_target_length'])
-    maxLength       = int(preprocessConfig['labels_max_length'])
+    print("Loading Config")
+    generalConfig       = ini().grabInfo("config.ini", "General")
+    preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
+
+    seed                    = int(generalConfig['seed'])
+    samplesPerBatch         = int(preprocessConfig['samples_per_batch'])
+    targetFrequencyLength   = int(preprocessConfig['target_frequency_length'])
+    maxLength               = int(preprocessConfig['labels_max_length'])
 
     # File prefix for tmp .dat files
     specFileName  = "Spectrogram"
     transFileName = "Labels"
-
-    process = Process()
 
     tf.random.set_seed(seed)
     np.random.seed(seed)
@@ -377,12 +375,12 @@ if __name__ == "__main__":
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nConverting Audio Files into Mel Spectrograms...")
-    process.Audio(audioFiles, targetLength, samplesPerBatch, sys.argv[2], specFileName)
+    process.Audio(audioFiles, targetFrequencyLength, samplesPerBatch, sys.argv[2], specFileName)
     
     print("\nCreating Labels From the Transcripts...")
-    process.Transcript(transcript, samplesPerBatch, sys.argv[2], transFileName, maxLength)
+    process.Transcript(transcript, maxLength, samplesPerBatch, sys.argv[2], transFileName)
 
     print("\nCombining and Cleaning up temp files")
-    SaveH5(specFileName, transFileName, sys.argv[2])
+    SaveH5(specFileName, transFileName, sys.argv[2], targetFrequencyLength, maxLength)
 
     print(f"\nProcessed data saved to {TMP_DATA_PATH}/{sys.argv[2]}")

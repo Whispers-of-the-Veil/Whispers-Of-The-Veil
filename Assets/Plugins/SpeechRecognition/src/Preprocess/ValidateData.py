@@ -37,9 +37,12 @@ if __name__ == "__main__":
     
     print(inputShape)
     print(outputSize)
+
+    print(f"Size of Spectrograms {sys.getsizeof(spectrograms)}")
+    print(f"Size of Labels {sys.getsizeof(labels)}")
     
     # Visualize some spectrograms
-    for i in range(3):  # Visualize the first 20 spectrograms
+    for i in range(50):  # Visualize the first 20 spectrograms
         plot_spectrogram(spectrograms[i], title=f'Spectrogram of Sample {i}')  # Visually show the spectrogram
         print(f"Labels: {labels[i]}")  # Show the labels
         TestLength(labels)
