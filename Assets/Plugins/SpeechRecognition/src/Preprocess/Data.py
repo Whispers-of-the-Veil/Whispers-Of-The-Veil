@@ -215,6 +215,7 @@ class Process:
                         cleanedTranscripts.append(trans)
 
                     charToIndex = self.CreateVocabulary(cleanedTranscripts)
+                    outputSize = len(charToIndex)
 
                     labels = self.PrepareLabels(cleanedTranscripts, charToIndex, _maxLength)
 
@@ -225,6 +226,8 @@ class Process:
                     pbar.update(len(batch))
                 except Exception as e:
                     print(f"Error processing batch: {e}")
+        
+        return outputSize
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -279,7 +282,7 @@ class Process:
 
         return indexedTranscripts
 
-def SaveH5(_spec, _label, _dirName, _length, _max):
+def SaveH5(_spec, _label, _dirName, _length, _maxLength, _size):
     """
     Load spectrogram and label batches, and combine them into a single HDF5 file.
     Parameters:
@@ -300,7 +303,7 @@ def SaveH5(_spec, _label, _dirName, _length, _max):
                 initialShape = (128, _length, 1)
                 hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
-                labelShape = (_max,)
+                labelShape = (_maxLength,)
                 hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
 
                 spectrogramBatch = os.path.join(directoryPath, f'{_spec}_Batch{index}.h5')
@@ -327,7 +330,7 @@ def SaveH5(_spec, _label, _dirName, _length, _max):
                 pbar.update(1)
 
                 hf.create_dataset('InputShape', data = hf['Spectrograms'].shape)
-                hf.create_dataset('OutputSize', data = hf['Labels'].shape)
+                hf.create_dataset('OutputSize', data = _size)
 
 def LoadCSV(_csvPath):
     """
@@ -362,7 +365,7 @@ if __name__ == "__main__":
     seed                    = int(generalConfig['seed'])
     samplesPerBatch         = int(preprocessConfig['samples_per_batch'])
     targetFrequencyLength   = int(preprocessConfig['target_frequency_length'])
-    maxLength               = int(preprocessConfig['labels_max_length'])
+    maxLength               = int(preprocessConfig['max_length'])
 
     # File prefix for tmp .dat files
     specFileName  = "Spectrogram"
@@ -378,9 +381,9 @@ if __name__ == "__main__":
     process.Audio(audioFiles, targetFrequencyLength, samplesPerBatch, sys.argv[2], specFileName)
     
     print("\nCreating Labels From the Transcripts...")
-    process.Transcript(transcript, maxLength, samplesPerBatch, sys.argv[2], transFileName)
+    size = process.Transcript(transcript, maxLength, samplesPerBatch, sys.argv[2], transFileName)
 
     print("\nCombining and Cleaning up temp files")
-    SaveH5(specFileName, transFileName, sys.argv[2], targetFrequencyLength, maxLength)
+    SaveH5(specFileName, transFileName, sys.argv[2], targetFrequencyLength, maxLength, size)
 
     print(f"\nProcessed data saved to {TMP_DATA_PATH}/{sys.argv[2]}")
