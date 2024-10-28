@@ -1,9 +1,11 @@
 import tensorflow as tf
 import numpy as np
 import h5py
+import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
+from tensorflow.keras.optimizers import Adam
 
 import sys
 import os
@@ -11,7 +13,28 @@ import os
 from Model.ASRModel import ASRModel as asrmodel
 from Config.Grab_Ini import ini
 
-def CreateDataset(_spectrograms, _Labels, _batchSize):
+def PlotLoss(_history):
+    """
+    This function plots the loss and val_loss that was recorred over each epoch.
+    Used to help determine the preformance of the model on a provided Training and
+    Validation set.
+
+    Parameters:
+        - _history: This is the history of the model during training
+    """
+    metrics = _history.history
+
+    # Plot the loss and val loss per each Epoch
+    plt.figure(figsize=(16,6))
+    plt.plot(_history.epoch, metrics['loss'], metrics['val_loss'])
+    plt.legend(['loss', 'val_loss'])
+    plt.ylim([0, max(plt.ylim())])
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss [ctcloss]')
+    plt.show()
+
+
+def CreateDataset(_spectrograms, _labels, _audioLength, _transLength, _batchSize):
     """
     Creates a TensorFlow dataset from pairs of audio data and transcript data, 
     shuffles the data, batches it, and optimizes it for processing.
@@ -24,7 +47,8 @@ def CreateDataset(_spectrograms, _Labels, _batchSize):
     Returns:
         Returns a Tensorflow dataset
     """
-    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _Labels))
+# Ensure that the lengths are numpy arrays
+    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _labels, _audioLength, _transLength))
     dataSet = dataSet.shuffle(buffer_size = len(_spectrograms))
     dataSet = dataSet.batch(_batchSize)
     dataSet = dataSet.prefetch(tf.data.AUTOTUNE)
@@ -67,16 +91,17 @@ if __name__ == "__main__":
     print("Loading Config")
     generalConfig   = ini().grabInfo("config.ini", "General")
     trainingConfig  = ini().grabInfo("config.ini", "Training")
-    learingConfig   = ini().grabInfo("config.ini", "Training.LearningRate")
+    learningConfig  = ini().grabInfo("config.ini", "Training.LearningRate")
     stopConfig      = ini().grabInfo("config.ini", "Training.EarlyStop")
 
     seed            = int(generalConfig['seed'])
     batchSize       = int(trainingConfig['batch_size'])
     numEpochs       = int(trainingConfig['epochs'])
-    learnMonitor    = str(learingConfig['monitor'])
-    factor          = float(learingConfig['factor'])
-    learnPatience   = int(learingConfig['patience'])
-    minLR           = float(learingConfig['min_lr'])
+    learnMonitor    = str(learningConfig['monitor'])
+    factor          = float(learningConfig['factor'])
+    learnPatience   = int(learningConfig['patience'])
+    lr              = float(learningConfig['learning_rate'])
+    minLR           = float(learningConfig['min_lr'])
     stopMonitor     = str(stopConfig['monitor'])
     stopPatience    = int(stopConfig['patience'])
 
@@ -94,11 +119,15 @@ if __name__ == "__main__":
     print(f"InputShape: {inputShape} | OutputSize: {outputSize}")
 
     trainingInfo = LoadH5(sys.argv[1], ['Spectrograms', 'Labels'])
-    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
+    trainAudioLengths = LoadH5(sys.argv[1], ['AudioLengths'])
+    trainTransLengths = LoadH5(sys.argv[1], ['TranscriptLengths'])
+    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], trainAudioLengths, trainTransLengths, batchSize)
     trainingInfo.clear
     
     validationInfo = LoadH5(sys.argv[2], ['Spectrograms', 'Labels'])
-    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], batchSize)
+    valAudioLengths = LoadH5(sys.argv[1], ['AudioLengths'])
+    valTransLengths = LoadH5(sys.argv[1], ['TranscriptLengths'])
+    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], valAudioLengths, valTransLengths, batchSize)
     validationInfo.clear
 
     # Load existing model if it exists
@@ -107,17 +136,17 @@ if __name__ == "__main__":
 
         model = load_model(
             sys.argv[3], 
-            custom_objects = {'ctcLoss': asrmodel.ctcLoss}, 
+            custom_objects = {'ctcLoss': tf.keras.backend.ctc_batch_cost}, 
             safe_mode = False
         )
     else:
         print(f"\nBuilding a new model")
 
-        model = asrmodel.BuildModel(inputShape, outputSize)
+        model = asrmodel.BuildModel(inputShape, outputSize, trainDataSet)
 
         model.compile(
-            optimizer   = 'adam', 
-            loss        = asrmodel.ctcLoss,
+            optimizer   = Adam(learning_rate = lr), 
+            loss        = lambda y_true, y_pred: tf.keras.backend.ctc_batch_cost(y_true, y_pred, trainAudioLengths, trainTransLengths),
         )
 
     reduce_lr = ReduceLROnPlateau(
@@ -136,13 +165,15 @@ if __name__ == "__main__":
     model.summary()
 
     print("\nTraining Model...")
-    model.fit(
+    history = model.fit(
         trainDataSet,
         validation_data = validDataSet,
         epochs          = numEpochs,
         verbose         = 1,
         callbacks       = [reduce_lr, early_stopping]
     )
+
+    PlotLoss(history)
 
     model.save(sys.argv[3])
     model.summary()

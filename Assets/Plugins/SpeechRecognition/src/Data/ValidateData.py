@@ -33,7 +33,7 @@ if __name__ == "__main__":
         spectrograms = data['Spectrograms'][:]
         labels = data['Labels'][:]
         inputShape = tuple(data['InputShape'][:])
-        outputSize = tuple(data['OutputSize'][:])
+        outputSize = int(data['OutputSize'][()])
     
     print(inputShape)
     print(outputSize)

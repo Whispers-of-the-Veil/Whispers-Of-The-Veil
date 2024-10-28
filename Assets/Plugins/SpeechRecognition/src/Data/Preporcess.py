@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import soundfile as sf
 import librosa
+from scipy.ndimage import gaussian_filter
 
 import concurrent.futures
 from tqdm import tqdm
@@ -54,8 +55,8 @@ class Process:
 
     def Audio(self, _audioFiles, _targetLength, _batchSize, _dir, _outFile):
         """
-        Process the audio files into Mel spectrograms, saving the results to a temparery batch file.
-        This is saving the spectrograms into a temparery file to avoid holding everything in memory; the
+        Process the audio files into Mel spectrograms, saving the results to a temporary batch file.
+        This is saving the spectrograms into a temporary file to avoid holding everything in memory; the
         librispeech dataset is too large to hold all at once.
         
         Parameters:
@@ -65,56 +66,86 @@ class Process:
             - _dir: the name of the new directory to store the processed data
             - _outFile: is the file prefix used to determine if the batch.dat is spectrogram or labels
         """
-        index = 1
+        total_batches = (len(_audioFiles) + _batchSize - 1) // _batchSize  # Calculate total batches
+        originalLengths = []
 
-        with tqdm(total = len(_audioFiles)) as pbar:
-            # Divide audio files into batches that each thread will work on
+        with tqdm(total=total_batches) as pbar:
+            # Divide audio files into batches
             for i in range(0, len(_audioFiles), _batchSize):
                 batchFiles = _audioFiles[i:i + _batchSize]
+                batch_index = i // _batchSize + 1  # Calculate the batch index (1-based)
+
+                # Process the batch concurrently
+                spectrograms, specLengths, lengths = self.BatchAudioHelper(batchFiles, _targetLength)
+
+                originalLengths.extend(lengths)
                 
-                with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futureSpectrograms = {
-                        executor.submit(self.BatchAudioHelper, batchFiles, _targetLength): batchFiles
-                    }
-                    
-                    for future in concurrent.futures.as_completed(futureSpectrograms):
-                        try:
-                            spectrograms = future.result()
+                self.SaveBatch(spectrograms, batch_index, _dir, _outFile)
 
-                            self.SaveBatch(spectrograms, index, _dir, _outFile)
+                pbar.update(1)
 
-                            index += 1
-
-                            pbar.update(len(spectrograms))  
-                        except Exception as e:
-                            print(f"Error processing batch: {e}")
+        return specLengths, lengths
 
     def BatchAudioHelper(self, _batchFiles, _length):
         """
-        This is function defines what each thread is doing. It will read in each audio file within a givin batch
-        and compute the spectrogram ensuring that it is normalized and padded/truncated to the target length
+        Process a batch of audio files into Mel spectrograms concurrently.
 
         Parameters:
             - _batchFiles: This is a batch of audio files to process
             - _length: is the target length to determine if we need to pad or truncate the spectrograms
 
         Returns:
-            A list of Mel spectrograms for the givin batch
+            A list of Mel spectrograms for the given batch
         """
-        spectrograms = []
+        spectrograms = [None] * len(_batchFiles)  # Pre-allocate list
+        lengths = []
 
-        for _file in _batchFiles:
-            audioSample, sampleRate = sf.read(_file, dtype = 'float32')
+        with tqdm(total=len(_batchFiles), desc="Processing Batch") as pbar:
+            with concurrent.futures.ThreadPoolExecutor() as executor:
+                futures = {executor.submit(self.ProcessAudioFile, _file, _length): idx for idx, _file in enumerate(_batchFiles)}
 
-            melSpectrogram = self.ComputeMelSpectrogram(audioSample, sampleRate, _length)
-            normalizedSpectrogram = self.NormalizeZScore(melSpectrogram)
-            paddedSpectrogram = self.PadSpectrograms(normalizedSpectrogram, _length)
+                for future in concurrent.futures.as_completed(futures):
+                    idx = futures[future]  # Retrieve original index
+                    try:
+                        normalizedSpectrogram, specLength, originalLength = future.result()
+                        lengths.append(originalLength)
+                        spectrograms[idx] = normalizedSpectrogram  # Place result in the correct index
+                    except Exception as e:
+                        print(f"Error processing audio file {futures[future]}: {e}")
+                    finally:
+                        pbar.update(1)  # Update progress bar for each processed file
 
-            spectrograms.append(paddedSpectrogram)
+        return spectrograms, specLength, lengths
 
-            del melSpectrogram, normalizedSpectrogram
-        
-        return spectrograms
+    def ProcessAudioFile(self, _file, _length):
+        """
+        Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
+
+        Parameters:
+            - _file: The path to the audio file
+            - _length: The target length to determine if we need to pad or truncate the spectrogram
+
+        Returns:
+            The normalized Mel spectrogram for the given audio file
+        """
+        audioSample, sampleRate = sf.read(_file, dtype='float32')
+
+        originalLength = len(audioSample)  # Save original length
+
+        targetLength = int(_length * sampleRate)
+        if len(audioSample) < targetLength:
+            padding = targetLength - len(audioSample)
+            audioSample = np.concatenate((audioSample, np.zeros(padding, dtype=np.float32)))
+        elif len(audioSample) > targetLength:
+            audioSample = audioSample[:targetLength]  # Truncate if necessary
+
+        melSpectrogram = self.ComputeMelSpectrogram(audioSample, sampleRate, _length)
+        smoothed = gaussian_filter(melSpectrogram, sigma=1)
+        normalizedSpectrogram = self.NormalizeZScore(smoothed)
+
+        del melSpectrogram, smoothed, audioSample
+
+        return normalizedSpectrogram, normalizedSpectrogram.shape[1], originalLength
     
     def ComputeMelSpectrogram(self, _audioSample, _sampleRate, _length):
         """
@@ -200,6 +231,7 @@ class Process:
             - _outFile: is the file prefix used to determine if the batch.dat is spectrogram or labels
         """
         index = 1
+        originalLengths = []  
 
         with tqdm(total = len(_transcripts)) as pbar:
             for i in range(0, len(_transcripts), _batchSize):
@@ -214,6 +246,8 @@ class Process:
 
                         cleanedTranscripts.append(trans)
 
+                    originalLengths.extend([len(transcript) for transcript in cleanedTranscripts])  
+
                     charToIndex = self.CreateVocabulary(cleanedTranscripts)
                     outputSize = len(charToIndex)
 
@@ -227,7 +261,7 @@ class Process:
                 except Exception as e:
                     print(f"Error processing batch: {e}")
         
-        return outputSize
+        return outputSize, originalLengths
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -282,55 +316,58 @@ class Process:
 
         return indexedTranscripts
 
-def SaveH5(_spec, _label, _dirName, _length, _maxLength, _size):
+def SaveH5(_spec, _label, _dirName, _length, _maxLength, _size, _audioLength, _transLength):
     """
     Load spectrogram and label batches, and combine them into a single HDF5 file.
     Parameters:
         - dir_name: Name of the new directory to store the processed data
     """
-    directoryPath = os.path.join(TMP_DATA_PATH, _dirName)
 
+    directoryPath = os.path.join(TMP_DATA_PATH, _dirName)
     numFiles = len(sorted(os.listdir(directoryPath)))
     numBatches = numFiles // 2
-
-    with tqdm(total = numBatches) as pbar:
+    with tqdm(total=numBatches) as pbar:
         for index in range(1, numBatches + 1):
             fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.h5")
-
             # Read in each tmp h5 file and combine them into one
             with h5py.File(fileName, 'w') as hf:
-
                 initialShape = (128, _length, 1)
-                hf.create_dataset('Spectrograms', shape = (0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
-
+                hf.create_dataset('Spectrograms', shape=(0,) + initialShape, maxshape=(None,) + initialShape, compression="gzip", chunks=True)
                 labelShape = (_maxLength,)
-                hf.create_dataset('Labels', shape = (0,) + labelShape, maxshape = (None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
-
+                hf.create_dataset('Labels', shape=(0,) + labelShape, maxshape=(None,) + labelShape, compression="gzip", chunks=True, dtype='int32')
+                hf.create_dataset('AudioLengths', shape=(0,), maxshape=(None,), compression="gzip", chunks=True, dtype='int32')
+                hf.create_dataset('TranscriptLengths', shape=(0,), maxshape=(None,), compression="gzip", chunks=True, dtype='int32')
+                
                 spectrogramBatch = os.path.join(directoryPath, f'{_spec}_Batch{index}.h5')
                 labelBatch = os.path.join(directoryPath, f'{_label}_Batch{index}.h5')
-
+                
                 with h5py.File(spectrogramBatch, 'r') as specHF:
                     spectrograms = specHF['Data'][:]
                     spectrograms = spectrograms[..., None]
-
                 with h5py.File(labelBatch, 'r') as labelHF:
                     labels = labelHF['Data'][:]
-
+                
                 # Append data to the combined file
-                hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
+                hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis=0)
                 hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
 
-                hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
+                hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis=0)
                 hf['Labels'][-labels.shape[0]:] = labels
 
+                hf['AudioLengths'].resize(hf['AudioLengths'].shape[0] + len(_audioLength), axis=0)
+                hf['AudioLengths'][-len(_audioLength):] = _audioLength
+                
+                hf['TranscriptLengths'].resize(hf['TranscriptLengths'].shape[0] + len(_transLength), axis=0)
+                hf['TranscriptLengths'][-len(_transLength):] = _transLength
+                
                 # Remove processed files
                 os.remove(spectrogramBatch)
                 os.remove(labelBatch)
-
                 pbar.update(1)
+                
+                hf.create_dataset('InputShape', data=hf['Spectrograms'].shape)
+                hf.create_dataset('OutputSize', data=_size)
 
-                hf.create_dataset('InputShape', data = hf['Spectrograms'].shape)
-                hf.create_dataset('OutputSize', data = _size)
 
 def LoadCSV(_csvPath):
     """
@@ -362,10 +399,10 @@ if __name__ == "__main__":
     generalConfig       = ini().grabInfo("config.ini", "General")
     preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
 
-    seed                    = int(generalConfig['seed'])
-    samplesPerBatch         = int(preprocessConfig['samples_per_batch'])
-    targetFrequencyLength   = int(preprocessConfig['target_frequency_length'])
-    maxLength               = int(preprocessConfig['max_length'])
+    seed                = int(generalConfig['seed'])
+    samplesPerBatch     = int(preprocessConfig['samples_per_batch'])
+    maxAudioLength      = int(preprocessConfig['max_audio_length'])
+    maxTransLength      = int(preprocessConfig['max_transcript_length'])
 
     # File prefix for tmp .dat files
     specFileName  = "Spectrogram"
@@ -378,12 +415,12 @@ if __name__ == "__main__":
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nConverting Audio Files into Mel Spectrograms...")
-    process.Audio(audioFiles, targetFrequencyLength, samplesPerBatch, sys.argv[2], specFileName)
+    frequencyLength, audioOriginalLengths = process.Audio(audioFiles, maxAudioLength, samplesPerBatch, sys.argv[2], specFileName)
     
     print("\nCreating Labels From the Transcripts...")
-    size = process.Transcript(transcript, maxLength, samplesPerBatch, sys.argv[2], transFileName)
+    size, transOriginalLengths = process.Transcript(transcript, maxTransLength, samplesPerBatch, sys.argv[2], transFileName)
 
     print("\nCombining and Cleaning up temp files")
-    SaveH5(specFileName, transFileName, sys.argv[2], targetFrequencyLength, maxLength, size)
+    SaveH5(specFileName, transFileName, sys.argv[2], frequencyLength, maxTransLength, size, audioOriginalLengths, transOriginalLengths)
 
     print(f"\nProcessed data saved to {TMP_DATA_PATH}/{sys.argv[2]}")
