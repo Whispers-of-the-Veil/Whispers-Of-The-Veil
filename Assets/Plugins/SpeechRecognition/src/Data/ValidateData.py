@@ -11,8 +11,8 @@ def plot_spectrogram(spectrogram, title='Spectrogram'):
     plt.imshow(spectrogram.T, aspect='auto', origin='lower', cmap='jet')
     plt.colorbar(format='%+2.0f dB')
     plt.title(title)
-    plt.xlabel('Frames')
-    plt.ylabel('Mel Frequency Bins')
+    plt.xlabel('Mel Frequency Bins')
+    plt.ylabel('Frames')
     plt.show()
 
 def TestShape(_shape, _nextShape):

@@ -42,3 +42,40 @@ class ASRModel:
             model = models.Model(inputs = inputLayer, outputs = outputLayer)
 
             return model
+    
+    def ctcLoss(_yTrue, _yPred):
+        """
+        CTC Loss using TensorFlow's `tf.nn.ctc_loss`.
+
+        Connectionist Temporal Classification (CTC) is used when the output sequences are shorter 
+        than the input sequences (audio data). It allows the model to align predictions to target 
+        labels without needing exact frame-level alignment.
+        
+        Parameters:
+            - _yTrue: Ground truth labels (sparse representation).
+            - _yPred: Model predictions (logits).
+
+        Returns:
+            Returns the mean of the computed CTC loss across the batch
+        """
+        batchSize = tf.shape(_yPred)[0]
+        timeSteps = tf.shape(_yPred)[1]
+
+        # Input and label lengths
+        inputLength = tf.fill([batchSize], timeSteps)  # Length of the predictions
+        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)  # Non-padded labels
+
+        # Cast _yTrue to int32 if it is not already
+        _yTrue = tf.cast(_yTrue, tf.int32)
+
+        # Compute the CTC loss
+        loss = tf.nn.ctc_loss(
+            labels              =   _yTrue,
+            logits              =   _yPred,
+            label_length        =   labelLength,
+            logit_length        =   inputLength,
+            logits_time_major   =   False,
+            blank_index         =   -1              # Last class used as the blank index
+        )
+
+        return tf.reduce_mean(loss)

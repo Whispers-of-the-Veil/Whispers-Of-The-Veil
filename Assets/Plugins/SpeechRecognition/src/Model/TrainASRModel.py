@@ -34,7 +34,7 @@ def PlotLoss(_history):
     plt.show()
 
 
-def CreateDataset(_spectrograms, _labels, _audioLength, _transLength, _batchSize):
+def CreateDataset(_spectrograms, _labels, _batchSize):
     """
     Creates a TensorFlow dataset from pairs of audio data and transcript data, 
     shuffles the data, batches it, and optimizes it for processing.
@@ -48,7 +48,7 @@ def CreateDataset(_spectrograms, _labels, _audioLength, _transLength, _batchSize
         Returns a Tensorflow dataset
     """
 # Ensure that the lengths are numpy arrays
-    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _labels, _audioLength, _transLength))
+    dataSet = tf.data.Dataset.from_tensor_slices((_spectrograms, _labels))
     dataSet = dataSet.shuffle(buffer_size = len(_spectrograms))
     dataSet = dataSet.batch(_batchSize)
     dataSet = dataSet.prefetch(tf.data.AUTOTUNE)
@@ -119,15 +119,11 @@ if __name__ == "__main__":
     print(f"InputShape: {inputShape} | OutputSize: {outputSize}")
 
     trainingInfo = LoadH5(sys.argv[1], ['Spectrograms', 'Labels'])
-    trainAudioLengths = LoadH5(sys.argv[1], ['AudioLengths'])
-    trainTransLengths = LoadH5(sys.argv[1], ['TranscriptLengths'])
-    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], trainAudioLengths, trainTransLengths, batchSize)
+    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
     trainingInfo.clear
     
     validationInfo = LoadH5(sys.argv[2], ['Spectrograms', 'Labels'])
-    valAudioLengths = LoadH5(sys.argv[1], ['AudioLengths'])
-    valTransLengths = LoadH5(sys.argv[1], ['TranscriptLengths'])
-    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], valAudioLengths, valTransLengths, batchSize)
+    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], batchSize)
     validationInfo.clear
 
     # Load existing model if it exists
@@ -136,7 +132,7 @@ if __name__ == "__main__":
 
         model = load_model(
             sys.argv[3], 
-            custom_objects = {'ctcLoss': tf.keras.backend.ctc_batch_cost}, 
+            custom_objects = {'ctcLoss': asrmodel.ctcLoss}, 
             safe_mode = False
         )
     else:
@@ -146,7 +142,7 @@ if __name__ == "__main__":
 
         model.compile(
             optimizer   = Adam(learning_rate = lr), 
-            loss        = lambda y_true, y_pred: tf.keras.backend.ctc_batch_cost(y_true, y_pred, trainAudioLengths, trainTransLengths),
+            loss        = asrmodel.ctcLoss,
         )
 
     reduce_lr = ReduceLROnPlateau(
