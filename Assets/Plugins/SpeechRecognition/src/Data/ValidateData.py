@@ -31,18 +31,24 @@ if __name__ == "__main__":
     # Load the processed data from the HDF5 file
     with h5py.File(sys.argv[1], 'r') as data:
         spectrograms = data['Spectrograms'][:]
+        mfccs = data['MFCC'][:]
         labels = data['Labels'][:]
+
+        specShape = tuple(data['SpecShape'][:])
         inputShape = tuple(data['InputShape'][:])
         outputSize = int(data['OutputSize'][()])
     
-    print(inputShape)
-    print(outputSize)
+    print(f"Spectrograms shape: {specShape}")
+    print(f"Input shape of the model (MFCC): {inputShape}")
+    print(f"Shape of the labels: {labels.shape}")
+    print(f"Output size (num of classes): {outputSize}")
 
     print(f"Size of Spectrograms {sys.getsizeof(spectrograms)}")
     print(f"Size of Labels {sys.getsizeof(labels)}")
     
     # Visualize some spectrograms
     for i in range(50):  # Visualize the first 20 spectrograms
+        print(f"MFCC: {mfccs[i]}")
         plot_spectrogram(spectrograms[i], title=f'Spectrogram of Sample {i}')  # Visually show the spectrogram
         print(f"Labels: {labels[i]}")  # Show the labels
         TestLength(labels)

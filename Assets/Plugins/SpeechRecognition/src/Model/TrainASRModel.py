@@ -7,6 +7,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
+from tensorflow.keras.backend import ctc_batch_cost
+
 import sys
 import os
 
@@ -120,6 +122,10 @@ if __name__ == "__main__":
 
     trainingInfo = LoadH5(sys.argv[1], ['Spectrograms', 'Labels'])
     trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
+
+    inputLengths = np.full((shapes[0][0],), shapes[0][2], dtype=int)
+    labelLengths = np.array([np.count_nonzero(label) for label in trainingInfo[1]])
+
     trainingInfo.clear
     
     validationInfo = LoadH5(sys.argv[2], ['Spectrograms', 'Labels'])
@@ -132,17 +138,17 @@ if __name__ == "__main__":
 
         model = load_model(
             sys.argv[3], 
-            custom_objects = {'ctcLoss': asrmodel.ctcLoss}, 
+            custom_objects = asrmodel.ctcLoss, 
             safe_mode = False
         )
     else:
         print(f"\nBuilding a new model")
 
-        model = asrmodel.BuildModel(inputShape, outputSize, trainDataSet)
+        model = asrmodel.BuildModel(inputShape, outputSize)
 
         model.compile(
             optimizer   = Adam(learning_rate = lr), 
-            loss        = asrmodel.ctcLoss,
+            loss = asrmodel.ctcLoss
         )
 
     reduce_lr = ReduceLROnPlateau(

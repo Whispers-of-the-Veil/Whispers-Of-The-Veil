@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras import layers, models, Input
 
 class ASRModel:
-    def BuildModel(_shape, _size, _dataset):
+    def BuildModel(_shape, _size):
             """
             This function constructs the main model, a combination of CNN and BiLSTM layers, to process spectrogram 
             data (2D time-frequency representations of audio signals).
@@ -15,29 +15,18 @@ class ASRModel:
             Returns:
                 Returns a Tensorflow Model
             """
-            normLayer = layers.Normalization()
-            normLayer.adapt(data = _dataset.map(map_func = lambda spec, label: spec))
-
             inputLayer = Input(shape = _shape, name = "input")
-            # resized = layers.Resizing(32, 32)(inputLayer)
-            normal = normLayer(inputLayer)
 
-            # Convolutional layer:
-            #   Used for feature extraction on the spectrograms
-            conv1 = layers.Conv2D(32, 3, activation='relu')(normal)
-            conv2 = layers.Conv2D(64, 3, activation = 'relu')(conv1)
-            pool = layers.MaxPooling2D()(conv2)
+            conv1 = layers.Conv2D(32, (3, 3), activation = 'relu')(inputLayer)
+            conv2 = layers.Conv2D(64, (3, 3), activation = 'relu')(conv1)
+            conv3 = layers.Conv2D(128, (3, 3), activation = 'relu')(conv2)
+            pool = layers.MaxPooling2D((2, 2))(conv3)
 
-            # Reshape to fit the LSTM Layer
             reshaped = layers.Reshape((pool.shape[1], pool.shape[2] * pool.shape[3]))(pool)
 
-            # LSTM Layer
-            #   capture the temporal relationships
-            lstm1 = layers.LSTM(128, return_sequences = True)(reshaped)
-            lstm2 = layers.LSTM(128, return_sequences = True)(lstm1)
+            lstm = layers.Bidirectional(layers.LSTM(128, return_sequences = True))(reshaped)
 
-            dense = layers.Dense(64, activation = 'relu')(lstm2)
-            outputLayer = layers.Dense(_size, activation = "linear", name = "output")(dense)
+            outputLayer = layers.TimeDistributed(layers.Dense(units = _size, activation = 'linear'))(lstm)
 
             model = models.Model(inputs = inputLayer, outputs = outputLayer)
 
