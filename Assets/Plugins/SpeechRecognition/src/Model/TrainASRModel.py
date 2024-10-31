@@ -7,7 +7,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
-from tensorflow.keras.backend import ctc_batch_cost
+
 
 import sys
 import os
@@ -120,7 +120,7 @@ if __name__ == "__main__":
 
     print(f"InputShape: {inputShape} | OutputSize: {outputSize}")
 
-    trainingInfo = LoadH5(sys.argv[1], ['Spectrograms', 'Labels'])
+    trainingInfo = LoadH5(sys.argv[1], ['MFCC', 'Labels'])
     trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
 
     inputLengths = np.full((shapes[0][0],), shapes[0][2], dtype=int)
@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
     trainingInfo.clear
     
-    validationInfo = LoadH5(sys.argv[2], ['Spectrograms', 'Labels'])
+    validationInfo = LoadH5(sys.argv[2], ['MFCC', 'Labels'])
     validDataSet = CreateDataset(validationInfo[0], validationInfo[1], batchSize)
     validationInfo.clear
 

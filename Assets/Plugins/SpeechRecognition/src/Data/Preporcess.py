@@ -6,6 +6,7 @@ import pandas as pd
 # Used to extract features (MFCC) from the audio samples
 import soundfile as sf
 from scipy.ndimage import gaussian_filter
+from sklearn.preprocessing import StandardScaler
 from scipy.fftpack import dct
 import librosa
 
@@ -73,13 +74,13 @@ class Process:
             - _dir: the name of the new directory to store the processed data
             - _outFile: is the file prefix used to determine if the batch.dat is spectrogram or labels
         """
-        totalBatches = (len(_audioFiles) + _batchSize - 1) // _batchSize  # Calculate total batches
+        totalBatches = (len(_audioFiles) + _batchSize - 1) // _batchSize
 
         with tqdm(total=totalBatches) as pbar:
             # Divide audio files into batches
             for i in range(0, len(_audioFiles), _batchSize):
                 batchFiles = _audioFiles[i:i + _batchSize]
-                batchIndex = i // _batchSize + 1  # Calculate the batch index (1-based)
+                batchIndex = i // _batchSize + 1
 
                 # Process the batch concurrently
                 spectrograms, specLengths, mfccs, mfccShape = self.BatchAudioHelper(batchFiles, _maxAudioLength, _numCoefficients, _windowLength, _hopLength)
@@ -181,6 +182,8 @@ class Process:
         windowLength = int(_windowLength * _sampleRate)
         hopLength = int(_hopLength * _sampleRate)
 
+        scaler = StandardScaler()
+
         # Compute the Short-Time Fourier Transform (STFT)
         # This is a windowing step as well, it is applying a default window defined 
         # by librosa: Hann window
@@ -206,11 +209,13 @@ class Process:
         # Retain only the First N Coeffcients of the DCT
         mfcc = mfcc[:, :_numCoefficients]
 
+        normalizedMfcc = scaler.fit_transform(mfcc)
+
         # Transpose the Mel Spectrogram 
         transposedSpec = logMelSpectrogram.T
 
         # Return both the mel spectrograms and the MFCC
-        return transposedSpec, mfcc, mfcc.shape
+        return transposedSpec, normalizedMfcc, normalizedMfcc.shape
     
     def NormalizeZScore(self, _melSpectrogram):
         """

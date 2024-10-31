@@ -1,6 +1,7 @@
 import tensorflow as tf
-
-from tensorflow.keras import layers, models, Input
+from tensorflow import keras
+from tensorflow.keras import layers
+from tensorflow.keras.backend import ctc_batch_cost
 
 class ASRModel:
     def BuildModel(_shape, _size):
@@ -15,20 +16,16 @@ class ASRModel:
             Returns:
                 Returns a Tensorflow Model
             """
-            inputLayer = Input(shape = _shape, name = "input")
+            model = keras.Sequential();
 
-            conv1 = layers.Conv2D(32, (3, 3), activation = 'relu')(inputLayer)
-            conv2 = layers.Conv2D(64, (3, 3), activation = 'relu')(conv1)
-            conv3 = layers.Conv2D(128, (3, 3), activation = 'relu')(conv2)
-            pool = layers.MaxPooling2D((2, 2))(conv3)
+            model.add(layers.Input(shape = _shape, name = "input"))
 
-            reshaped = layers.Reshape((pool.shape[1], pool.shape[2] * pool.shape[3]))(pool)
+            model.add(layers.Bidirectional(layers.LSTM(128, return_sequences = True, activation = 'tanh')))
+            model.add(layers.Bidirectional(layers.LSTM(64, return_sequences = True, activation = 'tanh')))
 
-            lstm = layers.Bidirectional(layers.LSTM(128, return_sequences = True))(reshaped)
+            model.add(layers.Dense(64, activation = 'relu'))
 
-            outputLayer = layers.TimeDistributed(layers.Dense(units = _size, activation = 'linear'))(lstm)
-
-            model = models.Model(inputs = inputLayer, outputs = outputLayer)
+            model.add(layers.TimeDistributed(layers.Dense(_size, activation = 'softmax')))
 
             return model
     
@@ -47,24 +44,22 @@ class ASRModel:
         Returns:
             Returns the mean of the computed CTC loss across the batch
         """
+        _yPred = tf.reshape(_yPred, [-1, 128, 28])
         batchSize = tf.shape(_yPred)[0]
         timeSteps = tf.shape(_yPred)[1]
 
-        # Input and label lengths
-        inputLength = tf.fill([batchSize], timeSteps)  # Length of the predictions
-        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)  # Non-padded labels
+        inputLength = tf.fill([batchSize], timeSteps)
+        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)
 
-        # Cast _yTrue to int32 if it is not already
         _yTrue = tf.cast(_yTrue, tf.int32)
 
-        # Compute the CTC loss
         loss = tf.nn.ctc_loss(
             labels              =   _yTrue,
             logits              =   _yPred,
             label_length        =   labelLength,
             logit_length        =   inputLength,
             logits_time_major   =   False,
-            blank_index         =   -1              # Last class used as the blank index
+            blank_index         =   -1
         )
 
         return tf.reduce_mean(loss)
