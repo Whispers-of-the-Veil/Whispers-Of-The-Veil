@@ -1,18 +1,27 @@
 import numpy as np
 import h5py
 import matplotlib.pyplot as plt
+import librosa
 import sys
 
-def plot_spectrogram(spectrogram, title='Spectrogram'):
+def PlotGraphs(_mfcc, _spectrograms, _sampleRate, title):
     # Squeeze to remove dimensions of size 1
-    spectrogram = np.squeeze(spectrogram)
-    
-    plt.figure(figsize=(10, 4))
-    plt.imshow(spectrogram.T, aspect='auto', origin='lower', cmap='jet')
+    spectrogram = np.squeeze(_spectrograms)
+
+    plt.figure(figsize=(25, 10))
+
+    plt.subplot(2, 1, 1)
+    librosa.display.specshow(_mfcc, sr = _sampleRate, x_axis = 'time')
+    plt.colorbar(format='%+2f')
+    plt.title('MFCC')
+
+    plt.subplot(2, 1, 2)
+    plt.imshow(spectrogram, aspect = 'auto', origin = 'lower', cmap = 'jet')
     plt.colorbar(format='%+2.0f dB')
     plt.title(title)
-    plt.xlabel('Mel Frequency Bins')
-    plt.ylabel('Frames')
+    plt.xlabel('Frames')
+    plt.ylabel('Mel Frequency Bins')
+
     plt.show()
 
 def TestShape(_shape, _nextShape):
@@ -37,11 +46,13 @@ if __name__ == "__main__":
         specShape = tuple(data['SpecShape'][:])
         inputShape = tuple(data['InputShape'][:])
         outputSize = int(data['OutputSize'][()])
+        sampleRate = int(data['SampleRate'][()])
     
     print(f"Spectrograms shape: {specShape}")
     print(f"Input shape of the model (MFCC): {inputShape}")
     print(f"Shape of the labels: {labels.shape}")
     print(f"Output size (num of classes): {outputSize}")
+    print(f"Sample Rate: {sampleRate} | {type(sampleRate)}")
 
     print(f"Size of Spectrograms {sys.getsizeof(spectrograms)}")
     print(f"Size of Labels {sys.getsizeof(labels)}")
@@ -49,7 +60,7 @@ if __name__ == "__main__":
     # Visualize some spectrograms
     for i in range(50):  # Visualize the first 20 spectrograms
         print(f"MFCC: {mfccs[i]}")
-        plot_spectrogram(spectrograms[i], title=f'Spectrogram of Sample {i}')  # Visually show the spectrogram
+        PlotGraphs(mfccs[i], spectrograms[i], sampleRate, title=f'MFCC and Spectrograms of Sample {i}')  # Visually show the spectrogram
         print(f"Labels: {labels[i]}")  # Show the labels
         TestLength(labels)
         TestShape(spectrograms[i].shape[1:], spectrograms[i + 1].shape[1:])
