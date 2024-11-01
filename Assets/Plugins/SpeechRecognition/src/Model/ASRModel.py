@@ -4,28 +4,52 @@ from tensorflow.keras import layers
 from tensorflow.keras.backend import ctc_batch_cost
 
 class ASRModel:
-    def BuildModel(_shape, _size):
+    def BuildModel(_shape, _numClasses):
             """
-            This function constructs the main model, a combination of CNN and BiLSTM layers, to process spectrogram 
-            data (2D time-frequency representations of audio signals).
+            Disclaimer:
+                This model was derived from the deepspeech models documentation found at:
+                https://deepspeech.readthedocs.io/en/v0.6.1/DeepSpeech.html
+                https://github.com/mozilla/DeepSpeech/blob/master/LICENSE
+
+                Credit to this architecture design goes to the mozilla team.
+
+            This model is comprised of seven layers (excluding the input layer). The first layer is a
+            one dimensional convolutional nerual network, which is used to extract features from the MFCCs.
+            The following three layers are are fully connected Dense layers with ReLU activation. These layers
+            take the feautures extracted from the convolutional layer and determine any patterns or relationships.
+            The Recurrent Logn Short-term Memory layer helps the model correctly predict sequence of characters or words.
+            The last Dense layer with the ReLU activation helps to tie together the results of the previous layers.
+
+            Each of these layers are followed by a BatchNormalization layer to help stabilize the outputs of each
+            layer before passing it to the next.
 
             Parameters:
-                - _shape: spectrograms (time steps, frequency bins, and channels)
-                - _size: number of unique labels that the model will predict at each time step
+                - _shape: This is the shape of the MFCC features
+                - _numClasses: This is the number of output classes that the predictions should have.
+                               This number should reflect the number of entries in the charToIndiceMap
 
             Returns:
-                Returns a Tensorflow Model
+                A Keras sequential model following the deepspeech model architecture
             """
             model = keras.Sequential();
 
             model.add(layers.Input(shape = _shape, name = "input"))
 
-            model.add(layers.Bidirectional(layers.LSTM(128, return_sequences = True, activation = 'tanh')))
-            model.add(layers.Bidirectional(layers.LSTM(64, return_sequences = True, activation = 'tanh')))
+            model.add(layers.Conv1D(filters = 32, kernel_size = 5, strides = 2, activation = "relu"))
+            model.add(layers.BatchNormalization())
 
-            model.add(layers.Dense(64, activation = 'relu'))
+            model.add(layers.Dense(1024, activation = 'relu')) 
+            model.add(layers.Dense(1024, activation = 'relu')) 
+            model.add(layers.Dense(1024, activation = 'relu')) 
+            model.add(layers.BatchNormalization())
 
-            model.add(layers.TimeDistributed(layers.Dense(_size, activation = 'softmax')))
+            model.add(layers.LSTM(units = 1024, return_sequences = True))
+            model.add(layers.BatchNormalization())
+
+            model.add(layers.Dense(units = 1024, activation = "relu"))
+            model.add(layers.BatchNormalization())
+
+            model.add(layers.Dense(units = _numClasses, activation = "softmax"), name = "output")
 
             return model
     

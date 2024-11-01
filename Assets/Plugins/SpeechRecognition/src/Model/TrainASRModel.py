@@ -57,28 +57,6 @@ def CreateDataset(_spectrograms, _labels, _batchSize):
 
     return dataSet
 
-def LoadH5(_file, _data):
-    """
-    Load in the information from the _data list from the h5 file
-
-    Parameters:
-        - _file: the complete file path to the h5 file
-        - _data: A list containing strings that identify what to pull out
-
-    Returns:
-        Returns a list of the pulled information
-    """
-    loadedInfo = []
-
-    with h5py.File(_file, 'r') as data:
-        for entry in _data:
-            if data[entry].ndim == 0:  # scalar dataset
-                loadedInfo.append(data[entry][()])
-            else:  # array dataset
-                loadedInfo.append(data[entry][:])
-
-    return loadedInfo
-
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -113,24 +91,7 @@ if __name__ == "__main__":
 
     print("\nInitializing Data Sets...")
 
-    shapes = LoadH5(sys.argv[1], ['InputShape', 'OutputSize'])
-
-    inputShape = tuple(shapes[0])[1:]
-    outputSize = shapes[1]
-
-    print(f"InputShape: {inputShape} | OutputSize: {outputSize}")
-
-    trainingInfo = LoadH5(sys.argv[1], ['MFCC', 'Labels'])
-    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
-
-    inputLengths = np.full((shapes[0][0],), shapes[0][2], dtype=int)
-    labelLengths = np.array([np.count_nonzero(label) for label in trainingInfo[1]])
-
-    trainingInfo.clear
     
-    validationInfo = LoadH5(sys.argv[2], ['MFCC', 'Labels'])
-    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], batchSize)
-    validationInfo.clear
 
     # Load existing model if it exists
     if os.path.exists(sys.argv[3]):
