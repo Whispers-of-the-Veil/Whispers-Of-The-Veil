@@ -25,6 +25,7 @@ import psutil
 import sys
 import os
 import gc
+import time
 
 # Custom class, used to import the configurations of the ini file
 from Config.Grab_Ini import ini
@@ -64,7 +65,7 @@ class Process:
     #           - Padd the Mel Spectrogram to a target length
     # ------------------------------------------------------------------------
 
-    def Audio(self, _audioFiles, _maxAudioLength, _batchSize, _dir, _numCoefficients, _windowLength, _hopLength):
+    def Audio(self, _audioFiles, _maxAudioLength, _batchSize, _dir, _numCoefficients):
         """
         Process the audio files into Mel spectrograms, saving the results to a temporary batch file.
         This is saving the spectrograms into a temporary file to avoid holding everything in memory; the
@@ -86,21 +87,22 @@ class Process:
                 batchIndex = i // _batchSize + 1
 
                 # Process the batch concurrently
-                spectrograms, mfccs, sampleRate = self.BatchAudioHelper(batchFiles, _maxAudioLength, _numCoefficients, _windowLength, _hopLength)
+                mfccs, sampleRate = self.BatchAudioHelper(batchFiles, _maxAudioLength, _numCoefficients)
+
+                mfccShape = mfccs[0].shape
                 
                 # Save the batch to the disk to help reduce the RAM usage
-                self.SaveBatch(spectrograms, batchIndex, _dir, "Spectrograms")
                 self.SaveBatch(mfccs, batchIndex, _dir, "MFCC")
 
                 # Explicitly clean unneeded data and call the garbage collector to help reduce RAM usage
-                del spectrograms, mfccs
+                del mfccs
                 gc.collect()
 
                 pbar.update(1)
 
-        return sampleRate
+        return mfccShape, sampleRate
 
-    def BatchAudioHelper(self, _batchFiles, _audioLength, _numCoefficients, _windowLength, _hopLength):
+    def BatchAudioHelper(self, _batchFiles, _audioLength, _numCoefficients):
         """
         Process a batch of audio files into Mel spectrograms concurrently.
 
@@ -111,19 +113,17 @@ class Process:
         Returns:
             A list of Mel spectrograms for the given batch
         """
-        spectrograms = [None] * len(_batchFiles)  # Pre-allocate list
         mfccs = [None] * len(_batchFiles)
 
         try:
             with tqdm(total=len(_batchFiles), desc="Processing Batch") as pbar:
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = {executor.submit(self.ProcessAudioFile, _file, _audioLength, _numCoefficients, _windowLength, _hopLength): idx for idx, _file in enumerate(_batchFiles)}
+                    futures = {executor.submit(self.ProcessAudioFile, _file, _audioLength, _numCoefficients): idx for idx, _file in enumerate(_batchFiles)}
 
                     for future in concurrent.futures.as_completed(futures):
                         idx = futures[future]  # Retrieve original index
 
-                        normalizedSpectrogram, mfcc, sampleRate = future.result()
-                        spectrograms[idx] = normalizedSpectrogram  # Place result in the correct index
+                        mfcc, sampleRate = future.result()
                         mfccs[idx] = mfcc
 
                         remainingMemory = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
@@ -147,9 +147,9 @@ class Process:
 
             exit(1)
 
-        return spectrograms, mfccs, sampleRate
+        return mfccs, sampleRate
 
-    def ProcessAudioFile(self, _file, _audioLength, _numCoefficients, _windowLength, _hopLength):
+    def ProcessAudioFile(self, _file, _audioLength, _numCoefficients):
         """
         Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
 
@@ -162,6 +162,8 @@ class Process:
         """
         audioSample, sampleRate = sf.read(_file, dtype='float32')
 
+        audioSample = librosa.util.normalize(audioSample)
+
         targetLength = int(_audioLength * sampleRate)
         if len(audioSample) < targetLength:
             padding = targetLength - len(audioSample)
@@ -169,109 +171,87 @@ class Process:
         elif len(audioSample) > targetLength:
             audioSample = audioSample[:targetLength]  # Truncate if necessary
 
-        melSpectrogram, mfcc = self.ComputeMelSpectrogram(audioSample, sampleRate, _numCoefficients, _windowLength, _hopLength)
-        # smoothed = gaussian_filter(melSpectrogram, sigma=1)
-        normalizedSpectrogram = self.Normalize(melSpectrogram)
-
-        del melSpectrogram, audioSample
-
-        return normalizedSpectrogram, mfcc, sampleRate
-    
-    def ComputeMelSpectrogram(self, _audioSample, _sampleRate, _numCoefficients, _windowLength, _hopLength):
-        """
-        Extract features of the audio sample using the following steps:
-            1. Window the signal
-            2. Apply the Discrete Fourier Transform
-            3. Logarithm of the magnitude
-            4. Apply discrete cosine tranform (DCT)
-
-        This is done to extract both the Mel Spectrogram, and the MFCC. The MFCC will be used
-        as the features that will be fed into the classification model. The Mel Spectrograms will be
-        used
+        mfcc = librosa.feature.mfcc(y = audioSample, sr = sampleRate, n_mfcc = _numCoefficients)
         
-        Parameters:
-            - _audio: An audio tensor
-            - _sampleRate: The sample rate of that audio tensor
-            - _length: Used to pad the the edges of the signal
+        mfcc = librosa.power_to_db(mfcc)
 
-        Returns:
-            Returns a transposed Mel Spectrogram in the Logscale
-            and the mfcc
-        """
-        # These are used to help align the Labels to the MFCCs of the Mel Spectrograms
-        windowLength = int(_windowLength * _sampleRate)
-        hopLength = int(_hopLength * _sampleRate)
+        del audioSample
 
-        # Compute the Short-Time Fourier Transform (STFT)
-        # This is a windowing step as well, it is applying a default window defined 
-        # by librosa: Hann window
-        # The Hann Window helps to minimize the spectral leakage when performing the Fourier
-        # Transforms. This helps with audio signals since they are non-stationary and not perfectly periodic
-        # This effectly taper the edges of the segment to zero.
-        spectrogram = librosa.stft(_audioSample, n_fft = windowLength, hop_length = hopLength)
-
-        # This step computes the magnitude spectrum
-        magnitude, _ = librosa.magphase(spectrogram)
-
-        # Convert to Mel spectrogram using the Mel scale
-        melScaleSpectrogram = librosa.feature.melspectrogram(S = magnitude, sr = _sampleRate, n_fft = windowLength, hop_length = hopLength)
-
-        # Convert he mel spectrogram to the log scale
-        # MFCC that we are trying to compute will need to be based on the logarithmic
-        # perception of sound; it wont work correctly otherwise.
-        logMelSpectrogram = librosa.amplitude_to_db(melScaleSpectrogram, ref = np.max)
-
-        # Apply the DCT on each frame
-        mfcc = dct(logMelSpectrogram, type = 2, axis = 1, norm = 'ortho')
-
-        # Retain only the First N Coeffcients of the DCT
-        mfcc = mfcc[:, :_numCoefficients]
-
-        logMelSpectrogram = logMelSpectrogram.T
-
-        # Return both the mel spectrograms and the MFCC
-        return logMelSpectrogram, mfcc
+        return mfcc, sampleRate
     
-    def Normalize(self, _melSpectrogram):
-        """
-        Normalizes the Mel spectrogram using z-score normalization.
+    # def ComputeMelSpectrogram(self, _audioSample, _sampleRate, _numCoefficients, _windowLength, _hopLength):
+    #     """
+    #     Extract features of the audio sample using the following steps:
+    #         1. Window the signal
+    #         2. Apply the Discrete Fourier Transform
+    #         3. Logarithm of the magnitude
+    #         4. Apply discrete cosine tranform (DCT)
+
+    #     This is done to extract both the Mel Spectrogram, and the MFCC. The MFCC will be used
+    #     as the features that will be fed into the classification model. The Mel Spectrograms will be
+    #     used
         
-        Parameters:
-            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+    #     Parameters:
+    #         - _audio: An audio tensor
+    #         - _sampleRate: The sample rate of that audio tensor
+    #         - _length: Used to pad the the edges of the signal
+
+    #     Returns:
+    #         Returns a transposed Mel Spectrogram in the Logscale
+    #         and the mfcc
+    #     """
+    #     # These are used to help align the Labels to the MFCCs of the Mel Spectrograms
+    #     windowLength = int(_windowLength * _sampleRate)
+    #     hopLength = int(_hopLength * _sampleRate)
+
+    #     # Compute the Short-Time Fourier Transform (STFT)
+    #     # This is a windowing step as well, it is applying a default window defined 
+    #     # by librosa: Hann window
+    #     # The Hann Window helps to minimize the spectral leakage when performing the Fourier
+    #     # Transforms. This helps with audio signals since they are non-stationary and not perfectly periodic
+    #     # This effectly taper the edges of the segment to zero.
+    #     spectrogram = librosa.stft(_audioSample, n_fft = windowLength, hop_length = hopLength)
+
+    #     # This step computes the magnitude spectrum
+    #     magnitude, _ = librosa.magphase(spectrogram)
+
+    #     # Convert to Mel spectrogram using the Mel scale
+    #     melScaleSpectrogram = librosa.feature.melspectrogram(S = magnitude, sr = _sampleRate, n_fft = windowLength, hop_length = hopLength)
+
+    #     # Convert he mel spectrogram to the log scale
+    #     # MFCC that we are trying to compute will need to be based on the logarithmic
+    #     # perception of sound; it wont work correctly otherwise.
+    #     logMelSpectrogram = librosa.amplitude_to_db(melScaleSpectrogram, ref = np.max)
+
+    #     # Apply the DCT on each frame
+    #     mfcc = dct(logMelSpectrogram, type = 2, axis = 1, norm = 'ortho')
+
+    #     # Retain only the First N Coeffcients of the DCT
+    #     mfcc = mfcc[:, :_numCoefficients]
+
+    #     logMelSpectrogram = logMelSpectrogram.T
+
+    #     # Return both the mel spectrograms and the MFCC
+    #     return logMelSpectrogram, mfcc
+    
+    # def Normalize(self, _melSpectrogram):
+    #     """
+    #     Normalizes the Mel spectrogram using z-score normalization.
+        
+    #     Parameters:
+    #         - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
             
-        Returns:
-            - Normalized spectrogram with mean 0 and standard deviation 1
-        """
-        # Center the spectrogram by subtracting the mean
-        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
+    #     Returns:
+    #         - Normalized spectrogram with mean 0 and standard deviation 1
+    #     """
+    #     # Center the spectrogram by subtracting the mean
+    #     centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
         
-        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
-        maxAbsValue = np.max(np.abs(centeredSpectrogram))
-        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
+    #     # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
+    #     maxAbsValue = np.max(np.abs(centeredSpectrogram))
+    #     normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
         
-        return normalizedSpectrogram
-    
-    def PadSpectrograms(self, _melSpectrogram, _targetLength):
-        """
-        Pads or truncates the Mel spectrogram to the target length
-
-        Parameters:
-            - melSpectrogram: The computed Mel spectrogram (2D NumPy array)
-            - target_length: The desired length in frames
-
-        Returns:
-            - The padded or truncated spectrogram
-        """
-        # Truncate the spectrogram if it is above the tragetLength
-        # Otherwise Pad the spectrogram with zeros
-        if _melSpectrogram.shape[1] > _targetLength:
-            return _melSpectrogram[:, :_targetLength]
-        elif _melSpectrogram.shape[1] < _targetLength:
-            pad_width = _targetLength - _melSpectrogram.shape[1]
-
-            return np.pad(_melSpectrogram, ((0, 0), (0, pad_width)), mode = 'constant')
-        
-        return _melSpectrogram
+    #     return normalizedSpectrogram
 
     # ------------------------------------------------------------------------
     #   Transcript processing
@@ -323,7 +303,7 @@ class Process:
                 except Exception as e:
                     print(f"Error processing batch: {e}")
         
-        return charToIndex
+        return len(charToIndex)
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -377,43 +357,47 @@ class Process:
             indexedTranscripts.append(indexedTranscript)
 
         return indexedTranscripts
-
-def CreateTFRecord(_dirPath, _dirName, _charToIndex, _sampleRate):
+    
+def SaveH5(_dirPath, _dirName, _mfccShape, _maxLength, _numClasses, _sampleRate):
     """
-    Create a tfrecord from all the processed data: mfcc; melspectrograms; and labels. We are also saving the character mapping and the sample rate
-    to each of these records.
+    Load spectrogram and label batches, and combine them into a single HDF5 file.
 
     Parameters:
-        - _dirPath: The data directory path
-        - _dirName: The name of the directory containing the tmp files
-        - _charToIndex: The character to indice mapping created when we prepared the labels
-        - _sampleRate: The samplerate of the audio files
+        - dir_name: Name of the new directory to store the processed data
     """
     directoryPath = os.path.join(_dirPath, _dirName)
     numFiles = len(sorted([f for f in os.listdir(directoryPath) if f.endswith('.h5')]))
-    
-    try:
-        if (numFiles % 3 != 0):
-            error = "Missing one or more processed data file.\n"
-            error1 = f"There should be one of each of the following present in the provided directory '{directoryPath}' for each processed batch(s):\n"
-            error2 = "\t-MFCC\n\t-Spectrograms\n\t-Labels"
-            
-            raise ValueError(error + error1 + error2)
 
-        numBatches = numFiles // 3
+    try:
+        # if (numFiles % 3 != 0):
+        #     error = "Missing one or more processed data file.\n"
+        #     error1 = f"There should be one of each of the following present in the provided directory '{directoryPath}' for each processed batch(s):\n"
+        #     error2 = "\t-MFCC\n\t-Spectrograms\n\t-Labels"
+            
+        #     raise ValueError(error + error1 + error2)
+
+        numBatches = 1
 
         with tqdm(total=numBatches) as pbar:
             for index in range(1, numBatches + 1):
-                fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.tfrecord")
+                fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.h5")
+                # Read in each tmp h5 file and combine them into one
+                with h5py.File(fileName, 'w') as hf:
+                    # initialShape = _specShape + (1, )
+                    # hf.create_dataset('Spectrograms', shape=(0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
 
-                spectrogramBatch = os.path.join(directoryPath, f'Spectrograms_Batch{index}.h5')
-                mfccBatch = os.path.join(directoryPath, f'MFCC_Batch{index}.h5')
-                labelBatch = os.path.join(directoryPath, f'Labels_Batch{index}.h5')
+                    hf.create_dataset('MFCC', shape = (0,) + _mfccShape, maxshape = (None,) + _mfccShape, compression = "gzip", chunks = True)
 
-                with tf.io.TFRecordWriter(fileName) as writer:
-                    with h5py.File(spectrogramBatch, 'r') as specHF:
-                        spectrograms = specHF['Data'][:]
-                        spectrograms = spectrograms[..., None]
+                    labelShape = (_maxLength,)
+                    hf.create_dataset('Labels', shape=(0,) + labelShape, maxshape=(None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
+                    
+                    # spectrogramBatch = os.path.join(directoryPath, f'Spectrograms_Batch{index}.h5')
+                    mfccBatch = os.path.join(directoryPath, f'MFCC_Batch{index}.h5')
+                    labelBatch = os.path.join(directoryPath, f'Labels_Batch{index}.h5')
+                    
+                    # with h5py.File(spectrogramBatch, 'r') as specHF:
+                    #     spectrograms = specHF['Data'][:]
+                    #     spectrograms = spectrograms[..., None]
                     with h5py.File(mfccBatch, 'r') as mfccHF:
                         mfccs = mfccHF['Data'][:]
                     with h5py.File(labelBatch, 'r') as labelHF:
@@ -431,30 +415,25 @@ def CreateTFRecord(_dirPath, _dirName, _charToIndex, _sampleRate):
                         del spectrograms, mfcc, labels
 
                         raise SystemError(error + error1 + error2)
+                    
+                    # # Append data to the combined file
+                    # hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
+                    # hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
 
-                    # Convert the dictionary into bytes to save it to the tf features
-                    # This makes it easier to save a dictionary to the features of the tfrecord
-                    mapping = str(_charToIndex)
-                    asciiMessage = mapping.encode('ascii')
-                    mappingBytes = base64.b64encode(asciiMessage)
+                    hf['MFCC'].resize(hf['MFCC'].shape[0] + mfccs.shape[0], axis = 0)
+                    hf['MFCC'][-mfccs.shape[0]:] = mfccs
 
-                    for i in range(spectrograms.shape[0]):
-                        feature = {
-                            'MFCC': tf.train.Feature(float_list = tf.train.FloatList(value = mfccs[i].flatten())),                    # The MFCC features: This is used to speech recognition in the Speech-to-text system
-                            'MelSpectrograms': tf.train.Feature(float_list = tf.train.FloatList(value = spectrograms[i].flatten())),  # The Mel Spectrograms: This is used to extrapolate the emotions in the speech
-                            'Labels': tf.train.Feature(int64_list = tf.train.Int64List(value = labels[i].tolist())),                  # The labels
-                            'CharToIndex': tf.train.Feature(bytes_list=tf.train.BytesList(value = [mappingBytes])),                   # The character to indice mapping: Used to decode the models predictions, and to ge the numClasses
-                            'SampleRate': tf.train.Feature(int64_list = tf.train.Int64List(value = [_sampleRate]))                    # The sample rate: Used to map the Mel Spectrograms and the MFCC on a plot
-                        }
+                    hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
+                    hf['Labels'][-labels.shape[0]:] = labels
+                    
+                    # Remove processed files
+                    # os.remove(spectrogramBatch)
+                    os.remove(mfccBatch)
+                    os.remove(labelBatch)
+                    pbar.update(1)
 
-                        example = tf.train.Example(features = tf.train.Features(feature = feature))
-                        writer.write(example.SerializeToString())
-
-                os.remove(spectrogramBatch)
-                os.remove(mfccBatch)
-                os.remove(labelBatch)
-                
-                pbar.update(1)
+                    hf.create_dataset('NumberOfClasses', data = _numClasses)
+                    hf.create_dataset('SampleRate', data = _sampleRate)
     except ValueError as e:
         print(f"Encountered error with tmp files:\n{e}")
     except OSError as e:
@@ -505,8 +484,6 @@ if __name__ == "__main__":
     maxAudioLength      = int(preprocessConfig['max_audio_length'])
     maxTransLength      = int(preprocessConfig['max_transcript_length'])
     numCoefficients     = int(preprocessConfig['num_coefficients_for_mfcc'])
-    windowLength        = float(preprocessConfig['window_length'])
-    hopLength           = float(preprocessConfig['hop_length'])
 
     tf.random.set_seed(seed)
     np.random.seed(seed)
@@ -515,14 +492,12 @@ if __name__ == "__main__":
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nConverting Audio Files into Mel Spectrograms, and extracting the MFCC...")
-    sampleRate = process.Audio(audioFiles, maxAudioLength, samplesPerBatch, sys.argv[2], numCoefficients, windowLength, hopLength)
+    mfccShape, sampleRate = process.Audio(audioFiles, maxAudioLength, samplesPerBatch, sys.argv[2], numCoefficients)
     
     print("\nCreating Labels From the Transcripts...")
-    charToIndex = process.Transcript(transcript, maxTransLength, samplesPerBatch, sys.argv[2])
+    numClasses = process.Transcript(transcript, maxTransLength, samplesPerBatch, sys.argv[2])
 
     print("\nCombining and Cleaning up temp files")
-    # We are saving the processed data into a tfrecord to better handle it in memory
-    # The idea would be to hold a large dataset in memory using these records
-    CreateTFRecord(sys.argv[3], sys.argv[2], charToIndex, sampleRate)
+    SaveH5(sys.argv[3], sys.argv[2], mfccShape, maxTransLength, numClasses, sampleRate)
 
     print(f"\nProcessed data saved to {sys.argv[3]}/{sys.argv[2]}")

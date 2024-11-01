@@ -1,14 +1,12 @@
 import tensorflow as tf
 import numpy as np
-import h5py
 import matplotlib.pyplot as plt
 
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
-
-
+import h5py
 import sys
 import os
 
@@ -57,6 +55,28 @@ def CreateDataset(_spectrograms, _labels, _batchSize):
 
     return dataSet
 
+def LoadH5(_file, _data):
+    """
+    Load in the information from the _data list from the h5 file
+
+    Parameters:
+        - _file: the complete file path to the h5 file
+        - _data: A list containing strings that identify what to pull out
+
+    Returns:
+        Returns a list of the pulled information
+    """
+    loadedInfo = []
+
+    with h5py.File(_file, 'r') as data:
+        for entry in _data:
+            if data[entry].ndim == 0:  # scalar dataset
+                loadedInfo.append(data[entry][()])
+            else:  # array dataset
+                loadedInfo.append(data[entry][:])
+
+    return loadedInfo
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData/Directory /Path/to/ValidationData/Directory /output/path/to/the/model.keras")
@@ -75,13 +95,16 @@ if __name__ == "__main__":
     stopConfig      = ini().grabInfo("config.ini", "Training.EarlyStop")
 
     seed            = int(generalConfig['seed'])
+
     batchSize       = int(trainingConfig['batch_size'])
     numEpochs       = int(trainingConfig['epochs'])
+
     learnMonitor    = str(learningConfig['monitor'])
     factor          = float(learningConfig['factor'])
     learnPatience   = int(learningConfig['patience'])
     lr              = float(learningConfig['learning_rate'])
     minLR           = float(learningConfig['min_lr'])
+
     stopMonitor     = str(stopConfig['monitor'])
     stopPatience    = int(stopConfig['patience'])
 
@@ -91,9 +114,21 @@ if __name__ == "__main__":
 
     print("\nInitializing Data Sets...")
 
-    
+    numClasses = LoadH5(sys.argv[1], ['NumberOfClasses'])[0]
 
-    # Load existing model if it exists
+    trainingInfo = LoadH5(sys.argv[1], ['MFCC', 'Labels'])
+    trainDataSet = CreateDataset(trainingInfo[0], trainingInfo[1], batchSize)
+
+    print(f"MFCC {trainingInfo[0].shape}\nLabels {trainingInfo[1].shape}")
+
+    inputShape = trainingInfo[0].shape[1:]
+
+    trainingInfo.clear
+    
+    validationInfo = LoadH5(sys.argv[2], ['MFCC', 'Labels'])
+    validDataSet = CreateDataset(validationInfo[0], validationInfo[1], batchSize)
+    validationInfo.clear
+
     if os.path.exists(sys.argv[3]):
         print(f"\nLoaded existing model {sys.argv[3]}")
 
@@ -105,7 +140,7 @@ if __name__ == "__main__":
     else:
         print(f"\nBuilding a new model")
 
-        model = asrmodel.BuildModel(inputShape, outputSize)
+        model = asrmodel.BuildModel(inputShape, numClasses)
 
         model.compile(
             optimizer   = Adam(learning_rate = lr), 
@@ -132,7 +167,7 @@ if __name__ == "__main__":
         trainDataSet,
         validation_data = validDataSet,
         epochs          = numEpochs,
-        verbose         = 1,
+        validation_split=0.2,
         callbacks       = [reduce_lr, early_stopping]
     )
 
@@ -140,5 +175,3 @@ if __name__ == "__main__":
 
     model.save(sys.argv[3])
     model.summary()
-
-    

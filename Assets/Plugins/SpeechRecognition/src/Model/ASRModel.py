@@ -33,9 +33,9 @@ class ASRModel:
             """
             model = keras.Sequential();
 
-            model.add(layers.Input(shape = _shape, name = "input"))
+            model.add(layers.Input(shape = _shape))
 
-            model.add(layers.Conv1D(filters = 32, kernel_size = 5, strides = 2, activation = "relu"))
+            model.add(layers.Conv1D(filters = 64, kernel_size = 3, strides = 1, activation = "relu"))
             model.add(layers.BatchNormalization())
 
             model.add(layers.Dense(1024, activation = 'relu')) 
@@ -49,7 +49,7 @@ class ASRModel:
             model.add(layers.Dense(units = 1024, activation = "relu"))
             model.add(layers.BatchNormalization())
 
-            model.add(layers.Dense(units = _numClasses, activation = "softmax"), name = "output")
+            model.add(layers.Dense(units = _numClasses, activation = "softmax"))
 
             return model
     
@@ -68,7 +68,6 @@ class ASRModel:
         Returns:
             Returns the mean of the computed CTC loss across the batch
         """
-        _yPred = tf.reshape(_yPred, [-1, 128, 28])
         batchSize = tf.shape(_yPred)[0]
         timeSteps = tf.shape(_yPred)[1]
 
