@@ -20,6 +20,8 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 # Used to get system paths and to explicitly call the garbage collector
+import base64
+import psutil
 import sys
 import os
 import gc
@@ -32,6 +34,7 @@ class Process:
     This class contains methods to handle the audio data and transcripts
     """
     def __init__(self, _dirPath):
+        self.scaler = StandardScaler()
         self.directoryPath = _dirPath
 
     def SaveBatch(self, data, _index, _dirName, _outFile):
@@ -83,7 +86,7 @@ class Process:
                 batchIndex = i // _batchSize + 1
 
                 # Process the batch concurrently
-                spectrograms, specLengths, mfccs, mfccShape = self.BatchAudioHelper(batchFiles, _maxAudioLength, _numCoefficients, _windowLength, _hopLength)
+                spectrograms, mfccs, sampleRate = self.BatchAudioHelper(batchFiles, _maxAudioLength, _numCoefficients, _windowLength, _hopLength)
                 
                 # Save the batch to the disk to help reduce the RAM usage
                 self.SaveBatch(spectrograms, batchIndex, _dir, "Spectrograms")
@@ -95,7 +98,7 @@ class Process:
 
                 pbar.update(1)
 
-        return specLengths, mfccShape
+        return sampleRate
 
     def BatchAudioHelper(self, _batchFiles, _audioLength, _numCoefficients, _windowLength, _hopLength):
         """
@@ -111,23 +114,40 @@ class Process:
         spectrograms = [None] * len(_batchFiles)  # Pre-allocate list
         mfccs = [None] * len(_batchFiles)
 
-        with tqdm(total=len(_batchFiles), desc="Processing Batch") as pbar:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                futures = {executor.submit(self.ProcessAudioFile, _file, _audioLength, _numCoefficients, _windowLength, _hopLength): idx for idx, _file in enumerate(_batchFiles)}
+        try:
+            with tqdm(total=len(_batchFiles), desc="Processing Batch") as pbar:
+                with concurrent.futures.ThreadPoolExecutor() as executor:
+                    futures = {executor.submit(self.ProcessAudioFile, _file, _audioLength, _numCoefficients, _windowLength, _hopLength): idx for idx, _file in enumerate(_batchFiles)}
 
-                for future in concurrent.futures.as_completed(futures):
-                    idx = futures[future]  # Retrieve original index
-                    try:
-                        normalizedSpectrogram, specLength, mfcc, mfccShape = future.result()
+                    for future in concurrent.futures.as_completed(futures):
+                        idx = futures[future]  # Retrieve original index
+
+                        normalizedSpectrogram, mfcc, sampleRate = future.result()
                         spectrograms[idx] = normalizedSpectrogram  # Place result in the correct index
                         mfccs[idx] = mfcc
 
-                    except Exception as e:
-                        print(f"Error processing audio file {futures[future]}: {e}")
-                    finally:
-                        pbar.update(1)  # Update progress bar for each processed file
+                        remainingMemory = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
 
-        return spectrograms, specLength, mfccs, mfccShape
+                        # Raise a System error if the available memory has dropped to 10% or lower
+                        # This helps to prevent the system hanging or crashing
+                        if (remainingMemory <= 10):
+                            error = f"System has ran out of available memory: {remainingMemory}% available\n"
+                            error1 = "Closing script before the system hangs or crashes\n"
+                            error2 = "Try lowing the samples per batch in the ini file"
+
+                            # Ensure that each thread joins before raising error
+                            executor.shutdown(wait = True, cancel_futures = True)
+
+                            raise SystemError(error + error1 + error2)
+
+                        pbar.update(1)
+        except SystemError as e:
+            print(f"ErrorEncountered: {e}")
+            del normalizedSpectrogram, mfcc, sampleRate, spectrograms, mfccs
+
+            exit(1)
+
+        return spectrograms, mfccs, sampleRate
 
     def ProcessAudioFile(self, _file, _audioLength, _numCoefficients, _windowLength, _hopLength):
         """
@@ -149,13 +169,13 @@ class Process:
         elif len(audioSample) > targetLength:
             audioSample = audioSample[:targetLength]  # Truncate if necessary
 
-        melSpectrogram, mfcc, mfccShape = self.ComputeMelSpectrogram(audioSample, sampleRate, _numCoefficients, _windowLength, _hopLength)
+        melSpectrogram, mfcc = self.ComputeMelSpectrogram(audioSample, sampleRate, _numCoefficients, _windowLength, _hopLength)
         # smoothed = gaussian_filter(melSpectrogram, sigma=1)
-        normalizedSpectrogram = self.NormalizeZScore(melSpectrogram)
+        normalizedSpectrogram = self.Normalize(melSpectrogram)
 
         del melSpectrogram, audioSample
 
-        return normalizedSpectrogram, normalizedSpectrogram.shape[0], mfcc, mfccShape
+        return normalizedSpectrogram, mfcc, sampleRate
     
     def ComputeMelSpectrogram(self, _audioSample, _sampleRate, _numCoefficients, _windowLength, _hopLength):
         """
@@ -182,8 +202,6 @@ class Process:
         windowLength = int(_windowLength * _sampleRate)
         hopLength = int(_hopLength * _sampleRate)
 
-        scaler = StandardScaler()
-
         # Compute the Short-Time Fourier Transform (STFT)
         # This is a windowing step as well, it is applying a default window defined 
         # by librosa: Hann window
@@ -209,15 +227,12 @@ class Process:
         # Retain only the First N Coeffcients of the DCT
         mfcc = mfcc[:, :_numCoefficients]
 
-        normalizedMfcc = scaler.fit_transform(mfcc)
-
-        # Transpose the Mel Spectrogram 
-        transposedSpec = logMelSpectrogram.T
+        logMelSpectrogram = logMelSpectrogram.T
 
         # Return both the mel spectrograms and the MFCC
-        return transposedSpec, normalizedMfcc, normalizedMfcc.shape
+        return logMelSpectrogram, mfcc
     
-    def NormalizeZScore(self, _melSpectrogram):
+    def Normalize(self, _melSpectrogram):
         """
         Normalizes the Mel spectrogram using z-score normalization.
         
@@ -227,10 +242,14 @@ class Process:
         Returns:
             - Normalized spectrogram with mean 0 and standard deviation 1
         """
-        mean = np.mean(_melSpectrogram)
-        std = np.std(_melSpectrogram)
+        # Center the spectrogram by subtracting the mean
+        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
         
-        return (_melSpectrogram - mean) / std
+        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
+        maxAbsValue = np.max(np.abs(centeredSpectrogram))
+        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
+        
+        return normalizedSpectrogram
     
     def PadSpectrograms(self, _melSpectrogram, _targetLength):
         """
@@ -292,7 +311,6 @@ class Process:
                         cleanedTranscripts.append(trans)
 
                     charToIndex = self.CreateVocabulary(cleanedTranscripts)
-                    outputSize = len(charToIndex)
 
                     labels = self.PrepareLabels(cleanedTranscripts, charToIndex, _numFrames)
 
@@ -305,7 +323,7 @@ class Process:
                 except Exception as e:
                     print(f"Error processing batch: {e}")
         
-        return outputSize
+        return charToIndex
     
     def CreateVocabulary(self, _transcripts):
         """
@@ -360,61 +378,90 @@ class Process:
 
         return indexedTranscripts
 
-def SaveH5(_dirPath, _dirName, _frequencyLength, _mfccShape, _maxLength, _size):
+def CreateTFRecord(_dirPath, _dirName, _charToIndex, _sampleRate):
     """
-    Load spectrogram and label batches, and combine them into a single HDF5 file.
+    Create a tfrecord from all the processed data: mfcc; melspectrograms; and labels. We are also saving the character mapping and the sample rate
+    to each of these records.
 
     Parameters:
-        - dir_name: Name of the new directory to store the processed data
+        - _dirPath: The data directory path
+        - _dirName: The name of the directory containing the tmp files
+        - _charToIndex: The character to indice mapping created when we prepared the labels
+        - _sampleRate: The samplerate of the audio files
     """
     directoryPath = os.path.join(_dirPath, _dirName)
-    numFiles = len(sorted(os.listdir(directoryPath)))
-    numBatches = numFiles // 3
+    numFiles = len(sorted([f for f in os.listdir(directoryPath) if f.endswith('.h5')]))
+    
+    try:
+        if (numFiles % 3 != 0):
+            error = "Missing one or more processed data file.\n"
+            error1 = f"There should be one of each of the following present in the provided directory '{directoryPath}' for each processed batch(s):\n"
+            error2 = "\t-MFCC\n\t-Spectrograms\n\t-Labels"
+            
+            raise ValueError(error + error1 + error2)
 
-    with tqdm(total=numBatches) as pbar:
-        for index in range(1, numBatches + 1):
-            fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.h5")
-            # Read in each tmp h5 file and combine them into one
-            with h5py.File(fileName, 'w') as hf:
-                initialShape = (_frequencyLength, 128, 1)
-                hf.create_dataset('Spectrograms', shape=(0,) + initialShape, maxshape = (None,) + initialShape, compression = "gzip", chunks = True)
+        numBatches = numFiles // 3
 
-                hf.create_dataset('MFCC', shape = (0,) + _mfccShape, maxshape = (None,) + _mfccShape, compression = "gzip", chunks = True)
+        with tqdm(total=numBatches) as pbar:
+            for index in range(1, numBatches + 1):
+                fileName = os.path.join(directoryPath, f"{_dirName}_Batch{index}.tfrecord")
 
-                labelShape = (_maxLength,)
-                hf.create_dataset('Labels', shape=(0,) + labelShape, maxshape=(None,) + labelShape, compression = "gzip", chunks = True, dtype = 'int32')
-                
                 spectrogramBatch = os.path.join(directoryPath, f'Spectrograms_Batch{index}.h5')
                 mfccBatch = os.path.join(directoryPath, f'MFCC_Batch{index}.h5')
                 labelBatch = os.path.join(directoryPath, f'Labels_Batch{index}.h5')
-                
-                with h5py.File(spectrogramBatch, 'r') as specHF:
-                    spectrograms = specHF['Data'][:]
-                    spectrograms = spectrograms[..., None]
-                with h5py.File(mfccBatch, 'r') as mfccHF:
-                    mfccs = mfccHF['Data'][:]
-                with h5py.File(labelBatch, 'r') as labelHF:
-                    labels = labelHF['Data'][:]
-                
-                # Append data to the combined file
-                hf['Spectrograms'].resize(hf['Spectrograms'].shape[0] + spectrograms.shape[0], axis = 0)
-                hf['Spectrograms'][-spectrograms.shape[0]:] = spectrograms
 
-                hf['MFCC'].resize(hf['MFCC'].shape[0] + mfccs.shape[0], axis = 0)
-                hf['MFCC'][-mfccs.shape[0]:] = mfccs
+                with tf.io.TFRecordWriter(fileName) as writer:
+                    with h5py.File(spectrogramBatch, 'r') as specHF:
+                        spectrograms = specHF['Data'][:]
+                        spectrograms = spectrograms[..., None]
+                    with h5py.File(mfccBatch, 'r') as mfccHF:
+                        mfccs = mfccHF['Data'][:]
+                    with h5py.File(labelBatch, 'r') as labelHF:
+                        labels = labelHF['Data'][:]
 
-                hf['Labels'].resize(hf['Labels'].shape[0] + labels.shape[0], axis = 0)
-                hf['Labels'][-labels.shape[0]:] = labels
-                
-                # Remove processed files
+                    remainingMemory = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
+
+                    # Raise a System error if the available memory has dropped to 10% or lower
+                    # This helps to prevent the system hanging or crashing
+                    if (remainingMemory <= 10):
+                        error = f"System has ran out of available memory: {remainingMemory}% available\n"
+                        error1 = "Closing script before the system hangs or crashes\n"
+                        error2 = "Try lowing the samples per batch in the ini file"
+
+                        del spectrograms, mfcc, labels
+
+                        raise SystemError(error + error1 + error2)
+
+                    # Convert the dictionary into bytes to save it to the tf features
+                    # This makes it easier to save a dictionary to the features of the tfrecord
+                    mapping = str(_charToIndex)
+                    asciiMessage = mapping.encode('ascii')
+                    mappingBytes = base64.b64encode(asciiMessage)
+
+                    for i in range(spectrograms.shape[0]):
+                        feature = {
+                            'MFCC': tf.train.Feature(float_list = tf.train.FloatList(value = mfccs[i].flatten())),                    # The MFCC features: This is used to speech recognition in the Speech-to-text system
+                            'MelSpectrograms': tf.train.Feature(float_list = tf.train.FloatList(value = spectrograms[i].flatten())),  # The Mel Spectrograms: This is used to extrapolate the emotions in the speech
+                            'Labels': tf.train.Feature(int64_list = tf.train.Int64List(value = labels[i].tolist())),                  # The labels
+                            'CharToIndex': tf.train.Feature(bytes_list=tf.train.BytesList(value = [mappingBytes])),                   # The character to indice mapping: Used to decode the models predictions, and to ge the numClasses
+                            'SampleRate': tf.train.Feature(int64_list = tf.train.Int64List(value = [_sampleRate]))                    # The sample rate: Used to map the Mel Spectrograms and the MFCC on a plot
+                        }
+
+                        example = tf.train.Example(features = tf.train.Features(feature = feature))
+                        writer.write(example.SerializeToString())
+
                 os.remove(spectrogramBatch)
                 os.remove(mfccBatch)
                 os.remove(labelBatch)
-                pbar.update(1)
                 
-                hf.create_dataset('SpecShape', data = hf['Spectrograms'].shape)
-                hf.create_dataset('InputShape', data = hf['MFCC'].shape)
-                hf.create_dataset('OutputSize', data = _size)
+                pbar.update(1)
+    except ValueError as e:
+        print(f"Encountered error with tmp files:\n{e}")
+    except OSError as e:
+        print(f"Encountered error reading/writing a file:\n{e}")
+    except SystemError as e:
+        print(f"Encountered error system ran out of memory:\n{e}")
+        exit(1)
 
 def LoadCSV(_csvPath):
     """
@@ -427,10 +474,17 @@ def LoadCSV(_csvPath):
     Returns:
         Two lists: one for audio paths and one for transcripts
     """
-    data = pd.read_csv(_csvPath)
+    try:
+        data = pd.read_csv(_csvPath)
 
-    audioPath = data['wav_filename'].tolist()
-    transcripts = data['transcript'].tolist()
+        audioPath = data['wav_filename'].tolist()
+        transcripts = data['transcript'].tolist()
+    except pd.errors.EmptyDataError:
+        print("Error: Empty csv file or no columns to parse")
+        exit(1)
+    except FileNotFoundError:
+        print("The csv file doesn't exist")
+        exit(1)
 
     return audioPath, transcripts
 
@@ -449,6 +503,7 @@ if __name__ == "__main__":
     seed                = int(generalConfig['seed'])
     samplesPerBatch     = int(preprocessConfig['samples_per_batch'])
     maxAudioLength      = int(preprocessConfig['max_audio_length'])
+    maxTransLength      = int(preprocessConfig['max_transcript_length'])
     numCoefficients     = int(preprocessConfig['num_coefficients_for_mfcc'])
     windowLength        = float(preprocessConfig['window_length'])
     hopLength           = float(preprocessConfig['hop_length'])
@@ -460,13 +515,14 @@ if __name__ == "__main__":
     audioFiles, transcript = LoadCSV(sys.argv[1])
 
     print("\nConverting Audio Files into Mel Spectrograms, and extracting the MFCC...")
-    frequencyLength, mfccShape = process.Audio(audioFiles, maxAudioLength, samplesPerBatch, sys.argv[2], numCoefficients, windowLength, hopLength)
+    sampleRate = process.Audio(audioFiles, maxAudioLength, samplesPerBatch, sys.argv[2], numCoefficients, windowLength, hopLength)
     
     print("\nCreating Labels From the Transcripts...")
-    # pass the frames of the mfcc to align the labels with them
-    size = process.Transcript(transcript, mfccShape[0], samplesPerBatch, sys.argv[2])
+    charToIndex = process.Transcript(transcript, maxTransLength, samplesPerBatch, sys.argv[2])
 
     print("\nCombining and Cleaning up temp files")
-    SaveH5(sys.argv[3], sys.argv[2], frequencyLength, mfccShape, mfccShape[0], size)
+    # We are saving the processed data into a tfrecord to better handle it in memory
+    # The idea would be to hold a large dataset in memory using these records
+    CreateTFRecord(sys.argv[3], sys.argv[2], charToIndex, sampleRate)
 
     print(f"\nProcessed data saved to {sys.argv[3]}/{sys.argv[2]}")
