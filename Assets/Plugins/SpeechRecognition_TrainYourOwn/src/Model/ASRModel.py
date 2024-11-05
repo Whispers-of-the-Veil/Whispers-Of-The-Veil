@@ -41,6 +41,8 @@ class ASRModel:
             model.add(layers.BatchNormalization())
             model.add(layers.Dropout(0.5))
 
+            model.add(layers.MaxPooling2D(pool_size=(2, 2)))
+
             model.add(layers.Reshape((-1, 64)))
 
             for _ in range(4):

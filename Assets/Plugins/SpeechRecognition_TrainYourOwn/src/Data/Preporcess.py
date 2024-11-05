@@ -101,9 +101,11 @@ class Process:
         
         # Reduce the validation set by half
         if _valSet:
-            batchFiles = _audioFiles[_num:_num + (self.batchSize - (self.batchSize // 2))]
+            valSize = (self.batchSize - (self.batchSize // 2))
+            batchFiles = _audioFiles[_num * valSize:(_num + 1) * valSize]
         else:
-            batchFiles = _audioFiles[_num:_num + self.batchSize]
+            batchFiles = _audioFiles[_num * self.batchSize:(_num + 1) * self.batchSize]
+
 
         spectrograms = [None] * len(batchFiles)
 
@@ -266,10 +268,12 @@ class Process:
 
         maxTransLength      = int(self.preprocessConfig['max_transcript_length'])
 
+        # Reduce the validation set by half
         if _valSet:
-            batch = _transcripts[_num:_num + (self.batchSize - (self.batchSize // 2))]
+            valSize = (self.batchSize - (self.batchSize // 2))
+            batch = _transcripts[_num * valSize:(_num + 1) * valSize]
         else:
-            batch = _transcripts[_num:_num + self.batchSize]
+            batch = _transcripts[_num * self.batchSize:(_num + 1) * self.batchSize]
 
         cleanedTranscripts  = []
 

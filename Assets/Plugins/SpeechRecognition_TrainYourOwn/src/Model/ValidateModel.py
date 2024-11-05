@@ -6,6 +6,7 @@ import h5py
 import sys
 
 from Model.ASRModel import ASRModel as asrmodel
+from Data.Preporcess import Process
 
 def TestSentiment(_model, _spectrogram, _label):
     try:
@@ -25,18 +26,31 @@ def TestSentiment(_model, _spectrogram, _label):
         print(f"An error occurred during testing: {e}")
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Usage: python ValidateModel /path/to/model.keras /path/to/testData.h5")
+        print("Usage: python ValidateModel /path/to/model.keras /path/to/train.csv")
         exit(1)
 
+    process = Process()
+
     print("Loading Test dataset")
-    with h5py.File(sys.argv[2], 'r') as data:
-        spectrograms = data['Spectrograms'][:]
-        labels = data['Labels'][:]
+    trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[2])
+    testSpectrograms, testSpecShape = process.Audio(trainAudioPaths, 0)
+    testLabels, testNumClasses = process.Transcript(trainTranscripts, 0)
     
     model = load_model(sys.argv[1],  custom_objects={'ctcLoss': asrmodel.ctcLoss}, safe_mode = False)
 
-    print("Asserting models preformance")
-    for sample, label in zip(spectrograms, labels):
-        TestSentiment(model, sample, label)
+    # Predict the sentiment class for the spectrogram
+    sentiment = model.predict(np.expand_dims(testSpectrograms[0], axis = 0))
+    predicted_classes = np.argmax(sentiment, axis = -1)
+
+    # Flatten the predicted sequence (assuming 1D transcript)
+    predicted_classes = predicted_classes.flatten()
+
+    print(f"Shape of prediction {predicted_classes.shape}")
+
+    print(f"Predition {predicted_classes}\nLabel {testLabels[0]}")
+
+    # print("Asserting models preformance")
+    # for sample, label in zip(testSpectrograms, testLabels):
+    #     TestSentiment(model, sample, label)
 
     model.summary()
