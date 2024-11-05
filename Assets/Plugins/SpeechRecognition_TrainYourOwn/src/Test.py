@@ -1,17 +1,11 @@
-import tensorflow as tf
+from Data.Preporcess import Process
+import sys
 
-# Load the TFLite model and allocate tensors.
-interpreter = tf.lite.Interpreter(model_path="/home/ldavis/Code/Data_Sets/SpeechRec/Model/deepspeech-0.9.3-models.tflite")
-interpreter.allocate_tensors()
+process = Process()
 
-# Get input details
-input_details = interpreter.get_input_details()
-print("Input details:")
-for input_tensor in input_details:
-    print(input_tensor)
+files, transcripts = process.LoadCSV(sys.argv[1])
+spectrograms, specShape = process.Audio(files, 0)
+labels, numClasses = process.Transcript(transcripts, 0)
 
-# Get output details
-output_details = interpreter.get_output_details()
-print("\nOutput details:")
-for output_tensor in output_details:
-    print(output_tensor)
+print(f"Shape of the spectrograms {spectrograms.shape}")
+print(f"Shape of the labels {labels.shape}")

@@ -54,6 +54,17 @@ def CreateDataset(_spectrograms, _labels, _batchSize):
 
     return dataSet
 
+def DataGenerator(_audioFiles, _transcripts):
+    """
+    
+    """
+    while True:
+        for i in len(_audioFiles):
+            spectrograms, _ = process.Audio(_audioFiles, i)
+            labels, _ = process.Transcript(_transcripts, i)
+
+            yield (spectrograms, labels)
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python SpeechRecognition.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /output/path/to/the/model.keras")
@@ -90,16 +101,9 @@ if __name__ == "__main__":
 
     print(f"\nProcessing {sys.argv[1]}...")
     trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[1])
-    trainSpectrograms, trainSpecShape = process.Audio(trainAudioPaths, 0)
-    trainLabels, trainNumClasses = process.Transcript(trainTranscripts, 0)
-
-    # process.ValidateData(trainSpectrograms, trainLabels, 3)
-    
-    print("Creating Dataset")
-    trainDataSet = CreateDataset(trainSpectrograms, trainLabels, batchSize)
-    del trainSpectrograms, trainLabels
 
     print(f"\nProcessing {sys.argv[2]}...")
+    # Change to load the entire validation set at once
     validAudioPaths, validTranscripts = process.LoadCSV(sys.argv[2])
     validSpectrograms, validSpecShape = process.Audio(validAudioPaths, 0, True)
     validLabels, validNumClasses = process.Transcript(validTranscripts, 0, True)
@@ -137,10 +141,10 @@ if __name__ == "__main__":
 
     print("\nTraining Model...")
     history = model.fit(
-        trainDataSet,
+        DataGenerator(trainAudioPaths, trainTranscripts),
         validation_data = validDataSet,
+        
         epochs          = numEpochs,
-        validation_split=0.2,
         callbacks       = [reduce_lr]
     )
 
@@ -148,3 +152,15 @@ if __name__ == "__main__":
 
     model.save(sys.argv[3])
     model.summary()
+
+# TODO:
+# Chnage the validation set to load the entire thing at once.
+#   This may cause an error with the memory (GPU not RAM).
+#       If this does cause an error, do a data generator with the validation
+#       set as well. And for a certain progress of the training generator,
+#       increment the validation set. (Maybe)
+#   First try it with just a subset of the validation data
+# Chnage the input shpae and the numer of classes to be a fixed length.
+#   Remove shape and num class return from the process methods
+#   These shapes can be defined in the config ini file
+# Change the fit function to properly work with the data generator
