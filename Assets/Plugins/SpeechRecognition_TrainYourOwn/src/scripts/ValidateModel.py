@@ -14,9 +14,6 @@ def TestSentiment(_model, _spectrogram, _label):
         sentiment = _model.predict(np.expand_dims(_spectrogram, axis = 0))
         predicted_classes = np.argmax(sentiment, axis = -1)
 
-        # Flatten the predicted sequence (assuming 1D transcript)
-        predicted_classes = predicted_classes.flatten()
-
         print(f"Predition {predicted_classes}\nLabel {_label}")
 
         # # Compare predicted class with transcript (assuming transcript is class label)
@@ -33,21 +30,19 @@ if __name__ == "__main__":
 
     print("Loading Test dataset")
     trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[2])
-    testSpectrograms, testSpecShape = process.Audio(trainAudioPaths, 0)
-    testLabels, testNumClasses = process.Transcript(trainTranscripts, 0)
+    testSpectrograms = process.Audio(trainAudioPaths, 0)
+    testLabels = process.Transcript(trainTranscripts, 0)
     
     model = load_model(sys.argv[1],  custom_objects={'ctcLoss': asrmodel.ctcLoss}, safe_mode = False)
 
     # Predict the sentiment class for the spectrogram
     sentiment = model.predict(np.expand_dims(testSpectrograms[0], axis = 0))
-    predicted_classes = np.argmax(sentiment, axis = -1)
 
     # Flatten the predicted sequence (assuming 1D transcript)
-    predicted_classes = predicted_classes.flatten()
 
-    print(f"Shape of prediction {predicted_classes.shape}")
+    print(f"Shape of prediction {sentiment.shape}")
 
-    print(f"Predition {predicted_classes}\nLabel {testLabels[0]}")
+    print(f"Predition {sentiment}\nLabel {testLabels[0]}")
 
     # print("Asserting models preformance")
     # for sample, label in zip(testSpectrograms, testLabels):

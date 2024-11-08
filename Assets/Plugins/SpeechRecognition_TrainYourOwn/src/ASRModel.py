@@ -30,30 +30,47 @@ class ASRModel:
 
             Returns:
                 A Keras sequential model following the deepspeech model architecture
-            """            
+            """
             model = keras.Sequential();
 
             model.add(layers.Input(shape = _shape))
 
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2]))
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [2, 2]))
-            model.add(layers.Conv2D(filters = 64, kernel_size = [11, 21], strides = [2, 2]))
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2], padding = 'same', use_bias=False))
             model.add(layers.BatchNormalization())
-            model.add(layers.Dropout(0.5))
-
+            model.add(layers.ReLU())
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2], padding = 'same', use_bias=False))
+            model.add(layers.BatchNormalization())
+            model.add(layers.ReLU())
             model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-            model.add(layers.Reshape((-1, 64)))
+            # # Adding another MaxPooling2D layer to further reduce the time steps 
+            # model.add(layers.Conv2D(filters=64, kernel_size=(11, 21), strides=(1, 1), padding='same')) 
+            # model.add(layers.BatchNormalization())
+            # model.add(layers.MaxPooling2D(pool_size=(2, 2)))
 
-            for _ in range(4):
-                model.add(layers.Bidirectional(layers.GRU(units = 800, return_sequences = True)))
+            model.add(layers.Reshape((-1, 64)))
+            # model.add(layers.Reshape((-1, model.output_shape[-1] * model.output_shape[-2])))
+
+            for _ in range(5):
+                model.add(layers.Bidirectional(layers.GRU(
+                    units = 800, 
+                    activation="tanh",
+                    recurrent_activation="sigmoid",
+                    use_bias=True,
+                    return_sequences=True,
+                    reset_after=True
+                    ), merge_mode="concat"
+                ))
+                model.add(layers.Dropout(0.5))
+
+            # , activation='relu', dropout = 0.5
+            model.add(layers.Dense(units = 1600, activation='relu'))
+            model.add(layers.Dropout(0.5))
             
-            model.add(layers.Dense(units = 1600))
-            
-            model.add(layers.Dense(units = _numClasses))
+            model.add(layers.TimeDistributed(layers.Dense(units = _numClasses + 1, activation = "softmax")))
 
             return model
-    
+
     def ctcLoss(_yTrue, _yPred):
         """
         CTC Loss using TensorFlow's `tf.nn.ctc_loss`.
@@ -87,3 +104,26 @@ class ASRModel:
         )
 
         return tf.reduce_mean(loss)
+
+    def CTCLoss(y_true, y_pred):
+        # Compute the training-time loss value
+        batch_len = tf.cast(tf.shape(y_true)[0], dtype="int64")
+        input_length = tf.cast(tf.shape(y_pred)[1], dtype="int64")
+        label_length = tf.cast(tf.shape(y_true)[1], dtype="int64")
+
+        input_length = input_length * tf.ones(shape=(batch_len, 1), dtype="int64")
+        label_length = label_length * tf.ones(shape=(batch_len, 1), dtype="int64")
+
+        print(tf.shape(y_true)[0])
+        print(tf.shape(y_pred)[1])
+        print(tf.shape(y_true)[1])
+
+        loss = keras.backend.ctc_batch_cost(y_true, y_pred, input_length, label_length)
+        return loss
+
+
+    # Custom CTC Greedy Decoder for evaluation
+    def ctc_greedy_decoder(y_pred):
+        input_length = tf.fill([tf.shape(y_pred)[0]], tf.shape(y_pred)[1])
+        decoded, _ = tf.nn.ctc_greedy_decoder(y_pred, input_length)
+        return decoded

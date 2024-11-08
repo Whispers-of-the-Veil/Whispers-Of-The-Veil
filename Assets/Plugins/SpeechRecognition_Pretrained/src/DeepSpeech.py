@@ -37,42 +37,11 @@ class API:
 
         return logMelSpectrogram
     
-    def _Decode(self, _output):
-        charMap = {
-            ' ': 1,
-            'a': 2, 
-            'b': 3, 
-            'c': 4, 
-            'd': 5, 
-            'e': 6, 
-            'f': 7, 
-            'g': 8, 
-            'h': 9, 
-            'i': 10, 
-            'j': 11, 
-            'k': 12, 
-            'l': 13, 
-            'm': 14, 
-            'n': 15, 
-            'o': 16, 
-            'p': 17, 
-            'q': 18, 
-            'r': 19, 
-            's': 20, 
-            't': 21, 
-            'u': 22, 
-            'v': 23, 
-            'w': 24, 
-            'x': 25, 
-            'y': 26, 
-            'z': 27, 
-            '<PAD>': 0
-        }
-        charIndices = np.argmax(_output, axis=2)
-
-        prediction = ''.join([charMap[index] for index in charIndices[0]]) 
-
-        return prediction
+    # Custom CTC Greedy Decoder for evaluation
+    def ctc_greedy_decoder(y_pred):
+        input_length = tf.fill([tf.shape(y_pred)[0]], tf.shape(y_pred)[1])
+        decoded, _ = tf.nn.ctc_greedy_decoder(y_pred, input_length)
+        return decoded
 
     def Predict(self, _audioSample, _sampleRate):
         logMelSpec = self._ComputeMelSpectrogram(_audioSample, _sampleRate)
@@ -85,7 +54,7 @@ class API:
 
         outputData = self.interpreter.get_tensor(self.outputDetails[0]['index'])
 
-        prediction = self._Decode(outputData)
+        
 
         return prediction
     

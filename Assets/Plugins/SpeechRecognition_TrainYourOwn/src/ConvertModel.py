@@ -1,6 +1,6 @@
 import tensorflow as tf
 import sys
-from Model.ASRModel import ASRModel as asrmodel
+from ASRModel import ASRModel as asrmodel
 
 # Load the Keras model
 model = tf.keras.models.load_model(

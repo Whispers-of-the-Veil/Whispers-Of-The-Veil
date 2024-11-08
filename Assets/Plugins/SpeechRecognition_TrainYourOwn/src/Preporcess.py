@@ -13,9 +13,11 @@ import psutil
 import gc
 import random
 
+from scipy.ndimage import gaussian_filter
+
 import matplotlib.pyplot as plt
 
-from Config.Grab_Ini import ini
+from Grab_Ini import ini
 
 class Process:
     """
@@ -74,6 +76,7 @@ class Process:
 
             self._PlotSpec(_specs[index], index)
 
+            print(f"Spec Shape: {_specs[index].shape}")
             print(f"Labels: {_labels[index]}")
 
     # ------------------------------------------------------------------------
@@ -142,11 +145,10 @@ class Process:
             exit(1)
 
         spectrograms = np.expand_dims(spectrograms, -1)                             # The input channels
-        specShape = spectrograms[0].shape
 
         gc.collect()
 
-        return spectrograms, specShape
+        return spectrograms
 
     def _ProcessAudioFile(self, _file, _audioLength, _window, _hop):
         """
@@ -157,90 +159,77 @@ class Process:
         Returns:
             The normalized Mel spectrogram for the given audio file
         """
-        audioSample, sampleRate = sf.read(_file, dtype='float32')
+        audioSample, sr = librosa.load(_file, sr = 1600)
 
-        targetLength = int(_audioLength * sampleRate)
+        targetLength = int(_audioLength * sr)
         if len(audioSample) < targetLength:
             padding = targetLength - len(audioSample)
             audioSample = np.concatenate((audioSample, np.zeros(padding, dtype=np.float32)))
         elif len(audioSample) > targetLength:
             audioSample = audioSample[:targetLength]  # Truncate if necessary
 
-        # # Gaussian Noise
-        # noise = np.random.normal(0, 0.005, audioSample.shape)
-        # augmented_audio = audioSample + noise
+        spectrogram = librosa.feature.melspectrogram(y = audioSample, sr = sr, n_mels = 160, hop_length = 160, win_length = 400)
 
-        # # Time Stretching
-        # augmented_audio = librosa.effects.time_stretch(augmented_audio, rate = 1.1) 
+        logSpectrogram = librosa.power_to_db(spectrogram, ref = np.max)
 
-        # FFT, Log & normalize
-        spectrogram = self._Normalize(self._ComputeSpectrogram(audioSample, sampleRate, _window, _hop))
-
-        del  audioSample
-
-        return spectrogram
-    
-    def _ComputeSpectrogram(self, _audioSample, _sampleRate, _windowLength, _hopLength):
-        """
-        Extract features of the audio sample using the following steps:
-            1. Window the signal
-            2. Apply the Discrete Fourier Transform
-            3. Logarithm of the magnitude
-            4. Apply discrete cosine tranform (DCT)
-
-        This is done to extract both the Mel Spectrogram, and the MFCC. The MFCC will be used
-        as the features that will be fed into the classification model. The Mel Spectrograms will be
-        used
-        
-        Parameters:
-            - _audio: An audio tensor
-            - _sampleRate: The sample rate of that audio tensor
-            - _length: Used to pad the the edges of the signal
-
-        Returns:
-            Returns a transposed Mel Spectrogram in the Logscale
-            and the mfcc
-        """
-        # These are used to help align the Labels to the MFCCs of the Mel Spectrograms
-        windowLength = int(_windowLength * _sampleRate)
-        hopLength = int(_hopLength * _sampleRate)
-
-        # Compute the Short-Time Fourier Transform (STFT)
-        # This is a windowing step as well, it is applying a default window defined 
-        # by librosa: Hann window
-        # The Hann Window helps to minimize the spectral leakage when performing the Fourier
-        # Transforms. This helps with audio signals since they are non-stationary and not perfectly periodic
-        # This effectly taper the edges of the segment to zero.
-        spectrogram = librosa.stft(_audioSample, n_fft = windowLength, hop_length = hopLength)
-
-        # Convert he mel spectrogram to the log scale
-        # MFCC that we are trying to compute will need to be based on the logarithmic
-        # perception of sound; it wont work correctly otherwise.
-        logSpectrogram = librosa.amplitude_to_db(np.abs(spectrogram), ref = np.max)
-
-        logSpectrogram = logSpectrogram.T # Maybe??
-
-        # Return both the mel spectrograms
         return logSpectrogram
     
-    def _Normalize(self, _melSpectrogram):
-        """
-        Normalizes the Mel spectrogram using z-score normalization.
+    # def _ComputeSpectrogram(self, _audioSample, _sampleRate, _windowLength, _hopLength):
+    #     """
+    #     Extract features of the audio sample using the following steps:
+    #         1. Window the signal
+    #         2. Apply the Discrete Fourier Transform
+    #         3. Logarithm of the magnitude
+    #         4. Apply discrete cosine tranform (DCT)
+
+    #     This is done to extract both the Mel Spectrogram, and the MFCC. The MFCC will be used
+    #     as the features that will be fed into the classification model. The Mel Spectrograms will be
+    #     used
         
-        Parameters:
-            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+    #     Parameters:
+    #         - _audio: An audio tensor
+    #         - _sampleRate: The sample rate of that audio tensor
+    #         - _length: Used to pad the the edges of the signal
+
+    #     Returns:
+    #         Returns a transposed Mel Spectrogram in the Logscale
+    #         and the mfcc
+    #     """
+    #     # These are used to help align the Labels to the MFCCs of the Mel Spectrograms
+    #     windowLength = int(_windowLength * _sampleRate)
+    #     hopLength = int(_hopLength * _sampleRate)
+
+    #     # Compute the Short-Time Fourier Transform (STFT)
+    #     # This is a windowing step as well, it is applying a default window defined 
+    #     # by librosa: Hann window
+    #     # The Hann Window helps to minimize the spectral leakage when performing the Fourier
+    #     # Transforms. This helps with audio signals since they are non-stationary and not perfectly periodic
+    #     # This effectly taper the edges of the segment to zero.
+    #     spectrogram = librosa.stft(_audioSample, n_mels = 96, n_fft = windowLength, hop_length = hopLength)
+
+    #     logSpectrogram = librosa.amplitude_to_db(spectrogram, ref = np.max)
+
+    #     # Return both the mel spectrograms
+    #     return logSpectrogram
+    
+    # def _Normalize(self, _melSpectrogram):
+    #     """
+    #     Normalizes the Mel spectrogram using z-score normalization.
+        
+    #     Parameters:
+    #         - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
             
-        Returns:
-            - Normalized spectrogram with mean 0 and standard deviation 1
-        """
-        # Center the spectrogram by subtracting the mean
-        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
+    #     Returns:
+    #         - Normalized spectrogram with mean 0 and standard deviation 1
+    #     """
+    #     # Center the spectrogram by subtracting the mean
+    #     centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
         
-        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
-        maxAbsValue = np.max(np.abs(centeredSpectrogram))
-        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
+    #     # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
+    #     maxAbsValue = np.max(np.abs(centeredSpectrogram))
+    #     normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
         
-        return normalizedSpectrogram
+    #     return normalizedSpectrogram
 
     # ------------------------------------------------------------------------
     #   Transcript processing
@@ -293,7 +282,7 @@ class Process:
 
                 pbar.update(1)
         
-        return labels, len(charToIndex)
+        return labels
     
     def _CreateVocabulary(self, _transcripts):
         """
