@@ -1,6 +1,10 @@
 import tensorflow as tf
 import numpy as np
+
+from tensorflow.keras import backend as K
+
 import librosa
+
 
 class API:
     def __init__(self):
@@ -11,37 +15,58 @@ class API:
         self.outputDetails = self.interpreter.get_output_details()
 
     def _ComputeMelSpectrogram(self, _audioSample, _sampleRate):
-        targetLength    = int(5 * _sampleRate) - 1
-        windowLength    = int(0.025 * _sampleRate)
-        hopLength       = int(0.010 * _sampleRate)
+        """
+        Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
 
-        # Extend the Mel Frequency bins to 500; the model is expecting that input shape
+        Parameters:
+
+        Returns:
+            The normalized Mel spectrogram for the given audio file
+        """
+        windowlength = int(0.025 * _sampleRate)
+        hopLength = int(0.010 * _sampleRate)
+
+        targetLength = int(5 * _sampleRate) - 1
         if len(_audioSample) < targetLength:
             padding = targetLength - len(_audioSample)
             _audioSample = np.concatenate((_audioSample, np.zeros(padding, dtype=np.float32)))
         elif len(_audioSample) > targetLength:
-            _audioSample = _audioSample[:targetLength]
+            _audioSample = _audioSample[:targetLength]  # Truncate if necessary
 
-        # Compute the Mel spectrogram in the Log-scale of the audio sample
-        spectrogram = librosa.stft(_audioSample, n_fft = windowLength, hop_length = hopLength)
-        
-        magnitude, _ = librosa.magphase(spectrogram)
-        melScaleSpectrogram = librosa.feature.melspectrogram(
-            S = magnitude,
-            sr = _sampleRate,
-            n_fft = windowLength,
-            hop_length = hopLength
-        )
-        
-        logMelSpectrogram = librosa.amplitude_to_db(melScaleSpectrogram, ref = np.max)
+        spectrogram = librosa.feature.melspectrogram(y = _audioSample, sr = _sampleRate, n_mels = 128, hop_length = hopLength, win_length = windowlength)
+        logSpectrogram = librosa.power_to_db(spectrogram, ref = np.max)
 
-        return logMelSpectrogram
+        return self._Normalize(logSpectrogram)
     
-    # Custom CTC Greedy Decoder for evaluation
-    def ctc_greedy_decoder(y_pred):
-        input_length = tf.fill([tf.shape(y_pred)[0]], tf.shape(y_pred)[1])
-        decoded, _ = tf.nn.ctc_greedy_decoder(y_pred, input_length)
-        return decoded
+    def _Normalize(self, _melSpectrogram):
+        """
+        Normalizes the Mel spectrogram using z-score normalization.
+        
+        Parameters:
+            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+            
+        Returns:
+            - Normalized spectrogram with mean 0 and standard deviation 1
+        """
+        # Center the spectrogram by subtracting the mean
+        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
+        
+        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
+        maxAbsValue = np.max(np.abs(centeredSpectrogram))
+        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
+        
+        return normalizedSpectrogram
+    
+    def ctcGreedyDecoder(self, logits):
+        print(f"logits shape: {logits.shape}")
+        print(f"Logits\n{logits}")
+
+        input_length = np.ones(logits.shape[0]) * logits.shape[1] 
+        decoded, _ = K.ctc_decode(logits, input_length, greedy=True)
+
+        print(f"Decoded: {decoded}")
+
+        return K.get_value(decoded[0])
 
     def Predict(self, _audioSample, _sampleRate):
         logMelSpec = self._ComputeMelSpectrogram(_audioSample, _sampleRate)
@@ -54,7 +79,11 @@ class API:
 
         outputData = self.interpreter.get_tensor(self.outputDetails[0]['index'])
 
-        
+        print(outputData)
 
-        return prediction
+        decoded = self.ctcGreedyDecoder(outputData)
+
+        print(decoded)       
+
+        return decoded
     

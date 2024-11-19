@@ -1,10 +1,11 @@
 from DeepSpeech import API
-import soundfile as sf
+import librosa
 
 api = API()
-file = "/Users/lucasdavis/Code/Data/librispeech/Test/61/70968/61-70968-0000.wav"
+file = "/home/ldavis/Code/Data_Sets/SpeechRec/LibriSpeech/TestSet/61/70968/61-70968-0000.wav"
 
-audioSample, sampleRate = sf.read(file, dtype='float32')
-predictedTranscript = api.Predict(audioSample, sampleRate)
+audioSample, sr = librosa.load(file, sr = 16000)
+
+predictedTranscript = api.Predict(audioSample, sr)
 
 print(f"The transcript of {file}:\n{predictedTranscript}")

@@ -9,9 +9,9 @@ from tensorflow.keras.optimizers import Adam
 import sys
 import os
 
-from ASRModel import ASRModel as asrmodel
+from Model.ASRModel import ASRModel
 from Grab_Ini import ini
-from Preporcess import Process
+from Data.Preporcess import Process
 
 def PlotLoss(_history):
     """
@@ -56,20 +56,14 @@ def CreateDataset(_spectrograms, _labels, _batchSize):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("usage: python SpeechRecognition.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /output/path/to/the/model.keras")
-        print("If you haven't please run the Preprocess script on the data")
-        print("\nThe arguments are:")
-        print(" - The path to the directory containing the batches of Training Data")
-        print(" - The path to the directory containing the batches of Validation Data")
-        print(" - The path to an existing model, or the path to save the model")
-
+        print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /output/path/to/the/model.keras")
         exit(1)
 
     print("Loading Config")
-    generalConfig   = ini().grabInfo("config.ini", "General")
-    trainingConfig  = ini().grabInfo("config.ini", "Training")
-    learningConfig  = ini().grabInfo("config.ini", "Training.LearningRate")
-    stopConfig      = ini().grabInfo("config.ini", "Training.EarlyStop")
+    generalConfig       = ini().grabInfo("config.ini", "General")
+    trainingConfig      = ini().grabInfo("config.ini", "Training")
+    learningConfig      = ini().grabInfo("config.ini", "Training.LearningRate")
+    preprocessingConfig = ini().grabInfo("config.ini", "Preprocess")
 
     seed            = int(generalConfig['seed'])
 
@@ -82,6 +76,8 @@ if __name__ == "__main__":
     lr              = float(learningConfig['learning_rate'])
     minLR           = float(learningConfig['min_lr'])
 
+    numValidSamples = int(preprocessingConfig['display_num_validation_samples'])
+
     # Set the seed value for experiment reproducibility.
     tf.random.set_seed(seed)
     np.random.seed(seed)
@@ -90,10 +86,10 @@ if __name__ == "__main__":
 
     print(f"\nProcessing {sys.argv[1]}...")
     trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[1])
-    trainSpectrograms = process.Audio(trainAudioPaths, 0)
-    trainLabels = process.Transcript(trainTranscripts, 0)
+    trainSpectrograms = process.Audio(trainAudioPaths, 1)
+    trainLabels = process.Transcript(trainTranscripts, 1)
 
-    # process.ValidateData(trainSpectrograms, trainLabels, 3)
+    process.ValidateData(trainSpectrograms, trainLabels, numValidSamples)
     
     print("Creating Dataset")
     trainDataSet = CreateDataset(trainSpectrograms, trainLabels, batchSize)
@@ -101,8 +97,8 @@ if __name__ == "__main__":
 
     print(f"\nProcessing {sys.argv[2]}...")
     validAudioPaths, validTranscripts = process.LoadCSV(sys.argv[2])
-    validSpectrograms = process.Audio(validAudioPaths, 0, True)
-    validLabels = process.Transcript(validTranscripts, 0, True)
+    validSpectrograms = process.Audio(validAudioPaths, 1, True)
+    validLabels = process.Transcript(validTranscripts, 1, True)
 
     print("Creating Dataset")
     validDataSet = CreateDataset(validSpectrograms, validLabels, batchSize)
@@ -113,17 +109,17 @@ if __name__ == "__main__":
 
         model = load_model(
             sys.argv[3], 
-            custom_objects = {'ctcLoss': asrmodel.ctcLoss}, 
+            custom_objects = {'ctcLoss': ASRModel.ctcloss}, 
             safe_mode = False
         )
     else:
         print(f"\nBuilding a new model")
 
-        model = asrmodel.BuildModel((160, 181, 1), 28)
+        model = ASRModel.BuildModel((96, 563, 1), 28)
 
         model.compile(
             optimizer   = Adam(learning_rate = lr), 
-            loss = asrmodel.ctcLoss
+            loss = ASRModel.ctcloss
         )
 
     reduce_lr = ReduceLROnPlateau(
@@ -140,7 +136,7 @@ if __name__ == "__main__":
         trainDataSet,
         validation_data = validDataSet,
         epochs          = numEpochs,
-        validation_split=0.2,
+        validation_split= 0.2,
         callbacks       = [reduce_lr]
     )
 

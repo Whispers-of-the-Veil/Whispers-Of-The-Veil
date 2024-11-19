@@ -5,7 +5,7 @@ import h5py
 
 import sys
 
-from Model.ASRModel import ASRModel as asrmodel
+from Model.ASRModel import ASRModel
 from Data.Preporcess import Process
 
 def TestSentiment(_model, _spectrogram, _label):
@@ -13,8 +13,9 @@ def TestSentiment(_model, _spectrogram, _label):
         # Predict the sentiment class for the spectrogram
         sentiment = _model.predict(np.expand_dims(_spectrogram, axis = 0))
         predicted_classes = np.argmax(sentiment, axis = -1)
+        
 
-        print(f"Predition {predicted_classes}\nLabel {_label}")
+        print(f"Predition {transcript}\nLabel {_label}")
 
         # # Compare predicted class with transcript (assuming transcript is class label)
         # assert predicted_classes[0] == _label, f"Prediction {predicted_classes} does not match Label\n {_label}"
@@ -33,19 +34,21 @@ if __name__ == "__main__":
     testSpectrograms = process.Audio(trainAudioPaths, 0)
     testLabels = process.Transcript(trainTranscripts, 0)
     
-    model = load_model(sys.argv[1],  custom_objects={'ctcLoss': asrmodel.ctcLoss}, safe_mode = False)
+    model = load_model(sys.argv[1],  custom_objects = {'ctcLoss': ASRModel.ctcloss}, safe_mode = False)
+    model.summary()
 
     # Predict the sentiment class for the spectrogram
     sentiment = model.predict(np.expand_dims(testSpectrograms[0], axis = 0))
 
-    # Flatten the predicted sequence (assuming 1D transcript)
+    print(sentiment.shape)
+    print(sentiment)
 
-    print(f"Shape of prediction {sentiment.shape}")
+    transcript = ASRModel.ctcGreedyDecoder(sentiment)
 
-    print(f"Predition {sentiment}\nLabel {testLabels[0]}")
+    print(f"Predition {transcript}\nLabel {testLabels[0]}")
 
     # print("Asserting models preformance")
     # for sample, label in zip(testSpectrograms, testLabels):
     #     TestSentiment(model, sample, label)
 
-    model.summary()
+    

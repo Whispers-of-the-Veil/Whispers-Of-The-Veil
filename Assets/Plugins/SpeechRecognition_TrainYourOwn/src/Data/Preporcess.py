@@ -3,7 +3,6 @@ import pandas as pd
 
 import concurrent.futures
 from tqdm import tqdm
-import soundfile as sf
 import librosa
 
 import tensorflow as tf
@@ -12,8 +11,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import psutil
 import gc
 import random
-
-from scipy.ndimage import gaussian_filter
 
 import matplotlib.pyplot as plt
 
@@ -59,6 +56,13 @@ class Process:
         return audioPath, transcripts
     
     def _PlotSpec(self, _spec, _index):
+        """
+        This function will use matplot to display the spectrograms to the screen
+
+        Parameters:
+            - _spec: An individual spectrogram to show
+            - _index: The index number of that spectrogram
+        """
         spectrogram = np.squeeze(_spec)
 
         plt.figure(figsize=(25, 10))
@@ -71,6 +75,20 @@ class Process:
         plt.show()
     
     def ValidateData(self, _specs, _labels, _numSamples):
+        """
+        A helper function used to display the processed Spectrograms and Labels.
+        Given the amount of samples the user wishes to show, it will randomly
+        select those samples and print the labels to the screen, the spectrograms
+        will be passed to a helper function that will display them to the user.
+
+        Parameters:
+            - _specs: A list containing the spectrograms to view
+            - _labels: A list containing the labels to view
+            - _numSamples: The amount of samples you wish to show
+        """
+        if (_numSamples == 0):
+            return
+
         for _ in range(_numSamples):
             index = random.randint(0, _specs[0].shape[0])
 
@@ -98,10 +116,12 @@ class Process:
         Parameters:
 
         """
-        maxAudioLength      = int(self.preprocessConfig['max_audio_length'])
-        winodw              = float(self.preprocessConfig['window_length'])
-        hop                 = float(self.preprocessConfig['hop_length'])
-        
+        audioLength = int(self.preprocessConfig['max_audio_length'])
+        sampleRate  = int(self.preprocessConfig['sample_rate'])
+        nFreqBins   = int(self.preprocessConfig['num_mel_freq_bins'])
+        window      = float(self.preprocessConfig['window_length'])
+        hop         = float(self.preprocessConfig['hop_length'])
+
         # Reduce the validation set by half
         if _valSet:
             valSize = (self.batchSize - (self.batchSize // 2))
@@ -109,13 +129,12 @@ class Process:
         else:
             batchFiles = _audioFiles[_num * self.batchSize:(_num + 1) * self.batchSize]
 
-
         spectrograms = [None] * len(batchFiles)
 
         try:
             with tqdm(total=len(batchFiles), desc="Spectrograms") as pbar:
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = {executor.submit(self._ProcessAudioFile, _file, maxAudioLength, winodw, hop): idx for idx, _file in enumerate(batchFiles)}
+                    futures = {executor.submit(self._Process, _file, audioLength, sampleRate, nFreqBins, window, hop): idx for idx, _file in enumerate(batchFiles)}
 
                     for future in concurrent.futures.as_completed(futures):
                         idx = futures[future]  # Retrieve original index
@@ -144,13 +163,13 @@ class Process:
 
             exit(1)
 
-        spectrograms = np.expand_dims(spectrograms, -1)                             # The input channels
+        spectrograms = np.expand_dims(spectrograms, -1) # The input channels
 
         gc.collect()
 
         return spectrograms
-
-    def _ProcessAudioFile(self, _file, _audioLength, _window, _hop):
+       
+    def _Process(self, _file, _audioLength, _sampleRate, _nFreqBins, _window, _hop):
         """
         Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
 
@@ -159,77 +178,42 @@ class Process:
         Returns:
             The normalized Mel spectrogram for the given audio file
         """
-        audioSample, sr = librosa.load(_file, sr = 1600)
+        audioSample, sr = librosa.load(_file, sr = _sampleRate)
 
-        targetLength = int(_audioLength * sr)
+        windowlength = int(_window * sr)
+        hopLength = int(_hop * sr)
+
+        targetLength = int(_audioLength * sr) - 1
         if len(audioSample) < targetLength:
             padding = targetLength - len(audioSample)
-            audioSample = np.concatenate((audioSample, np.zeros(padding, dtype=np.float32)))
+            audioSample = np.concatenate((audioSample, np.zeros(padding, dtype = np.float32)))
         elif len(audioSample) > targetLength:
             audioSample = audioSample[:targetLength]  # Truncate if necessary
 
-        spectrogram = librosa.feature.melspectrogram(y = audioSample, sr = sr, n_mels = 160, hop_length = 160, win_length = 400)
+        spectrogram = librosa.feature.melspectrogram(y = audioSample, sr = sr, n_mels = _nFreqBins)
 
         logSpectrogram = librosa.power_to_db(spectrogram, ref = np.max)
 
-        return logSpectrogram
+        return self._Normalize(logSpectrogram)
     
-    # def _ComputeSpectrogram(self, _audioSample, _sampleRate, _windowLength, _hopLength):
-    #     """
-    #     Extract features of the audio sample using the following steps:
-    #         1. Window the signal
-    #         2. Apply the Discrete Fourier Transform
-    #         3. Logarithm of the magnitude
-    #         4. Apply discrete cosine tranform (DCT)
-
-    #     This is done to extract both the Mel Spectrogram, and the MFCC. The MFCC will be used
-    #     as the features that will be fed into the classification model. The Mel Spectrograms will be
-    #     used
+    def _Normalize(self, _melSpectrogram):
+        """
+        Normalizes the Mel spectrogram using z-score normalization.
         
-    #     Parameters:
-    #         - _audio: An audio tensor
-    #         - _sampleRate: The sample rate of that audio tensor
-    #         - _length: Used to pad the the edges of the signal
-
-    #     Returns:
-    #         Returns a transposed Mel Spectrogram in the Logscale
-    #         and the mfcc
-    #     """
-    #     # These are used to help align the Labels to the MFCCs of the Mel Spectrograms
-    #     windowLength = int(_windowLength * _sampleRate)
-    #     hopLength = int(_hopLength * _sampleRate)
-
-    #     # Compute the Short-Time Fourier Transform (STFT)
-    #     # This is a windowing step as well, it is applying a default window defined 
-    #     # by librosa: Hann window
-    #     # The Hann Window helps to minimize the spectral leakage when performing the Fourier
-    #     # Transforms. This helps with audio signals since they are non-stationary and not perfectly periodic
-    #     # This effectly taper the edges of the segment to zero.
-    #     spectrogram = librosa.stft(_audioSample, n_mels = 96, n_fft = windowLength, hop_length = hopLength)
-
-    #     logSpectrogram = librosa.amplitude_to_db(spectrogram, ref = np.max)
-
-    #     # Return both the mel spectrograms
-    #     return logSpectrogram
-    
-    # def _Normalize(self, _melSpectrogram):
-    #     """
-    #     Normalizes the Mel spectrogram using z-score normalization.
-        
-    #     Parameters:
-    #         - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
+        Parameters:
+            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
             
-    #     Returns:
-    #         - Normalized spectrogram with mean 0 and standard deviation 1
-    #     """
-    #     # Center the spectrogram by subtracting the mean
-    #     centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
+        Returns:
+            - Normalized spectrogram with mean 0 and standard deviation 1
+        """
+        # Center the spectrogram by subtracting the mean
+        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
         
-    #     # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
-    #     maxAbsValue = np.max(np.abs(centeredSpectrogram))
-    #     normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
+        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
+        maxAbsValue = np.max(np.abs(centeredSpectrogram))
+        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
         
-    #     return normalizedSpectrogram
+        return normalizedSpectrogram
 
     # ------------------------------------------------------------------------
     #   Transcript processing
@@ -245,7 +229,8 @@ class Process:
     
     def Transcript(self, _transcripts, _num, _valSet = False):
         """
-        Process each transcript in batches, saving the results to temperary .data files
+        Process each transcript into its corresponding label. Where each character has been converted
+        to its corresponding indice, and has been padded up to a specified length with zeros.
         
         Parameters:
             - _transcripts: A list of transcripts
@@ -253,8 +238,6 @@ class Process:
             - _dir: the name of the new directory to store the processed data
             - _outFile: is the file prefix used to determine if the batch.dat is spectrogram or labels
         """
-        index = 1
-
         maxTransLength      = int(self.preprocessConfig['max_transcript_length'])
 
         # Reduce the validation set by half
@@ -264,26 +247,23 @@ class Process:
         else:
             batch = _transcripts[_num * self.batchSize:(_num + 1) * self.batchSize]
 
-        cleanedTranscripts  = []
+        cleanedTranscripts = []
 
-        with tqdm(total = len(batch), desc="Labels") as pbar:
-            # Make sure that the transcripts are lowercase and all punctuation is removed
-            for transcript in batch:
-                trans = transcript.lower()
-                trans = ''.join(c for c in trans if c.isalnum() or c.isspace())
+        # Make sure that the transcripts are lowercase and all punctuation is removed
+        for transcript in batch:
+            trans = transcript.lower()
+            trans = ''.join(c for c in trans if c.isalnum() or c.isspace())
 
-                cleanedTranscripts.append(trans)
+            cleanedTranscripts.append(trans)
 
-            charToIndex = self._CreateVocabulary(cleanedTranscripts)
+        charToIndex = self._CreateVocabulary(cleanedTranscripts)
 
-        
-            for transcript in batch: 
-                labels = self._PrepareLabels(cleanedTranscripts, charToIndex, maxTransLength)
+        labels = self._PrepareLabels(cleanedTranscripts, charToIndex, maxTransLength)
 
-                pbar.update(1)
+        labels = np.array(labels, dtype = np.int32)
         
         return labels
-    
+
     def _CreateVocabulary(self, _transcripts):
         """
         Create a dictionary mapping of characters to integer from a list of transcripts.
