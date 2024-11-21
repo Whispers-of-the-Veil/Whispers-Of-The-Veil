@@ -32,22 +32,22 @@ class ASRModel:
 
             model.add(layers.Input(shape = _shape))
 
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2], use_bias = False))
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2], padding = 'same'))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2], use_bias = False))
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2], padding = 'same'))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
 
             model.add(layers.MaxPooling2D(pool_size = (2, 2)))
 
-            model.add(layers.Reshape((-1, 64)))
+            model.add(layers.Reshape((-1, 32)))
 
-            for _ in range(3):
-                model.add(layers.Bidirectional(layers.GRU(units = 940, return_sequences = True)))
-                model.add(layers.Dropout(0.5))
+            for _ in range(2):
+                model.add(layers.Bidirectional(layers.GRU(units = 512, return_sequences = True)))
+            model.add(layers.Dropout(0.5))
 
-            model.add(layers.Dense(units = 1880))
+            model.add(layers.Dense(units = 1024))
             model.add(layers.ReLU())
             model.add(layers.Dropout(0.5))
             
@@ -93,11 +93,13 @@ class ASRModel:
     @register_keras_serializable()
     def ctcGreedyDecoder(logits):
         print(f"logits shape: {logits.shape}")
-        print(f"Logits\n{logits}")
 
-        input_length = np.ones(logits.shape[0]) * logits.shape[1] 
-        decoded, _ = K.ctc_decode(logits, input_length, greedy=True)
+        logits = tf.transpose(logits, perm=[1, 0, 2])
 
-        print(f"Decoded: {decoded}")
+        decoded, _ = tf.nn.ctc_greedy_decoder(logits, tf.constant([logits.shape[1]], dtype=tf.int32), blank_index = logits.shape[2] - 1)
 
-        return K.get_value(decoded[0])
+        dense_decoded = tf.sparse.to_dense(decoded[0])
+
+        print(f"decoded:\n{dense_decoded}")
+        
+        return dense_decoded

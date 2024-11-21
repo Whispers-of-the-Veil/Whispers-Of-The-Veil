@@ -25,7 +25,8 @@ class Process:
         self.preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
 
         seed            = int(generalConfig['seed'])
-        self.batchSize  = int(self.preprocessConfig['samples_per_batch'])
+        self.samples    = int(self.preprocessConfig['samples'])
+        self.valSamples = int(self.preprocessConfig['validation_samples'])
 
         tf.random.set_seed(seed)
         np.random.seed(seed)
@@ -119,22 +120,19 @@ class Process:
         audioLength = int(self.preprocessConfig['max_audio_length'])
         sampleRate  = int(self.preprocessConfig['sample_rate'])
         nFreqBins   = int(self.preprocessConfig['num_mel_freq_bins'])
-        window      = float(self.preprocessConfig['window_length'])
-        hop         = float(self.preprocessConfig['hop_length'])
 
         # Reduce the validation set by half
         if _valSet:
-            valSize = (self.batchSize - (self.batchSize // 2))
-            batchFiles = _audioFiles[_num * valSize:(_num + 1) * valSize]
+            batchFiles = _audioFiles[_num * self.valSamples:(_num + 1) * self.valSamples]
         else:
-            batchFiles = _audioFiles[_num * self.batchSize:(_num + 1) * self.batchSize]
+            batchFiles = _audioFiles[_num * self.samples:(_num + 1) * self.samples]
 
         spectrograms = [None] * len(batchFiles)
 
         try:
-            with tqdm(total=len(batchFiles), desc="Spectrograms") as pbar:
+            with tqdm(total = len(batchFiles), desc = "Spectrograms") as pbar:
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = {executor.submit(self._Process, _file, audioLength, sampleRate, nFreqBins, window, hop): idx for idx, _file in enumerate(batchFiles)}
+                    futures = {executor.submit(self._Process, _file, audioLength, sampleRate, nFreqBins): idx for idx, _file in enumerate(batchFiles)}
 
                     for future in concurrent.futures.as_completed(futures):
                         idx = futures[future]  # Retrieve original index
@@ -169,7 +167,7 @@ class Process:
 
         return spectrograms
        
-    def _Process(self, _file, _audioLength, _sampleRate, _nFreqBins, _window, _hop):
+    def _Process(self, _file, _audioLength, _sampleRate, _nFreqBins):
         """
         Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
 
@@ -179,9 +177,6 @@ class Process:
             The normalized Mel spectrogram for the given audio file
         """
         audioSample, sr = librosa.load(_file, sr = _sampleRate)
-
-        windowlength = int(_window * sr)
-        hopLength = int(_hop * sr)
 
         targetLength = int(_audioLength * sr) - 1
         if len(audioSample) < targetLength:
@@ -242,10 +237,9 @@ class Process:
 
         # Reduce the validation set by half
         if _valSet:
-            valSize = (self.batchSize - (self.batchSize // 2))
-            batch = _transcripts[_num * valSize:(_num + 1) * valSize]
+            batch = _transcripts[_num * self.valSamples:(_num + 1) * self.valSamples]
         else:
-            batch = _transcripts[_num * self.batchSize:(_num + 1) * self.batchSize]
+            batch = _transcripts[_num * self.samples:(_num + 1) * self.samples]
 
         cleanedTranscripts = []
 

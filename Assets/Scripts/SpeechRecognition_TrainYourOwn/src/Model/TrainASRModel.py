@@ -6,12 +6,16 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping
 from tensorflow.keras.optimizers import Adam
 
+from tqdm import tqdm
 import sys
 import os
+import math
 
 from Model.ASRModel import ASRModel
 from Grab_Ini import ini
 from Data.Preporcess import Process
+
+PROCESS = Process()
 
 def PlotLoss(_history):
     """
@@ -54,6 +58,20 @@ def CreateDataset(_spectrograms, _labels, _batchSize):
 
     return dataSet
 
+def DataGenerator(_audioPath, _transcripts, _iterAmount, _batchSize, _validSet):
+    epoch = 0
+    
+    while True:
+        index = epoch % _iterAmount
+
+        spectrograms = PROCESS.Audio(_audioPath, index, _validSet)
+        labels       = PROCESS.Transcript(_transcripts, index, _validSet)
+
+        for batch in CreateDataset(spectrograms, labels, _batchSize):
+            yield batch
+        
+        epoch += 1
+
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /output/path/to/the/model.keras")
@@ -70,39 +88,31 @@ if __name__ == "__main__":
     batchSize       = int(trainingConfig['batch_size'])
     numEpochs       = int(trainingConfig['epochs'])
 
-    learnMonitor    = str(learningConfig['monitor'])
-    factor          = float(learningConfig['factor'])
-    learnPatience   = int(learningConfig['patience'])
     lr              = float(learningConfig['learning_rate'])
-    minLR           = float(learningConfig['min_lr'])
+    decaySteps      = int(learningConfig['decay_steps'])
+    decayRate       = float(learningConfig['decay_rate'])
 
-    numValidSamples = int(preprocessingConfig['display_num_validation_samples'])
+    samples         = int(preprocessingConfig['samples'])
+    valSamples      = int(preprocessingConfig['validation_samples'])
 
     # Set the seed value for experiment reproducibility.
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
-    process = Process()
+    trainAudioPaths, trainTranscripts = PROCESS.LoadCSV(sys.argv[1])
+    validAudioPaths, validTranscripts = PROCESS.LoadCSV(sys.argv[2])
 
-    print(f"\nProcessing {sys.argv[1]}...")
-    trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[1])
-    trainSpectrograms = process.Audio(trainAudioPaths, 1)
-    trainLabels = process.Transcript(trainTranscripts, 1)
+    trainIter = math.ceil(len(trainAudioPaths) / samples)
+    validIter = math.ceil(len(validAudioPaths) / valSamples)
 
-    process.ValidateData(trainSpectrograms, trainLabels, numValidSamples)
-    
-    print("Creating Dataset")
-    trainDataSet = CreateDataset(trainSpectrograms, trainLabels, batchSize)
-    del trainSpectrograms, trainLabels
+    print(f"Training with {len(trainAudioPaths)} samples")
+    print(f"Validating with {len(validAudioPaths)} sampels")
 
-    print(f"\nProcessing {sys.argv[2]}...")
-    validAudioPaths, validTranscripts = process.LoadCSV(sys.argv[2])
-    validSpectrograms = process.Audio(validAudioPaths, 1, True)
-    validLabels = process.Transcript(validTranscripts, 1, True)
-
-    print("Creating Dataset")
-    validDataSet = CreateDataset(validSpectrograms, validLabels, batchSize)
-    del validSpectrograms, validLabels
+    expDecayLR = tf.keras.optimizers.schedules.ExponentialDecay(
+        lr,
+        decay_steps = decaySteps,
+        decay_rate = decayRate,
+        staircase = True)
 
     if os.path.exists(sys.argv[3]):
         print(f"\nLoaded existing model {sys.argv[3]}")
@@ -118,26 +128,20 @@ if __name__ == "__main__":
         model = ASRModel.BuildModel((96, 563, 1), 28)
 
         model.compile(
-            optimizer   = Adam(learning_rate = lr), 
+            optimizer   = Adam(learning_rate = expDecayLR), 
             loss = ASRModel.ctcloss
         )
 
-    reduce_lr = ReduceLROnPlateau(
-        monitor     = learnMonitor, 
-        factor      = factor, 
-        patience    = learnPatience, 
-        min_lr      = minLR
-    )
 
-    model.summary()
+    trainGen = DataGenerator(trainAudioPaths, trainTranscripts, trainIter, batchSize, False)
+    validGen = DataGenerator(validAudioPaths, validTranscripts, validIter, batchSize, True)
 
-    print("\nTraining Model...")
     history = model.fit(
-        trainDataSet,
-        validation_data = validDataSet,
-        epochs          = numEpochs,
-        validation_split= 0.2,
-        callbacks       = [reduce_lr]
+        trainGen,
+        steps_per_epoch  = trainIter,
+        validation_data  = validGen,
+        validation_steps = validIter,
+        epochs           = numEpochs
     )
 
     PlotLoss(history)
