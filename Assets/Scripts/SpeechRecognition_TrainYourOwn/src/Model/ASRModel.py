@@ -3,6 +3,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 from keras.saving import register_keras_serializable
+from tensorflow.keras.regularizers import l2
 from tensorflow.keras import backend as K
 import numpy as np
 
@@ -32,10 +33,10 @@ class ASRModel:
 
             model.add(layers.Input(shape = _shape))
 
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2], padding = 'same'))
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2]))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2], padding = 'same'))
+            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2]))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
 
@@ -43,9 +44,9 @@ class ASRModel:
 
             model.add(layers.Reshape((-1, 32)))
 
-            for _ in range(2):
+            for _ in range(3):
                 model.add(layers.Bidirectional(layers.GRU(units = 512, return_sequences = True)))
-            model.add(layers.Dropout(0.5))
+                model.add(layers.Dropout(0.5))
 
             model.add(layers.Dense(units = 1024))
             model.add(layers.ReLU())
@@ -91,15 +92,9 @@ class ASRModel:
         return tf.reduce_mean(loss)
 
     @register_keras_serializable()
-    def ctcGreedyDecoder(logits):
-        print(f"logits shape: {logits.shape}")
+    def ctcDecoder(logits):
+        inputLength = np.ones(logits.shape[0]) * logits.shape[1]
 
-        logits = tf.transpose(logits, perm=[1, 0, 2])
-
-        decoded, _ = tf.nn.ctc_greedy_decoder(logits, tf.constant([logits.shape[1]], dtype=tf.int32), blank_index = logits.shape[2] - 1)
-
-        dense_decoded = tf.sparse.to_dense(decoded[0])
-
-        print(f"decoded:\n{dense_decoded}")
+        results = keras.backend.ctc_decode(logits, input_length = inputLength, greedy = True)[0][0]
         
-        return dense_decoded
+        return results

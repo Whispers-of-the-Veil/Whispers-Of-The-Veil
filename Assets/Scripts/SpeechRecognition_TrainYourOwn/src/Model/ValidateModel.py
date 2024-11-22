@@ -43,7 +43,7 @@ if __name__ == "__main__":
     print(sentiment.shape)
     print(sentiment)
 
-    transcript = ASRModel.ctcGreedyDecoder(sentiment)
+    transcript = ASRModel.ctcDecoder(sentiment)
 
     print(f"Predition {transcript}\nLabel {testLabels[0]}")
 

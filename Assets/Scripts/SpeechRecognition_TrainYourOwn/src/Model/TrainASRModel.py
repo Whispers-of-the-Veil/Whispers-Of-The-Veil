@@ -132,6 +132,7 @@ if __name__ == "__main__":
             loss = ASRModel.ctcloss
         )
 
+    model.summary()
 
     trainGen = DataGenerator(trainAudioPaths, trainTranscripts, trainIter, batchSize, False)
     validGen = DataGenerator(validAudioPaths, validTranscripts, validIter, batchSize, True)
