@@ -93,8 +93,11 @@ class ASRModel:
 
     @register_keras_serializable()
     def ctcDecoder(logits):
-        inputLength = np.ones(logits.shape[0]) * logits.shape[1]
+        decoded = tf.keras.ops.ctc_decode(
+             logits,
+             np.ones(logits.shape[0]) * logits.shape[1],
+             strategy = 'beam_search',
+             beam_width = 512
+        )
 
-        results = keras.backend.ctc_decode(logits, input_length = inputLength, greedy = True)[0][0]
-        
-        return results
+        return decoded

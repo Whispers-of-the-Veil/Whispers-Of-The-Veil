@@ -40,15 +40,6 @@ if __name__ == "__main__":
     # Predict the sentiment class for the spectrogram
     sentiment = model.predict(np.expand_dims(testSpectrograms[0], axis = 0))
 
-    print(sentiment.shape)
-    print(sentiment)
-
     transcript = ASRModel.ctcDecoder(sentiment)
 
-    print(f"Predition {transcript}\nLabel {testLabels[0]}")
-
-    # print("Asserting models preformance")
-    # for sample, label in zip(testSpectrograms, testLabels):
-    #     TestSentiment(model, sample, label)
-
-    
+    print(testLabels[0])
