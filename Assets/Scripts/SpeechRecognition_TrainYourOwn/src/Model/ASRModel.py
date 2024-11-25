@@ -4,7 +4,6 @@ from tensorflow.keras import layers
 
 from keras.saving import register_keras_serializable
 from tensorflow.keras.regularizers import l2
-from tensorflow.keras import backend as K
 import numpy as np
 
 class ASRModel:   
@@ -33,18 +32,33 @@ class ASRModel:
 
             model.add(layers.Input(shape = _shape))
 
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 41], strides = [2, 2]))
+            model.add(layers.Conv2D(
+                filters = 32, 
+                kernel_size = [11, 41], 
+                strides = [2, 2], 
+                padding = 'same', 
+                use_bias = False, 
+                kernel_regularizer = l2(0.0005)
+            ))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
-            model.add(layers.Conv2D(filters = 32, kernel_size = [11, 21], strides = [1, 2]))
+            
+            model.add(layers.Conv2D(
+                filters = 32, 
+                kernel_size = [11, 41], 
+                strides = [2, 2], 
+                padding = 'same', 
+                use_bias = False, 
+                kernel_regularizer = l2(0.0005)
+            ))
             model.add(layers.BatchNormalization())
             model.add(layers.ReLU())
 
-            model.add(layers.MaxPooling2D(pool_size = (2, 2)))
+            model.add(layers.MaxPooling2D(pool_size = (2, 3)))
 
             model.add(layers.Reshape((-1, 32)))
 
-            for _ in range(3):
+            for _ in range(5):
                 model.add(layers.Bidirectional(layers.GRU(units = 512, return_sequences = True)))
                 model.add(layers.Dropout(0.5))
 
@@ -94,10 +108,10 @@ class ASRModel:
     @register_keras_serializable()
     def ctcDecoder(logits):
         decoded = tf.keras.ops.ctc_decode(
-             logits,
-             np.ones(logits.shape[0]) * logits.shape[1],
-             strategy = 'beam_search',
-             beam_width = 512
+            logits,
+            np.ones(logits.shape[0]) * logits.shape[1],
+            strategy = 'beam_search',
+            beam_width = 512
         )
 
         return decoded

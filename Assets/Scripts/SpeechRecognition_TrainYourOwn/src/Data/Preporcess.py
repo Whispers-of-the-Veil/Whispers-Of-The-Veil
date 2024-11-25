@@ -118,10 +118,8 @@ class Process:
 
         """
         audioLength = int(self.preprocessConfig['max_audio_length'])
-        sampleRate  = int(self.preprocessConfig['sample_rate'])
         nFreqBins   = int(self.preprocessConfig['num_mel_freq_bins'])
 
-        # Reduce the validation set by half
         if _valSet:
             batchFiles = _audioFiles[_num * self.valSamples:(_num + 1) * self.valSamples]
         else:
@@ -132,10 +130,12 @@ class Process:
         try:
             with tqdm(total = len(batchFiles), desc = "Spectrograms") as pbar:
                 with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = {executor.submit(self._Process, _file, audioLength, sampleRate, nFreqBins): idx for idx, _file in enumerate(batchFiles)}
+                    futures = {executor.submit(self._Process, _file, audioLength, nFreqBins): idx for idx, _file in enumerate(batchFiles)}
 
                     for future in concurrent.futures.as_completed(futures):
-                        idx = futures[future]  # Retrieve original index
+                        # We are saving the spectrograms in their original position so that way
+                        # they line up with their corresponding transcripts
+                        idx = futures[future]
 
                         spectrogram = future.result()
                         spectrograms[idx] = spectrogram
@@ -167,7 +167,7 @@ class Process:
 
         return spectrograms
        
-    def _Process(self, _file, _audioLength, _sampleRate, _nFreqBins):
+    def _Process(self, _file, _audioLength, _nFreqBins):
         """
         Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
 
@@ -176,14 +176,17 @@ class Process:
         Returns:
             The normalized Mel spectrogram for the given audio file
         """
-        audioSample, sr = librosa.load(_file, sr = _sampleRate)
+        # sr None will preserve the original sample rate of the audio file
+        audioSample, sr = librosa.load(_file, sr = None)
 
+        # The audio samples are padded to the sample length so that way the can be held in a numpy
+        # array. It will through a shape error otherwise
         targetLength = int(_audioLength * sr) - 1
         if len(audioSample) < targetLength:
             padding = targetLength - len(audioSample)
             audioSample = np.concatenate((audioSample, np.zeros(padding, dtype = np.float32)))
         elif len(audioSample) > targetLength:
-            audioSample = audioSample[:targetLength]  # Truncate if necessary
+            audioSample = audioSample[:targetLength]
 
         spectrogram = librosa.feature.melspectrogram(y = audioSample, sr = sr, n_mels = _nFreqBins)
 
@@ -201,7 +204,7 @@ class Process:
         Returns:
             - Normalized spectrogram with mean 0 and standard deviation 1
         """
-        # Center the spectrogram by subtracting the mean
+        # Center the spectrogram
         centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
         
         # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
@@ -235,7 +238,6 @@ class Process:
         """
         maxTransLength      = int(self.preprocessConfig['max_transcript_length'])
 
-        # Reduce the validation set by half
         if _valSet:
             batch = _transcripts[_num * self.valSamples:(_num + 1) * self.valSamples]
         else:

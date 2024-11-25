@@ -8,20 +8,6 @@ import sys
 from Model.ASRModel import ASRModel
 from Data.Preporcess import Process
 
-def TestSentiment(_model, _spectrogram, _label):
-    try:
-        # Predict the sentiment class for the spectrogram
-        sentiment = _model.predict(np.expand_dims(_spectrogram, axis = 0))
-        predicted_classes = np.argmax(sentiment, axis = -1)
-        
-
-        print(f"Predition {transcript}\nLabel {_label}")
-
-        # # Compare predicted class with transcript (assuming transcript is class label)
-        # assert predicted_classes[0] == _label, f"Prediction {predicted_classes} does not match Label\n {_label}"
-
-    except Exception as e:
-        print(f"An error occurred during testing: {e}")
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print("Usage: python ValidateModel /path/to/model.keras /path/to/train.csv")
@@ -42,4 +28,5 @@ if __name__ == "__main__":
 
     transcript = ASRModel.ctcDecoder(sentiment)
 
-    print(testLabels[0])
+    print(f"Label{0}: {testLabels[0]}\n")
+    print(f"Prediction: {transcript}")
