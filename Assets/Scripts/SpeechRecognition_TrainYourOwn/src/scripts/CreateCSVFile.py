@@ -2,7 +2,7 @@ import os
 import csv
 import sys
 
-def ProcessFile(_rootDir, _outputCSV):
+def ProcessFile(_rootDir, _outputCSV, _extension):
     """
     This will walk through a root directory and all sub directories looking for two types of files: .wav files and .trans.txt.
     The .trans.txt contains the transcript of all the audio files in a given directory.
@@ -15,7 +15,7 @@ def ProcessFile(_rootDir, _outputCSV):
     with open(_outputCSV, mode='w', newline='', encoding='utf-8') as csvFile:
         csv_writer = csv.writer(csvFile)
         # Write the CSV header
-        csv_writer.writerow(["wav_filename", "wav_filesize", "transcript"])
+        csv_writer.writerow(["filename", "filesize", "transcript"])
 
         # Walk through all subdirectories and files in the root directory
         for subdir, _, files in os.walk(_rootDir):
@@ -34,7 +34,7 @@ def ProcessFile(_rootDir, _outputCSV):
                                 transcript = parts[1]
 
                                 # Find the corresponding .wav file
-                                wav_filename = os.path.join(subdir, wavefile + ".wav")
+                                wav_filename = os.path.join(subdir, wavefile + _extension)
                                 if os.path.exists(wav_filename):
                                     wav_filesize = os.path.getsize(wav_filename)
 
@@ -43,11 +43,12 @@ def ProcessFile(_rootDir, _outputCSV):
                                     print(f"File {wav_filename} written")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python script_name.py /path/to/your/directory file_name.csv")
+    if len(sys.argv) != 4:
+        print("Usage: python script_name.py /path/to/your/directory file_name.csv fileExtension")
         sys.exit(1)
-
 
     root = sys.argv[1]                      # Change this to your root directory path
     outputFile = sys.argv[2]                # Output CSV file name
-    ProcessFile(root, outputFile)
+    extension = "." + sys.argv[3]
+
+    ProcessFile(root, outputFile, extension)

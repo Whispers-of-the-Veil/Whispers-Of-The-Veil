@@ -1,32 +1,49 @@
-import tensorflow as tf
-import numpy as np
-from tensorflow.keras.models import Model, load_model
-import h5py
-
-import sys
+from tensorflow import keras
+from jiwer import wer
 
 from Model.ASRModel import ASRModel
 from Data.Preporcess import Process
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python ValidateModel /path/to/model.keras /path/to/train.csv")
-        exit(1)
+class ValidateModel(keras.callbacks.Callback):
+    def __init__(self, _dataset):
+        super().__init__()
 
-    process = Process()
+        self.dataset = _dataset
+        self.process = Process()
 
-    print("Loading Test dataset")
-    trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[2])
-    testSpectrograms = process.Audio(trainAudioPaths, 0)
-    testLabels = process.Transcript(trainTranscripts, 0)
-    
-    model = load_model(sys.argv[1],  custom_objects = {'ctcLoss': ASRModel.ctcloss}, safe_mode = False)
-    model.summary()
+        self.errorRate = []
 
-    # Predict the sentiment class for the spectrogram
-    sentiment = model.predict(np.expand_dims(testSpectrograms[0], axis = 0))
+    def on_epoch_end(self, epoch, logs = None):
+        """
+        This function will compute the word error rate at the end of each epoch. The error rate
+        will be added to a custom metric for the models logs; 'Error_Rate'.
 
-    transcript = ASRModel.ctcDecoder(sentiment)
+        Parameters:
+            - epoch: The epoch that just completed
+            - logs: 
+        """
+        transcripts = []
+        predictions = []
 
-    print(f"Label{0}: {testLabels[0]}\n")
-    print(f"Prediction: {transcript}")
+        model = self.model
+
+        for batch in self.dataset:
+            spectrogram, labels = batch
+
+            output = model.predict(spectrogram)
+
+            output = ASRModel.ctcDecoder(output)
+
+            for item in output:
+                decoded = self.process.ConvertLabel(item)
+
+                predictions.append(decoded)
+
+            for item in labels:
+                item = self.process.ConvertLabel(item)
+                transcripts.append(item)
+
+        errorRate = wer(transcripts, predictions)
+
+        # This will add a custom metric to the models logs for the error rate
+        logs['Error_Rate'] = errorRate

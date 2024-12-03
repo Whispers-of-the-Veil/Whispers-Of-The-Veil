@@ -1,18 +1,9 @@
 import numpy as np
 import pandas as pd
-
-import concurrent.futures
-from tqdm import tqdm
-import librosa
+import matplotlib.pyplot as plt
 
 import tensorflow as tf
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-
-import psutil
-import gc
-import random
-
-import matplotlib.pyplot as plt
+from tensorflow import keras
 
 from Grab_Ini import ini
 
@@ -25,11 +16,46 @@ class Process:
         self.preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
 
         seed            = int(generalConfig['seed'])
-        self.samples    = int(self.preprocessConfig['samples'])
-        self.valSamples = int(self.preprocessConfig['validation_samples'])
+        vocab      = self.preprocessConfig['vocabulary']
+
+        characters = [x for x in vocab]
+        characters.append(' ')
+
+        self.charToNum = keras.layers.StringLookup(vocabulary = characters, oov_token = "")
+        self.numToChar = keras.layers.StringLookup(vocabulary = characters, oov_token = "", invert = True)
 
         tf.random.set_seed(seed)
         np.random.seed(seed)
+
+    def ConvertLabel(self, _label):
+        """
+        This function will convert the labels back into their character form.
+
+        Parameters:
+            - _label: A list containing the label to convert
+
+        Returns:
+            The transcript of the corresponding labelc
+        """
+        return tf.strings.reduce_join(self.numToChar(_label)).numpy().decode("utf-8")
+    
+    def Data(self, _audio, _transcript):
+        """
+        This method is used when we are maping the audio paths and transcripts to their
+        spectrograms and labels when creating a dataset in the Training script. It simply calls
+        the _Audio and _Transcript methods and returns the spectrogram and label of the audio sample.
+
+        Parameters:
+            - _audio: The path of the audio file; must be a .wav file
+            - _transcript: The transcript of the audio file
+
+        Returns:
+            The spectrogram and label of the audio sample
+        """
+        spectrogram = self.Audio(_audio)
+        label = self._Transcript(_transcript)
+            
+        return spectrogram, label
 
     def LoadCSV(self, _csvPath):
         """
@@ -45,8 +71,8 @@ class Process:
         try:
             data = pd.read_csv(_csvPath)
 
-            audioPath = data['wav_filename'].tolist()
-            transcripts = data['transcript'].tolist()
+            audioPath = list(data['filename'])
+            transcripts = list(data['transcript'])
         except pd.errors.EmptyDataError:
             print("Error: Empty csv file or no columns to parse")
             exit(1)
@@ -56,7 +82,7 @@ class Process:
 
         return audioPath, transcripts
     
-    def _PlotSpec(self, _spec, _index):
+    def _PlotSpec(self, _spec):
         """
         This function will use matplot to display the spectrograms to the screen
 
@@ -69,13 +95,13 @@ class Process:
         plt.figure(figsize=(25, 10))
         plt.imshow(spectrogram, aspect = 'auto', origin = 'lower', cmap = 'jet')
         plt.colorbar(format='%+2.0f dB')
-        plt.title(f"Spectrogram of sample {_index}")
+        plt.title(f"Spectrogram")
         plt.xlabel('Frames')
         plt.ylabel('Mel Frequency Bins')
 
         plt.show()
     
-    def ValidateData(self, _specs, _labels, _numSamples):
+    def ValidateData(self, _spec, _label):
         """
         A helper function used to display the processed Spectrograms and Labels.
         Given the amount of samples the user wishes to show, it will randomly
@@ -85,230 +111,85 @@ class Process:
         Parameters:
             - _specs: A list containing the spectrograms to view
             - _labels: A list containing the labels to view
-            - _numSamples: The amount of samples you wish to show
         """
-        if (_numSamples == 0):
-            return
+        trans = self.ConvertLabel(_label)
 
-        for _ in range(_numSamples):
-            index = random.randint(0, _specs[0].shape[0])
+        self._PlotSpec(_spec)
 
-            self._PlotSpec(_specs[index], index)
-
-            print(f"Spec Shape: {_specs[index].shape}")
-            print(f"Labels: {_labels[index]}")
+        print(f"Spec Shape: {_spec.shape}")
+        print(f"Labels: {_label}")
+        print(f"Transcripts: {trans}")
 
     # ------------------------------------------------------------------------
     #   Audio processing
     #       - Process the audio files in batches
     #       - Each batch will follow this structure
     #           - Read in the audio file
-    #           - Compute the Mel Spectrogram for each audio file
-    #           - Normalize the Mel Spectrorgam
-    #           - Padd the Mel Spectrogram to a target length
+    #           - Compute the Spectrogram for each audio file
+    #           - Normalize the Spectrorgam
     # ------------------------------------------------------------------------
 
-    def Audio(self, _audioFiles, _num, _valSet = False):
+    def Audio(self, _file):
         """
-        Process the audio files into Mel spectrograms, saving the results to a temporary batch file.
-        This is saving the spectrograms into a temporary file to avoid holding everything in memory; the
-        librispeech dataset is too large to hold all at once.
+        This method transforms a given audio sample into a spectrogram using tensorflows stft method.
+        It will normalize the sample before returning it.
         
         Parameters:
-
-        """
-        audioLength = int(self.preprocessConfig['max_audio_length'])
-        nFreqBins   = int(self.preprocessConfig['num_mel_freq_bins'])
-
-        if _valSet:
-            batchFiles = _audioFiles[_num * self.valSamples:(_num + 1) * self.valSamples]
-        else:
-            batchFiles = _audioFiles[_num * self.samples:(_num + 1) * self.samples]
-
-        spectrograms = [None] * len(batchFiles)
-
-        try:
-            with tqdm(total = len(batchFiles), desc = "Spectrograms") as pbar:
-                with concurrent.futures.ThreadPoolExecutor() as executor:
-                    futures = {executor.submit(self._Process, _file, audioLength, nFreqBins): idx for idx, _file in enumerate(batchFiles)}
-
-                    for future in concurrent.futures.as_completed(futures):
-                        # We are saving the spectrograms in their original position so that way
-                        # they line up with their corresponding transcripts
-                        idx = futures[future]
-
-                        spectrogram = future.result()
-                        spectrograms[idx] = spectrogram
-
-                        remainingMemory = psutil.virtual_memory().available * 100 / psutil.virtual_memory().total
-
-                        # Raise a System error if the available memory has dropped to 10% or lower
-                        # This helps to prevent the system hanging or crashing
-                        if (remainingMemory <= 10):
-                            error = f"System has ran out of available memory: {remainingMemory}% available\n"
-                            error1 = "Closing script before the system hangs or crashes\n"
-                            error2 = "Try lowing the samples per batch in the ini file"
-
-                            # Ensure that each thread joins before raising error
-                            executor.shutdown(wait = True, cancel_futures = True)
-
-                            raise SystemError(error + error1 + error2)
-
-                        pbar.update(1)
-        except SystemError as e:
-            print(f"ErrorEncountered: {e}")
-            del spectrograms
-
-            exit(1)
-
-        spectrograms = np.expand_dims(spectrograms, -1) # The input channels
-
-        gc.collect()
-
-        return spectrograms
-       
-    def _Process(self, _file, _audioLength, _nFreqBins):
-        """
-        Read an audio file, compute its Mel spectrogram, normalize it, and pad/truncate it to the target length.
-
-        Parameters:
+            - _file: The file path to a given audio sample
 
         Returns:
-            The normalized Mel spectrogram for the given audio file
+            A spectrogram
         """
-        # sr None will preserve the original sample rate of the audio file
-        audioSample, sr = librosa.load(_file, sr = None)
+        length  = int(self.preprocessConfig['frame_length'])
+        step    = int(self.preprocessConfig['frame_step'])
+        fft     = int(self.preprocessConfig['fft'])
 
-        # The audio samples are padded to the sample length so that way the can be held in a numpy
-        # array. It will through a shape error otherwise
-        targetLength = int(_audioLength * sr) - 1
-        if len(audioSample) < targetLength:
-            padding = targetLength - len(audioSample)
-            audioSample = np.concatenate((audioSample, np.zeros(padding, dtype = np.float32)))
-        elif len(audioSample) > targetLength:
-            audioSample = audioSample[:targetLength]
+        file = tf.io.read_file(_file)
+        audio, _ = tf.audio.decode_wav(file)
+        audio = tf.squeeze(audio, axis = -1)
 
-        spectrogram = librosa.feature.melspectrogram(y = audioSample, sr = sr, n_mels = _nFreqBins)
+        audio = tf.cast(audio, tf.float32)
+        
+        spectrogram = tf.signal.stft(audio, frame_length = length, frame_step = step, fft_length = fft)
+        spectrogram = tf.abs(spectrogram)
+        spectrogram = tf.math.pow(spectrogram, 0.5)
 
-        logSpectrogram = librosa.power_to_db(spectrogram, ref = np.max)
-
-        return self._Normalize(logSpectrogram)
+        return self._Normalize(spectrogram)
     
-    def _Normalize(self, _melSpectrogram):
+    def _Normalize(self, _spectrogram):
         """
-        Normalizes the Mel spectrogram using z-score normalization.
-        
+        Normalize the features of the spectrogram
+
         Parameters:
-            - _melSpectrogram: The computed Mel spectrogram (2D NumPy array)
-            
+            - _spectrogram: The spectrogram to normalize
+
         Returns:
-            - Normalized spectrogram with mean 0 and standard deviation 1
+            The normalized spectrogram
         """
-        # Center the spectrogram
-        centeredSpectrogram = _melSpectrogram - np.mean(_melSpectrogram)
-        
-        # Scale the centered spectrogram to [-1, 1] by dividing by the max absolute value
-        maxAbsValue = np.max(np.abs(centeredSpectrogram))
-        normalizedSpectrogram = centeredSpectrogram / maxAbsValue if maxAbsValue != 0 else centeredSpectrogram
-        
-        return normalizedSpectrogram
+        means = tf.math.reduce_mean(_spectrogram, 1, keepdims = True)
+        std = tf.math.reduce_std(_spectrogram, 1, keepdims = True)
+
+        return (_spectrogram - means) / (std + 1e-10)
 
     # ------------------------------------------------------------------------
     #   Transcript processing
-    #       - Process each transcript in batches. Done to match the tmp spectrogram files
-    #       - Each batch will
-    #           - Make the sure the transcripts are lower case. And all punctuation
-    #              is removed
-    #           - Create a dictionary mapping of characters to integers
-    #           - Prepare the labels
-    #               - Transform the transcripts into their repective indices
-    #               - Pad the labels
+    #
     # ------------------------------------------------------------------------
-    
-    def Transcript(self, _transcripts, _num, _valSet = False):
+
+    def _Transcript(self, _transcript):
         """
-        Process each transcript into its corresponding label. Where each character has been converted
-        to its corresponding indice, and has been padded up to a specified length with zeros.
-        
-        Parameters:
-            - _transcripts: A list of transcripts
-            - _batchSize: used to determine the size of each batch
-            - _dir: the name of the new directory to store the processed data
-            - _outFile: is the file prefix used to determine if the batch.dat is spectrogram or labels
-        """
-        maxTransLength      = int(self.preprocessConfig['max_transcript_length'])
-
-        if _valSet:
-            batch = _transcripts[_num * self.valSamples:(_num + 1) * self.valSamples]
-        else:
-            batch = _transcripts[_num * self.samples:(_num + 1) * self.samples]
-
-        cleanedTranscripts = []
-
-        # Make sure that the transcripts are lowercase and all punctuation is removed
-        for transcript in batch:
-            trans = transcript.lower()
-            trans = ''.join(c for c in trans if c.isalnum() or c.isspace())
-
-            cleanedTranscripts.append(trans)
-
-        charToIndex = self._CreateVocabulary(cleanedTranscripts)
-
-        labels = self._PrepareLabels(cleanedTranscripts, charToIndex, maxTransLength)
-
-        labels = np.array(labels, dtype = np.int32)
-        
-        return labels
-
-    def _CreateVocabulary(self, _transcripts):
-        """
-        Create a dictionary mapping of characters to integer from a list of transcripts.
+        Process each transcript into its corresponding label. Where each character
+        has been converted to its corresponding indice.
 
         Parameters:
-            - _trainscripts: A list of transcripts
-        
-        Returns:
-            returns a chracter-to-indice dictionary
-        """
-        uniqueChar = sorted(set(''.join(_transcripts)))
-        charIndex = {char: index + 1 for index, char in enumerate(uniqueChar)}
-        charIndex['<PAD>'] = 0
-
-        return charIndex
-
-    def _PrepareLabels(self, _transcripts, _charIndex, _numFrames):
-        """
-        Takes in a list of transcripts, converts them into their corresponding character indices 
-        using a provided character index dictionary, and pads them to ensure they all have the same length
-
-        Parameters:
-            - _transcript: A list of transcripts
-            - _charIndex: A dictionary mapping characters to their respective indices
-            - _maxLength: The maximum length of the sequences after padding
+            - _transcript: The transcript of a given audio sample
 
         Returns:
-            Returns a list of processed transcripts
+            The label of the transcript
         """
-        indexedTranscripts = self._TranscriptToIndices(_transcripts, _charIndex)
-        paddedLabels = pad_sequences(indexedTranscripts, maxlen = _numFrames, padding = 'post', value = _charIndex['<PAD>'])
+        trans = tf.strings.lower(_transcript)
 
-        return paddedLabels
+        label = tf.strings.unicode_split(trans, input_encoding = "UTF-8")
+        label = self.charToNum(label)
 
-    def _TranscriptToIndices(self, _transcripts, _charIndex):
-        """
-        Converts the text transcripts into a list of integer indices using a provided a dictionary of chracter mappings
-
-        Parameters:
-            - _trascripts: A list of transcripts
-            - _charIndex: A dictionary mapping characters to their respective indices
-        
-        Returns:
-            A lists containing the integer indices for each transcript
-        """
-        indexedTranscripts = []
-
-        for transcript in _transcripts:
-            indexedTranscript = [_charIndex[char] for char in transcript if char in _charIndex]
-            indexedTranscripts.append(indexedTranscript)
-
-        return indexedTranscripts
+        return label
