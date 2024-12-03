@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-namespace DistortClip {
+namespace SpeechRecognition.Transform {
     public class SignalTransformer {
         /// <summary>
         /// This method will generate a hanning window using the following formula:
