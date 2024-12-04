@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     print("Loading Test dataset")
     trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[2])
-    testSpectrogram, testLabel = process.Data(trainAudioPaths[1], trainTranscripts[1])
+    testSpectrogram, testLabel = process.Data(trainAudioPaths[0], trainTranscripts[0])
     
     model = load_model(sys.argv[1],  custom_objects = {'ctcLoss': ASRModel.ctcloss}, safe_mode = False)
     model.summary()
@@ -28,5 +28,5 @@ if __name__ == "__main__":
     transcript = ASRModel.ctcDecoder(sentiment)
     transcript = process.ConvertLabel(transcript)
 
-    print(f"Label{1}: {trainTranscripts[1]}\n")
+    print(f"Label{1}: {trainTranscripts[0]}\n")
     print(f"Prediction: {transcript}")

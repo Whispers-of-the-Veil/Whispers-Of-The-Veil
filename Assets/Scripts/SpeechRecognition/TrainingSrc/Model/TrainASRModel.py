@@ -165,7 +165,7 @@ if __name__ == "__main__":
         callbacks        = [validate]
     )
 
-    # PlotLoss(history)
+    PlotLoss(history)
     PlotErrorRate(history)
 
     model.save(sys.argv[3])

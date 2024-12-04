@@ -66,7 +66,7 @@ class ASRModel():
         model.add(layers.ReLU())
         model.add(layers.Dropout(0.5))
 
-        model.add(layers.Dense(units = _numClasses + 1, activation = "softmax"))
+        model.add(layers.Dense(units = _numClasses + 1))
 
         return model
 
@@ -86,32 +86,40 @@ class ASRModel():
         Returns:
             Returns the mean of the computed CTC loss across the batch
         """
-        batchSize = tf.cast(tf.shape(_yTrue)[0], dtype = "int64")
-        inputLength = tf.cast(tf.shape(_yPred)[1], dtype = "int64")
-        labelLength = tf.cast(tf.shape(_yTrue)[1], dtype = "int64")
+        batchSize = tf.shape(_yPred)[0]
+        timeSteps = tf.shape(_yPred)[1]
 
-        inputLength = inputLength * tf.ones(shape = (batchSize, 1), dtype = "int64")
-        labelLength = labelLength * tf.ones(shape = (batchSize, 1), dtype = "int64")
+        inputLength = tf.fill([batchSize], timeSteps)
+        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)
 
-        loss = keras.backend.ctc_batch_cost(_yTrue, _yPred, inputLength, labelLength)
+        _yTrue = tf.cast(_yTrue, tf.int32)
+
+        loss = tf.nn.ctc_loss(
+            labels              =   _yTrue,
+            logits              =   _yPred,
+            label_length        =   labelLength,
+            logit_length        =   inputLength,
+            logits_time_major   =   False,
+            blank_index         =   -1
+        )
 
         return tf.reduce_mean(loss)
 
     @register_keras_serializable()
-    def ctcDecoder(_pred):
+    def ctcDecoder(_logits):
         """
-        Decodes the output of the model. Expects the output to be a softmax predictions.
+        
 
         Parameters:
-            - _pred: A tensor of the predictions 
+            - _logits:
 
         Returns:
             A list of the decoded sequence
         """
-        decoded = keras.backend.ctc_decode(
-                _pred,
-                np.ones(_pred.shape[0]) * _pred.shape[1],
-                greedy = True
+        decoded = tf.keras.ops.ctc_decode (
+            _logits,
+            np.ones(_logits.shape[0]) * _logits.shape[1],
+            strategy = 'greedy'
         )[0][0]
 
         return decoded
