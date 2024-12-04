@@ -21,7 +21,7 @@ namespace Characters.Player {
         // Start is called before the first frame update
         private void Start() {
             this._rb = GetComponent<Rigidbody>();
-            Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.lockState = CursorLockMode.Locked;
         }
     
         // Update is called once per frame
