@@ -1,7 +1,6 @@
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.models import Model, load_model
-import h5py
 
 import sys
 
@@ -16,17 +15,19 @@ if __name__ == "__main__":
     process = Process()
 
     print("Loading Test dataset")
-    trainAudioPaths, trainTranscripts = process.LoadCSV(sys.argv[2])
-    testSpectrogram, testLabel = process.Data(trainAudioPaths[0], trainTranscripts[0])
+    audioPaths, transcripts = process.LoadCSV(sys.argv[2])
     
-    model = load_model(sys.argv[1],  custom_objects = {'ctcLoss': ASRModel.ctcloss}, safe_mode = False)
+    model = load_model(sys.argv[1],  custom_objects = {'ctcloss': ASRModel.ctcloss}, safe_mode = False)
     model.summary()
 
-    # Predict the sentiment class for the spectrogram
-    sentiment = model.predict(np.expand_dims(testSpectrogram, axis = 0))
+    for i in range(len(audioPaths)):
+        testSpectrogram, testLabel = process.Data(audioPaths[i], transcripts[i])
 
-    transcript = ASRModel.ctcDecoder(sentiment)
-    transcript = process.ConvertLabel(transcript)
+        # Predict the sentiment class for the spectrogram
+        sentiment = model.predict(np.expand_dims(testSpectrogram, axis = 0))
 
-    print(f"Label{1}: {trainTranscripts[0]}\n")
-    print(f"Prediction: {transcript}")
+        prediction = ASRModel.ctcDecoder(sentiment)
+        prediction = process.ConvertLabel(prediction)
+
+        print(f"Label{i}: {transcripts[i]}\n")
+        print(f"Prediction: {prediction}")

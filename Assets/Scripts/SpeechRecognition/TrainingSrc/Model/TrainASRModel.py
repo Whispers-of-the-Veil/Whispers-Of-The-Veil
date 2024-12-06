@@ -6,13 +6,14 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 from Model.ASRModel import ASRModel
 from Grab_Ini import ini
 from Data.Preporcess import Process
 from Model.ValidateModel import ValidateModel
 
-def PlotErrorRate(_history):
+def PlotErrorRate(_history, _path):
     """
     This function plots the error rate of the model that was recorded from the
     callback class ValidateModel.
@@ -29,9 +30,9 @@ def PlotErrorRate(_history):
     plt.ylim([0, max(plt.ylim())])
     plt.xlabel('Epoch')
     plt.ylabel('Error Rate')
-    plt.show()
+    plt.savefig(_path + 'ErrorRate.png')
 
-def PlotLoss(_history):
+def PlotLoss(_history, _path):
     """
     This function plots the loss and val_loss that was recorred over each epoch.
     Used to help determine the preformance of the model on a provided Training and
@@ -48,7 +49,7 @@ def PlotLoss(_history):
     plt.ylim([0, max(plt.ylim())])
     plt.xlabel('Epoch')
     plt.ylabel('Loss [ctcloss]')
-    plt.show()
+    plt.savefig(_path + 'Loss.png')
 
 def Debug(process: Process, _train, _valid):
     """
@@ -98,21 +99,26 @@ def CreateDataset(process: Process, _training, _validation):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /output/path/to/the/model.keras")
+        print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv")
         exit(1)
 
     print("Loading Config")
     generalConfig       = ini().grabInfo("config.ini", "General")
     trainingConfig      = ini().grabInfo("config.ini", "Training")
     learningConfig      = ini().grabInfo("config.ini", "Training.LearningRate")
+    stopConfig          = ini().grabInfo("config.ini", "Training.EarlyStopping")
     preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
 
     seed            = int(generalConfig['seed'])
     batchSize       = int(trainingConfig['batch_size'])
     numEpochs       = int(trainingConfig['epochs'])
+    pathToModel     = str(trainingConfig['path_to_model'])
+    pathToCheckpoint= str(trainingConfig['path_to_checkpoint'])
+    pathToFigures   = str(trainingConfig['path_to_figures'])
     lr              = float(learningConfig['learning_rate'])
     decaySteps      = int(learningConfig['decay_steps'])
     decayRate       = float(learningConfig['decay_rate'])
+    stoppingPatients= int(stopConfig['patience'])
     display         = int(preprocessConfig['display_samples']) != 0
     fft             = int(preprocessConfig['fft'])
     
@@ -128,12 +134,12 @@ if __name__ == "__main__":
         staircase = True
     )
 
-    if os.path.exists(sys.argv[3]):
-        print(f"\nLoaded existing model {sys.argv[3]}")
+    if os.path.exists(pathToModel):
+        print(f"\nLoaded existing model")
 
         model = load_model(
-            sys.argv[3], 
-            custom_objects = {'ctcLoss': ASRModel.ctcloss}, 
+            pathToModel, 
+            custom_objects = {'ctcloss': ASRModel.ctcloss}, 
             safe_mode = False
         )
     else:
@@ -155,6 +161,20 @@ if __name__ == "__main__":
 
     validate = ValidateModel(validationData)
 
+    checkpoint = ModelCheckpoint(
+        pathToCheckpoint + "BestWeights.keras",
+        monitor = 'Error_Rate',
+        save_best_only = True,
+        mode = 'min',
+        verbose = 1
+    )
+
+    earlyStop = EarlyStopping (
+        monitor = 'val_loss',
+        patience = stoppingPatients,
+        restore_best_weights = True
+    )
+
     if display:
         Debug(process, trainDataset, validationData)
 
@@ -162,11 +182,11 @@ if __name__ == "__main__":
         trainDataset,
         validation_data  = validationData,
         epochs           = numEpochs,
-        callbacks        = [validate]
+        callbacks        = [validate, checkpoint, earlyStop]
     )
 
-    PlotLoss(history)
-    PlotErrorRate(history)
+    PlotLoss(history, pathToFigures)
+    PlotErrorRate(history, pathToFigures)
 
-    model.save(sys.argv[3])
+    model.save(pathToModel)
     model.summary()

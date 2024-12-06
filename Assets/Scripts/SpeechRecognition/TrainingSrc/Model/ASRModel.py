@@ -70,7 +70,7 @@ class ASRModel():
 
         return model
 
-    @register_keras_serializable()
+    @register_keras_serializable(name = "ctcloss")
     def ctcloss(_yTrue, _yPred):
         """
         CTC Loss using TensorFlow's `tf.nn.ctc_loss`.
@@ -105,7 +105,7 @@ class ASRModel():
 
         return tf.reduce_mean(loss)
 
-    @register_keras_serializable()
+    @register_keras_serializable(name = "ctcDecoder")
     def ctcDecoder(_logits):
         """
         
