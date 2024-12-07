@@ -74,7 +74,6 @@ namespace Dialogue
             {
                 dialogueUI.CloseDialogueBox();
             }
-            dialogueUI.ShowDialogue(response.DialogueObject);
         }
     }
 }
