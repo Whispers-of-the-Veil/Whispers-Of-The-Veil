@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bb4d3ea72efd834aaae67ff58e7f15b, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  dialogue:
+  - 'This is my Dialogue!!!!!!!!!!!!!
+
+    hello.'
+  - 'this is my second dialogue!
+
+    goodbye!'
+  responses:
+  - reponseText: Yes
+    dialogueObject: {fileID: 11400000, guid: c8d723a1f4e1d72408da955b2b942843, type: 2}
+  - reponseText: No
+    dialogueObject: {fileID: 11400000, guid: 9da4714c9b5e6bc48b8329880d482939, type: 2}
