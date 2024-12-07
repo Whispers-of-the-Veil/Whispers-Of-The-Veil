@@ -1,3 +1,4 @@
+using Dialogue;
 using UnityEngine;
 
 namespace Characters.Player {
@@ -18,6 +19,13 @@ namespace Characters.Player {
         [SerializeField] private float pickupRange = 2f;  
         private GameObject _heldObject;
         
+        [Header("Dialogue")]
+        [SerializeField] private DialogueUI dialogueUI;
+
+        public DialogueUI DialogueUI => dialogueUI;
+        
+        public IInteractable Interactable { get; set; }
+        
         // Start is called before the first frame update
         private void Start() {
             this._rb = GetComponent<Rigidbody>();
@@ -26,9 +34,17 @@ namespace Characters.Player {
     
         // Update is called once per frame
         private void Update() {
+            if (DialogueUI.IsOpen) return;
             OnMove();
             CheckForPickup();
             CheckForSprint();
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (Interactable != null)
+                {
+                    Interactable.Interact(this);
+                }
+            }
         }
     
         private void OnMove() {
