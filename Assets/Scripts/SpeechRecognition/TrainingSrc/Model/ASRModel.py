@@ -3,7 +3,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 from keras.saving import register_keras_serializable
-from tf.keras.ops import ctc_decode
+from tensorflow.keras.ops import ctc_decode
 from tensorflow.keras.regularizers import l2
 import numpy as np
 

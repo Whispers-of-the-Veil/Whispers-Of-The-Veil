@@ -31,3 +31,8 @@ if __name__ == "__main__":
 
         print(f"Label{i}: {transcripts[i]}\n")
         print(f"Prediction: {prediction}")
+
+        check = input("Continue? [Enter or q] ")
+
+        if check == 'q':
+            break
