@@ -3,6 +3,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 from keras.saving import register_keras_serializable
+from tf.keras.ops import ctc_decode
 from tensorflow.keras.regularizers import l2
 import numpy as np
 
@@ -33,22 +34,22 @@ class ASRModel():
         model.add(layers.Reshape((-1, _shape, 1)))            
 
         model.add(layers.Conv2D(
-            filters = 32, 
-            kernel_size = [11, 41], 
-            strides = [2, 2], 
-            padding = 'same',
-            use_bias = False,
+            filters            = 32,
+            kernel_size        = [11, 41],
+            strides            = [2, 2],
+            padding            = 'same',
+            use_bias           = False,
             kernel_regularizer = l2(0.0005)
         ))
         model.add(layers.BatchNormalization())
         model.add(layers.ReLU())
         
         model.add(layers.Conv2D(
-            filters = 32, 
-            kernel_size = [11, 41], 
-            strides = [2, 2], 
-            padding = 'same', 
-            use_bias = False,
+            filters            = 32,
+            kernel_size        = [11, 41],
+            strides            = [2, 2],
+            padding            = 'same',
+            use_bias           = False,
             kernel_regularizer = l2(0.0005)
         ))
         model.add(layers.BatchNormalization())
@@ -90,17 +91,17 @@ class ASRModel():
         timeSteps = tf.shape(_yPred)[1]
 
         inputLength = tf.fill([batchSize], timeSteps)
-        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis=-1)
+        labelLength = tf.reduce_sum(tf.cast(_yTrue != 0, tf.int32), axis = -1)
 
         _yTrue = tf.cast(_yTrue, tf.int32)
 
         loss = tf.nn.ctc_loss(
-            labels              =   _yTrue,
-            logits              =   _yPred,
-            label_length        =   labelLength,
-            logit_length        =   inputLength,
-            logits_time_major   =   False,
-            blank_index         =   -1
+            labels            = _yTrue,
+            logits            = _yPred,
+            label_length      = labelLength,
+            logit_length      = inputLength,
+            logits_time_major = False,
+            blank_index       = -1
         )
 
         return tf.reduce_mean(loss)
@@ -108,7 +109,6 @@ class ASRModel():
     @register_keras_serializable(name = "ctcDecoder")
     def ctcDecoder(_logits):
         """
-        
 
         Parameters:
             - _logits:
@@ -116,7 +116,7 @@ class ASRModel():
         Returns:
             A list of the decoded sequence
         """
-        decoded = tf.keras.ops.ctc_decode (
+        decoded = ctc_decode (
             _logits,
             np.ones(_logits.shape[0]) * _logits.shape[1],
             strategy = 'greedy'

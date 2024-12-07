@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tf.keras.optimizers.schedules import ExponentialDecay
 
 from Model.ASRModel import ASRModel
 from Grab_Ini import ini
@@ -103,35 +104,35 @@ if __name__ == "__main__":
         exit(1)
 
     print("Loading Config")
-    generalConfig       = ini().grabInfo("config.ini", "General")
-    trainingConfig      = ini().grabInfo("config.ini", "Training")
-    learningConfig      = ini().grabInfo("config.ini", "Training.LearningRate")
-    stopConfig          = ini().grabInfo("config.ini", "Training.EarlyStopping")
-    preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
+    generalConfig    = ini().grabInfo("config.ini", "General")
+    trainingConfig   = ini().grabInfo("config.ini", "Training")
+    learningConfig   = ini().grabInfo("config.ini", "Training.LearningRate")
+    stopConfig       = ini().grabInfo("config.ini", "Training.EarlyStopping")
+    preprocessConfig = ini().grabInfo("config.ini", "Preprocess")
 
-    seed            = int(generalConfig['seed'])
-    batchSize       = int(trainingConfig['batch_size'])
-    numEpochs       = int(trainingConfig['epochs'])
-    pathToModel     = str(trainingConfig['path_to_model'])
-    pathToCheckpoint= str(trainingConfig['path_to_checkpoint'])
-    pathToFigures   = str(trainingConfig['path_to_figures'])
-    lr              = float(learningConfig['learning_rate'])
-    decaySteps      = int(learningConfig['decay_steps'])
-    decayRate       = float(learningConfig['decay_rate'])
-    stoppingPatients= int(stopConfig['patience'])
-    display         = int(preprocessConfig['display_samples']) != 0
-    fft             = int(preprocessConfig['fft'])
+    seed             = int(generalConfig['seed'])
+    batchSize        = int(trainingConfig['batch_size'])
+    numEpochs        = int(trainingConfig['epochs'])
+    pathToModel      = str(trainingConfig['path_to_model'])
+    pathToCheckpoint = str(trainingConfig['path_to_checkpoint'])
+    pathToFigures    = str(trainingConfig['path_to_figures'])
+    lr               = float(learningConfig['learning_rate'])
+    decaySteps       = int(learningConfig['decay_steps'])
+    decayRate        = float(learningConfig['decay_rate'])
+    stoppingPatients = int(stopConfig['patience'])
+    display          = int(preprocessConfig['display_samples']) != 0
+    fft              = int(preprocessConfig['fft'])
     
     tf.random.set_seed(seed)
     np.random.seed(seed)
 
     process = Process()
 
-    expDecayLR = tf.keras.optimizers.schedules.ExponentialDecay(
+    expDecayLR = ExponentialDecay (
         lr,
         decay_steps = decaySteps,
-        decay_rate = decayRate,
-        staircase = True
+        decay_rate  = decayRate,
+        staircase   = True
     )
 
     if os.path.exists(pathToModel):
@@ -145,7 +146,7 @@ if __name__ == "__main__":
     else:
         print(f"\nBuilding a new model")
 
-        model = ASRModel.BuildModel(
+        model = ASRModel.BuildModel (
             fft // 2 + 1,                           # Input size
             process.charToNum.vocabulary_size()     # Num of Classes
         )
@@ -161,28 +162,28 @@ if __name__ == "__main__":
 
     validate = ValidateModel(validationData)
 
-    checkpoint = ModelCheckpoint(
+    checkpoint = ModelCheckpoint (
         pathToCheckpoint + "BestWeights.keras",
-        monitor = 'Error_Rate',
+        monitor        = 'Error_Rate',
         save_best_only = True,
-        mode = 'min',
-        verbose = 1
+        mode           = 'min',
+        verbose        = 1
     )
 
     earlyStop = EarlyStopping (
-        monitor = 'val_loss',
-        patience = stoppingPatients,
+        monitor              = 'val_loss',
+        patience             = stoppingPatients,
         restore_best_weights = True
     )
 
     if display:
         Debug(process, trainDataset, validationData)
 
-    history = model.fit(
+    history = model.fit (
         trainDataset,
-        validation_data  = validationData,
-        epochs           = numEpochs,
-        callbacks        = [validate, checkpoint, earlyStop]
+        validation_data = validationData,
+        epochs          = numEpochs,
+        callbacks       = [validate, checkpoint, earlyStop]
     )
 
     PlotLoss(history, pathToFigures)
