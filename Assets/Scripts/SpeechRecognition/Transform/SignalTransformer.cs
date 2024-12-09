@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEngine;
+using DistortClip;
 
 namespace SpeechRecognition.Transform {
     public class SignalTransformer {
@@ -174,8 +175,6 @@ namespace SpeechRecognition.Transform {
         public ComplexValues[][] stft(float[] signal, int segmentLength, int hopSize) {
             int numSegments = 1 + (signal.Length - segmentLength) / hopSize;
             float[] window = CreateHanningWindow(segmentLength);
-            float[] pitches = new float[numSegments];
-            float avgPitch;
             
             ComplexValues[][] stft = new ComplexValues[numSegments][];
             

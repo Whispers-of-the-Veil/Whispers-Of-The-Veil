@@ -7,7 +7,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
-from tf.keras.optimizers.schedules import ExponentialDecay
+from tensorflow.keras.optimizers.schedules import ExponentialDecay
 
 from Model.ASRModel import ASRModel
 from Grab_Ini import ini
@@ -99,7 +99,7 @@ def CreateDataset(process: Process, _training, _validation):
     return trainDataset, validationData
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
+    if len(sys.argv) != 3:
         print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv")
         exit(1)
 

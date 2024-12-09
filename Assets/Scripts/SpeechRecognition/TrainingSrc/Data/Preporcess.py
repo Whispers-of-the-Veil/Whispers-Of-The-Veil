@@ -140,17 +140,20 @@ class Process:
         Returns:
             A spectrogram
         """
-        length  = int(self.preprocessConfig['frame_length'])
-        step    = int(self.preprocessConfig['frame_step'])
-        fft     = int(self.preprocessConfig['fft'])
-
         file = tf.io.read_file(_file)
         audio, _ = tf.audio.decode_wav(file)
         audio = tf.squeeze(audio, axis = -1)
 
         audio = tf.cast(audio, tf.float32)
-        
-        spectrogram = tf.signal.stft(audio, frame_length = length, frame_step = step, fft_length = fft)
+
+        return self._Spectrogram(audio)
+    
+    def _Spectrogram(self, _audio):
+        length  = int(self.preprocessConfig['frame_length'])
+        step    = int(self.preprocessConfig['frame_step'])
+        fft     = int(self.preprocessConfig['fft'])
+
+        spectrogram = tf.signal.stft(_audio, frame_length = length, frame_step = step, fft_length = fft)
         spectrogram = tf.abs(spectrogram)
         spectrogram = tf.math.pow(spectrogram, 0.5)
 
