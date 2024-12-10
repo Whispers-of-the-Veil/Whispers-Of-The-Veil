@@ -19,7 +19,7 @@ namespace Characters.Player {
         
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
-        [SerializeField] private float pickupRange = 2f;  
+        [SerializeField] private float pickupRange = .25f;  
         private GameObject _heldObject;
         
         [Header("Dialogue")]
@@ -32,14 +32,12 @@ namespace Characters.Player {
         // Start is called before the first frame update
         private void Start() {
             this._rb = GetComponent<Rigidbody>();
-            //givng me issues
             inventory.ItemUsed += Inventory_ItemUsed; 
             //Cursor.lockState = CursorLockMode.Locked;
         }
 
         private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
         {
-            Debug.Log("ItemUsed event triggered.");
             IInventoryItem item = e.Item;
 
             GameObject goItem = (item as MonoBehaviour).gameObject;
@@ -47,7 +45,6 @@ namespace Characters.Player {
             
             goItem.transform.parent = holdPoint.transform;
             goItem.transform.position = holdPoint.position;
-            Debug.Log($"Item {item.Name} placed in holdPoint.");
         }
     
         // Update is called once per frame
@@ -131,18 +128,18 @@ namespace Characters.Player {
             }
         }
 
-        private void CheckForRemoveFromInventory()
-        {
-            if (_heldObject != null)
-            {
-                IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
-                if (item != null && inventory != null)
-                {
-                    inventory.RemoveItem(item);
-                }
-                
-            }
-        }
+        // private void CheckForRemoveFromInventory()
+        // {
+        //     if (_heldObject != null)
+        //     {
+        //         IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
+        //         if (item != null && inventory != null)
+        //         {
+        //             inventory.RemoveItem(item);
+        //         }
+        //         
+        //     }
+        // }
         
         
     }

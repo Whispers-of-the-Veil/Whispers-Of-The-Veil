@@ -29,6 +29,8 @@ public class PickUpObject : MonoBehaviour
         
         BoxCollider box = gameObject.GetComponent<BoxCollider>();
         box.enabled = true;
+        Collider collider = gameObject.GetComponent<Collider>();
+        collider.enabled = true;
 
     }
 }
