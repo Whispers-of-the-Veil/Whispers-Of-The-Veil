@@ -14,6 +14,9 @@ namespace Characters.Player {
         [Header("Components")]
         private Rigidbody _rb;
         
+        [Header("Inventory")]
+        public Inventory inventory;
+        
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
         [SerializeField] private float pickupRange = 2f;  
@@ -29,7 +32,22 @@ namespace Characters.Player {
         // Start is called before the first frame update
         private void Start() {
             this._rb = GetComponent<Rigidbody>();
+            //givng me issues
+            inventory.ItemUsed += Inventory_ItemUsed; 
             //Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
+        {
+            Debug.Log("ItemUsed event triggered.");
+            IInventoryItem item = e.Item;
+
+            GameObject goItem = (item as MonoBehaviour).gameObject;
+            goItem.SetActive(true);
+            
+            goItem.transform.parent = holdPoint.transform;
+            goItem.transform.position = holdPoint.position;
+            Debug.Log($"Item {item.Name} placed in holdPoint.");
         }
     
         // Update is called once per frame
@@ -38,6 +56,7 @@ namespace Characters.Player {
             OnMove();
             CheckForPickup();
             CheckForSprint();
+            CheckForInventoryAdd();
             if (Input.GetKeyDown(KeyCode.T))
             {
                 if (Interactable != null)
@@ -98,5 +117,33 @@ namespace Characters.Player {
             target.Drop();
             _heldObject = null;
         }
+
+        private void CheckForInventoryAdd()
+        {
+            if (_heldObject != null && Input.GetKeyDown(KeyCode.Q))
+            {
+                IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
+                if (item != null)
+                {
+                    inventory.AddItem(item);
+                    
+                }
+            }
+        }
+
+        private void CheckForRemoveFromInventory()
+        {
+            if (_heldObject != null)
+            {
+                IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
+                if (item != null && inventory != null)
+                {
+                    inventory.RemoveItem(item);
+                }
+                
+            }
+        }
+        
+        
     }
 }
