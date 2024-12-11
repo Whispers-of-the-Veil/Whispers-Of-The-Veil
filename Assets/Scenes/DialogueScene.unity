@@ -1339,7 +1339,7 @@ MonoBehaviour:
   hearingRange: 0
   heardLimit: 0
   alertEmote: {fileID: 2111075227}
-  target: {fileID: 0}
+  target: {fileID: 2056935112}
   stoppingDistance: 0
   health: 30
 --- !u!64 &723973817
@@ -1665,7 +1665,7 @@ MonoBehaviour:
   hearingRange: 2
   heardLimit: 3
   alertEmote: {fileID: 92192103}
-  target: {fileID: 0}
+  target: {fileID: 2056935112}
   stoppingDistance: 0
   health: 30
 --- !u!64 &935384846
@@ -2991,7 +2991,7 @@ MonoBehaviour:
   hearingRange: 5
   heardLimit: 3
   alertEmote: {fileID: 2142158895}
-  target: {fileID: 0}
+  target: {fileID: 2056935112}
   stoppingDistance: 0
   health: 30
 --- !u!64 &1893395602

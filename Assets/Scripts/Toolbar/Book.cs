@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Book : InventoryItemBase
 {
+    [SerializeField] private GameObject bookCanvas;
+    private bool isBookOpen = false;
     public override string Name
     {
         get { return "Book"; }
@@ -13,6 +15,13 @@ public class Book : InventoryItemBase
     public override void OnUse()
     {
         base.OnUse();
+    }
+
+    public void OpenBook()
+    {
+        isBookOpen = !isBookOpen;
+        bookCanvas.SetActive(isBookOpen);
+        
     }
     
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Characters.Player;
 public class PickUpObject : MonoBehaviour
 {
     public void PickUp(Transform holdPoint)
@@ -23,7 +23,7 @@ public class PickUpObject : MonoBehaviour
     {
         Rigidbody objRb = gameObject.GetComponent<Rigidbody>();
         if (objRb != null) {
-            objRb.isKinematic = false;  // Re-enable physics on the object
+            objRb.isKinematic = false;  
         }
         gameObject.transform.parent = null;
         
@@ -31,6 +31,7 @@ public class PickUpObject : MonoBehaviour
         box.enabled = true;
         Collider collider = gameObject.GetComponent<Collider>();
         collider.enabled = true;
+        
 
     }
 }

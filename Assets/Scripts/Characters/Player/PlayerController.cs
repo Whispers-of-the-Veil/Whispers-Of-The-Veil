@@ -2,7 +2,12 @@ using Dialogue;
 using UnityEngine;
 
 namespace Characters.Player {
-    public class PlayerController : MonoBehaviour {
+    public class PlayerController : MonoBehaviour
+    {
+        private bool hasKey = false;
+        private GameObject heldKey;
+        private bool isHoldingBook = false;
+        private GameObject heldBook;
         [Header("Movement")]
         [SerializeField] public float speed;
         [SerializeField] private float sprintSpeedMultiplier = 1.5f;  // Sprint speed multiplier
@@ -54,6 +59,8 @@ namespace Characters.Player {
             CheckForPickup();
             CheckForSprint();
             CheckForInventoryAdd();
+            CheckForChestInteraction();
+            CheckForBookInteraction();
             if (Input.GetKeyDown(KeyCode.T))
             {
                 if (Interactable != null)
@@ -90,16 +97,30 @@ namespace Characters.Player {
 
         private void CheckForPickup() {
             if (_heldObject == null && Input.GetKeyDown(KeyCode.E)) {
-                // Check for objects within a spherical radius around the player
+                
                 Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
-                foreach (var hitCollider in hitColliders) {
+                
+                foreach (var hitCollider in hitColliders) 
+                {
                     if (hitCollider.CompareTag("Pickup") && hitCollider.isTrigger) {
+                        Key key = hitCollider.GetComponent<Key>();
+                        hasKey = true;
+                        heldKey = hitCollider.gameObject;
+                        
+                        Book book = hitCollider.GetComponent<Book>();
+                        if (book != null)
+                        {
+                            isHoldingBook = true;
+                            heldBook = hitCollider.gameObject;
+                        }
+                        
                         PickupObject(hitCollider.gameObject);
-                        break;  // Exit the loop after picking up the first object
+                        break;  
                     }
                 }
             } else if (_heldObject != null && Input.GetKeyDown(KeyCode.R)) {
                 DropObject();
+                
             }
         }
 
@@ -113,6 +134,11 @@ namespace Characters.Player {
             PickUpObject target = _heldObject.GetComponent<PickUpObject>();
             target.Drop();
             _heldObject = null;
+            Book book = target.GetComponent<Book>();
+            if (book != null)
+            {
+                isHoldingBook = false;
+            }
         }
 
         private void CheckForInventoryAdd()
@@ -124,22 +150,67 @@ namespace Characters.Player {
                 {
                     inventory.AddItem(item);
                     
+                    Book book = _heldObject.GetComponent<Book>();
+                    if (book != null) { // 
+                        isHoldingBook = false; 
+                    }
+                    
                 }
             }
         }
+        
+        private void CheckForChestInteraction()
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                // Check for objects within interaction range
+                Collider[] hitColliders = Physics.OverlapSphere(transform.position, (float).25);
+                foreach (var hitCollider in hitColliders)
+                {
+                    if (hitCollider.CompareTag("Chest"))
+                    {
+                        Chest chest = hitCollider.GetComponent<Chest>();
+                        if (chest != null)
+                        {
+                            if (hasKey)
+                            {
+                                chest.Open(heldKey);
+                                hasKey = false; // Use the key
+                            }
+                            else
+                            {
+                                Debug.Log("You need a key to open this chest!");
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        
+        private void CheckForBookInteraction()
+        {
+            if (Input.GetKeyDown(KeyCode.F) && isHoldingBook && heldBook != null)
+            {
+                // Access the Book script and toggle the book UI
+                Book bookScript = heldBook.GetComponent<Book>();
+                if (bookScript != null)
+                {
+                    bookScript.OpenBook();
+                }
+                else
+                {
+                    Debug.LogError("No Book script attached to the held book!");
+                }
+            }
+        }
+        
+        
 
-        // private void CheckForRemoveFromInventory()
-        // {
-        //     if (_heldObject != null)
-        //     {
-        //         IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
-        //         if (item != null && inventory != null)
-        //         {
-        //             inventory.RemoveItem(item);
-        //         }
-        //         
-        //     }
-        // }
+
+
+
+        
         
     
     }
