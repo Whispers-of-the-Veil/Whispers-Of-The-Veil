@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Pickup
   - Door_Start
-  - Checkpoint
   - Enemy
   - Checkpoint
   layers:
