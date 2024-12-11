@@ -39,7 +39,9 @@ public class CheckpointManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("no checkpoint set respawning at default pos");
+            player.transform.position = new Vector3(0, 0.206f, 0);
+            Debug.LogWarning("No checkpoint set, respawning at default position.");
         }
     }
+
 }

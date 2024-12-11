@@ -14,17 +14,19 @@ namespace Characters.Player
 
         private void GetReferences()
         {
-            
         }
+
         public override void CheckHealth()
         {
             base.CheckHealth();
         }
+
         public override void Die()
         {
             isDead = true;
-            Destroy(gameObject);
-
+            CheckpointManager.Instance.RespawnPlayer(gameObject);
+            health = 100;
+            Debug.Log("Player died, respawning");
         }
     }
 }
