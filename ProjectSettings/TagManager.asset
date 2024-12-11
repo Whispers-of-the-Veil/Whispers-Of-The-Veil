@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Pickup
   - Door_Start
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
