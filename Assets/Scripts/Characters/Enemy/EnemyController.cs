@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+using Characters.Player;
 
 namespace Characters.Enemy {
     public class EnemyController : MonoBehaviour {
@@ -32,6 +34,7 @@ namespace Characters.Enemy {
         private void Start() {
             this.alertEmote.SetActive(false);
             this.rb = GetComponent<Rigidbody>();
+            GetReferences();
         }
 
         // Update is called once per frame
@@ -85,11 +88,35 @@ namespace Characters.Enemy {
         }
 
         private void MoveEnemy(Vector3 targetPosition) {
+            // Calculate direction and velocity towards the target
             direction = (targetPosition - transform.position).normalized;
             velocity = direction * speed;
-            
-            rb.MovePosition(transform.position + velocity * Time.fixedDeltaTime);
+
+            // Calculate the distance to the target
+            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+
+            // Move if the target is outside the stopping distance
+            if (distanceToTarget > stoppingDistance) {
+                rb.MovePosition(transform.position + velocity * Time.fixedDeltaTime);
+                hasStopped = false; // Reset attack state when moving
+            } else {
+                // Attack logic if within stopping distance
+                if (!hasStopped) {
+                    timeOfLastAttack = Time.time;
+                    hasStopped = true; // Enemy has stopped to attack
+                }
+
+                if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
+                    timeOfLastAttack = Time.time;
+                    CharacterStats targetStats = target.GetComponent<CharacterStats>();
+                    if (targetStats != null) {
+                        AttackTarget(targetStats);
+                    }
+                }
+            }
         }
+
+
         
         // Reset enemy alert state
         private void ResetAlert() {
@@ -127,8 +154,38 @@ namespace Characters.Enemy {
             
             isMoving = false;
         }
+
+        void Die()
+        {
+            // Handle death (e.g., play animation, drop items)
+            Debug.Log("Enemy defeated!");
+            Destroy(gameObject);
+        }
         
+        //combat testing
+        private float timeOfLastAttack = 0;
+        private bool hasStopped = false;
+        
+        private EnemyStats stats = null;
+
+        [SerializeField] Transform target;
+        [SerializeField] private float stoppingDistance = 2.0f; // The distance at which the enemy stops moving and starts attacking
+
+        
+        private void AttackTarget(CharacterStats statsToDamage)
+        {
+            Debug.Log("attacking players");
+            stats.DealDamage(statsToDamage);
+        }
+
+        private void GetReferences()
+        {
+            stats = GetComponent<EnemyStats>();
+        }
+        
+        //player to enemy combat
         public int health = 30;
+        
         public void TakeDamage(int damage)
         {
             health -= damage;
@@ -139,12 +196,5 @@ namespace Characters.Enemy {
             }
         }
 
-        void Die()
-        {
-            // Handle death (e.g., play animation, drop items)
-            Debug.Log("Enemy defeated!");
-            Destroy(gameObject);
-        }
-        
     }
 }

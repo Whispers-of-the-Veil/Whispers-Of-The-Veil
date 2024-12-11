@@ -17,7 +17,7 @@ namespace Combat
             // Left-click to attack
             if (Input.GetMouseButtonDown(0) && canAttack)
             {
-                Attack();
+                //Attack();
             }
         }
 
