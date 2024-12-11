@@ -109,9 +109,6 @@ namespace Characters.Enemy {
                 if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
                     timeOfLastAttack = Time.time;
                     CharacterStats targetStats = target.GetComponent<CharacterStats>();
-                    if (targetStats != null) {
-                        AttackTarget(targetStats);
-                    }
                 }
             }
         }
@@ -157,19 +154,17 @@ namespace Characters.Enemy {
 
         void Die()
         {
-            // Handle death (e.g., play animation, drop items)
             Debug.Log("Enemy defeated!");
             Destroy(gameObject);
         }
         
-        //combat testing
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         
         private EnemyStats stats = null;
 
         [SerializeField] Transform target;
-        [SerializeField] private float stoppingDistance = 2.0f; // The distance at which the enemy stops moving and starts attacking
+        [SerializeField] private float stoppingDistance = 2.0f; 
 
         
         private void AttackTarget(CharacterStats statsToDamage)
