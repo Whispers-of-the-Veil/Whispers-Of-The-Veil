@@ -50,7 +50,7 @@ namespace Characters.Enemy {
         
         private void FixedUpdate() {
             // If player is in sight, move to them
-            if (playerInSight) {
+            if (playerInSight && !hasStopped) {
                 alert = false; // reset the alert flag
                 MoveEnemy(playerTransform.position);
             }
@@ -109,6 +109,9 @@ namespace Characters.Enemy {
                 if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
                     timeOfLastAttack = Time.time;
                     CharacterStats targetStats = target.GetComponent<CharacterStats>();
+                    if (targetStats != null) {
+                        AttackTarget(targetStats);
+                    }
                 }
             }
         }
