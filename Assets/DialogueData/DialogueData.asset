@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bb4d3ea72efd834aaae67ff58e7f15b, type: 3}
-  m_Name: Test
+  m_Name: DialogueData
   m_EditorClassIdentifier: 
   dialogue:
-  - 'This is my Dialogue!!!!!!!!!!!!!
+  - Hi my name is Echo! I'm your helper.
+  - 'Press ''E'' to pick up an object
 
-    hello.'
-  - 'this is my second dialogue!
+    Press ''R'' to drop it
 
-    goodbye!'
+    Press ''Q''
+    while holding to store it'
   responses:
-  - reponseText: Yes
+  - reponseText: Okay!
     dialogueObject: {fileID: 11400000, guid: c8d723a1f4e1d72408da955b2b942843, type: 2}
-  - reponseText: No
+  - reponseText: Controls?
     dialogueObject: {fileID: 11400000, guid: 9da4714c9b5e6bc48b8329880d482939, type: 2}

@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using HealthHUD;
 
 namespace Characters.Player
 {
     public class PlayerStats : CharacterStats
     {
+        private HUDHealth hud;
+        
         private void Start()
         {
             GetReferences();
@@ -14,11 +17,13 @@ namespace Characters.Player
 
         private void GetReferences()
         {
+            hud = GetComponent<HUDHealth>();
         }
 
         public override void CheckHealth()
         {
             base.CheckHealth();
+            hud.UpdateHealth(health, maxHealth);
         }
 
         public override void Die()

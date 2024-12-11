@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Done
   m_EditorClassIdentifier: 
   dialogue:
-  - I'm done.
+  - I've said too much.
   responses:
   - reponseText: Okay
     dialogueObject: {fileID: 0}

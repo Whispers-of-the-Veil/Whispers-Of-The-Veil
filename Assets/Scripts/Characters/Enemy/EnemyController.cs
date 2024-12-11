@@ -111,6 +111,7 @@ namespace Characters.Enemy {
                     CharacterStats targetStats = target.GetComponent<CharacterStats>();
                     if (targetStats != null) {
                         AttackTarget(targetStats);
+                        Debug.Log("attacking player");
                     }
                 }
             }
