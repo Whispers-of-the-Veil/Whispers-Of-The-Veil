@@ -55,7 +55,6 @@ public class Inventory : MonoBehaviour
 
     public void UseItem(IInventoryItem item)
     {
-        Debug.Log("UseItem called.");
         if (ItemUsed != null)
         {
             ItemUsed(this, new InventoryEventArgs(item));

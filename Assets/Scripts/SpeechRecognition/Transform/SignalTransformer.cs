@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using DistortClip;
 
 namespace SpeechRecognition.Transform {
     public class SignalTransformer {
