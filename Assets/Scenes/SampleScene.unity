@@ -934,6 +934,11 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!4 &331641905 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3235691092645365454, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
+  m_PrefabInstance: {fileID: 639165505}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &340301331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2151,11 +2156,11 @@ PrefabInstance:
     - target: {fileID: 6870522140050884339, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
       propertyPath: enemies.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1893395599}
     - target: {fileID: 6870522140050884339, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
       propertyPath: enemies.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 935384844}
     - target: {fileID: 7279896245814517681, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3046,12 +3051,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alertDuration: 20
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 331641905}
   speed: 1
   radius: 1.5
   player:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   sightRange: 2
   hearingRange: 2
   heardLimit: 3
@@ -6387,12 +6392,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alertDuration: 20
-  playerTransform: {fileID: 0}
+  playerTransform: {fileID: 331641905}
   speed: 1
   radius: 1.5
   player:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   sightRange: 0.5
   hearingRange: 5
   heardLimit: 3
