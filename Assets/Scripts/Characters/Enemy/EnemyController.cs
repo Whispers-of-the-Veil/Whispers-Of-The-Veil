@@ -127,5 +127,24 @@ namespace Characters.Enemy {
             
             isMoving = false;
         }
+        
+        public int health = 30;
+        public void TakeDamage(int damage)
+        {
+            health -= damage;
+            Debug.Log($"Enemy hit! Remaining health: {health}");
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        void Die()
+        {
+            // Handle death (e.g., play animation, drop items)
+            Debug.Log("Enemy defeated!");
+            Destroy(gameObject);
+        }
+        
     }
 }
