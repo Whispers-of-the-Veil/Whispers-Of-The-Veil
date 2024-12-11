@@ -143,7 +143,5 @@ namespace Characters.Player {
                 
             }
         }
-        
-        
     }
 }
