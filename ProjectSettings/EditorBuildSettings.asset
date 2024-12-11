@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: f4902928d793c5b45a123300d8bf113d
   - enabled: 1
+    path: Assets/Scenes/Demo Scene.unity
+    guid: d6bc510a272d19b47a29b9eb4d205f29
+  - enabled: 1
     path: Assets/Scenes/SS_FARZANA.unity
     guid: a9d53e207320ee241904fb273a359ddd
   - enabled: 1
