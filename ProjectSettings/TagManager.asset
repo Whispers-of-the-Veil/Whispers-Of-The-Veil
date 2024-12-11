@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
+<<<<<<< HEAD
   tags: []
+=======
+  tags:
+  - Pickup
+  - Door_Start
+  - Enemy
+  - Checkpoint
+>>>>>>> 73b2b8b7744c902d409d4e998bb30b11510ab46b
   layers:
   - Default
   - TransparentFX
