@@ -9,7 +9,6 @@ namespace Characters.Player
         
         [SerializeField] protected int health;
         [SerializeField] protected int maxHealth;
-
         [SerializeField] protected bool isDead;
         // Start is called before the first frame update
         void Start()
@@ -47,7 +46,6 @@ namespace Characters.Player
             int healthAfterDamage = health - damage;
             SetHealthTo(healthAfterDamage);
             Debug.Log($"Player took {damage} damage. Health left: {health}");
-
         }
         
         public virtual void InitVariables()

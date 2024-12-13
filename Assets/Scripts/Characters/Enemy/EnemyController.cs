@@ -29,6 +29,14 @@ namespace Characters.Enemy {
         [Header("Components")]
         [SerializeField] public GameObject alertEmote;
         private Rigidbody rb;
+ 
+        //combat
+        private float timeOfLastAttack = 0;
+        private bool hasStopped = false;
+        private EnemyStats stats = null;
+        [SerializeField] Transform target;
+        [SerializeField] private float stoppingDistance = 2.0f;
+        public int health = 30;
         
         // Start is called before the first frame update
         private void Start() {
@@ -116,8 +124,6 @@ namespace Characters.Enemy {
                 }
             }
         }
-
-
         
         // Reset enemy alert state
         private void ResetAlert() {
@@ -162,31 +168,23 @@ namespace Characters.Enemy {
             Destroy(gameObject);
         }
         
-        private float timeOfLastAttack = 0;
-        private bool hasStopped = false;
-        
-        private EnemyStats stats = null;
-
-        [SerializeField] Transform target;
-        [SerializeField] private float stoppingDistance = 2.0f; 
-
-        
         private void AttackTarget(CharacterStats statsToDamage)
         {
+            //perform player damage to enemy stats script
             Debug.Log("attacking players");
             stats.DealDamage(statsToDamage);
         }
 
         private void GetReferences()
         {
+            //get enemy stats
             stats = GetComponent<EnemyStats>();
         }
         
         //player to enemy combat
-        public int health = 30;
-        
         public void TakeDamage(int damage)
         {
+            //take damage amount from enemy health, if <= 0 then enemy dies
             health -= damage;
             Debug.Log($"Enemy hit! Remaining health: {health}");
             if (health <= 0)
@@ -194,6 +192,5 @@ namespace Characters.Enemy {
                 Die();
             }
         }
-
     }
 }

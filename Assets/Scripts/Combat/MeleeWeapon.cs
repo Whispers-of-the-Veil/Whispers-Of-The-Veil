@@ -9,7 +9,6 @@ namespace Combat
     {
         public int damage = 10; 
         public float attackCooldown = 0.5f; 
-
         private bool canAttack = true;
 
         void Update()
