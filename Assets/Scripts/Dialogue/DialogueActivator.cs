@@ -43,7 +43,6 @@ namespace Dialogue
                     break;
                 }
             }
-            
             player.DialogueUI.ShowDialogue(dialogueObject);
         }
     }

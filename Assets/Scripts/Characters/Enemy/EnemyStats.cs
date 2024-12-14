@@ -8,9 +8,8 @@ namespace Characters.Enemy
     public class EnemyStats : CharacterStats
     {
         [SerializeField] private int damage;
-        public float attackSpeed;
-        
         [SerializeField] private bool canAttack;
+        public float attackSpeed;
         
         private void Start()
         {

@@ -83,7 +83,5 @@ namespace Dialogue
             toolbar.SetActive(true);
             textLabel.text = string.Empty;
         }
-
-        
     }
 }
