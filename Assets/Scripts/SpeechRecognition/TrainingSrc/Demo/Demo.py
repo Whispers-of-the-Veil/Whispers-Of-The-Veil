@@ -1,3 +1,5 @@
+# Lucas Davis
+
 import sys
 import pyaudio
 import numpy as np
