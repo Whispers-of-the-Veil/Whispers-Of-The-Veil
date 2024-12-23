@@ -54,9 +54,16 @@ def PlotLoss(_history, _path):
     plt.ylabel('Loss [ctcloss]')
     plt.savefig(_path + 'Loss.png')
 
-def Debug(process: Process, _train, _valid):
+def Debug(process: Process, _train, _valid, _test):
     """
-    
+    This function will display the labels and spcetrograms using process' ValidateData method.
+    This is used to debug the spectrograms and the labels if there is a problem
+
+    Parameters:
+        - process: A reference to the process class
+        - _train: The training dataset
+        - _valid: The validation dataset
+        - _test: The testing dataset
     """
     for spectrogram, label in _train.take(1):
         process.ValidateData(spectrogram[0], label[0])
@@ -64,8 +71,10 @@ def Debug(process: Process, _train, _valid):
     for spectrogram, label in _valid.take(1):
         process.ValidateData(spectrogram[0], label[0])
 
+    for spectrogram, label in _test.take(1):
+        process.ValidateData(spectrogram[0], label[0])
 
-def CreateDataset(process: Process, _training, _validation):
+def CreateDataset(process: Process, _training, _validation, _test):
     """
     Creates a dataset for both the training and validatation sets. It will map the audio paths and transcripts
     to the process.Data method to process them into spectrograms and labels.
@@ -79,16 +88,21 @@ def CreateDataset(process: Process, _training, _validation):
     """
     trainAudioPaths, trainTranscripts = process.LoadCSV(_training)
     validAudioPaths, validTranscripts = process.LoadCSV(_validation)
+    testAudioSamples, testTranscripts = process.LoadCSV(_test)
 
+    # The train dataset calls a different method that will augment the audio samples
     trainDataset = tf.data.Dataset.from_tensor_slices(
         (list(trainAudioPaths), list(trainTranscripts))
     )
     trainDataset = (
-        trainDataset.map(process.Data, num_parallel_calls = tf.data.AUTOTUNE)
+        trainDataset.map(process.TrainData, num_parallel_calls = tf.data.AUTOTUNE)
         .padded_batch(batchSize)
         .prefetch(buffer_size = tf.data.AUTOTUNE)
     )
 
+    # The validation and testing datasets arent augmented. This is to keep them the same
+    # between different training sets so we can get an accurate val_loss and Error_Rate
+    # measurement
     validationData = tf.data.Dataset.from_tensor_slices(
         (list(validAudioPaths), list(validTranscripts))
     )
@@ -98,11 +112,20 @@ def CreateDataset(process: Process, _training, _validation):
         .prefetch(buffer_size = tf.data.AUTOTUNE)
     )
 
-    return trainDataset, validationData
+    testDataset = tf.data.Dataset.from_tensor_slices(
+        (list(testAudioSamples), list(testTranscripts))
+    )
+    testDataset = (
+        testDataset.map(process.Data, num_parallel_calls = tf.data.AUTOTUNE)
+        .padded_batch(batchSize)
+        .prefetch(buffer_size = tf.data.AUTOTUNE)
+    )
+
+    return trainDataset, validationData, testDataset
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv")
+    if len(sys.argv) != 4:
+        print("usage: python TrainASRModel.py /Path/to/TrainingData.csv /Path/to/ValidationData.csv /Path/to/TestData.csv")
         exit(1)
 
     print("Loading Config")
@@ -110,7 +133,8 @@ if __name__ == "__main__":
     trainingConfig   = ini().grabInfo("config.ini", "Training")
     learningConfig   = ini().grabInfo("config.ini", "Training.LearningRate")
     stopConfig       = ini().grabInfo("config.ini", "Training.EarlyStopping")
-    preprocessConfig = ini().grabInfo("config.ini", "Preprocess")
+    processConfig    = ini().grabInfo("config.ini", "Process")
+    spectrogramConfig= ini().grabInfo("config.ini", "Process.Spectrogram")
 
     seed             = int(generalConfig['seed'])
     batchSize        = int(trainingConfig['batch_size'])
@@ -122,8 +146,8 @@ if __name__ == "__main__":
     decaySteps       = int(learningConfig['decay_steps'])
     decayRate        = float(learningConfig['decay_rate'])
     stoppingPatients = int(stopConfig['patience'])
-    display          = int(preprocessConfig['display_samples']) != 0
-    fft              = int(preprocessConfig['fft'])
+    debug            = eval(processConfig['display_spectrograms'])
+    fft              = int(spectrogramConfig['fft'])
     
     tf.random.set_seed(seed)
     np.random.seed(seed)
@@ -160,9 +184,9 @@ if __name__ == "__main__":
 
     model.summary()
 
-    trainDataset, validationData = CreateDataset(process, sys.argv[1], sys.argv[2])
+    trainDataset, validationData, testDataset = CreateDataset(process, sys.argv[1], sys.argv[2], sys.argv[3])
 
-    validate = ValidateModel(validationData)
+    validate = ValidateModel(testDataset)
 
     checkpoint = ModelCheckpoint (
         pathToCheckpoint + "BestWeights.keras",
@@ -178,8 +202,8 @@ if __name__ == "__main__":
         restore_best_weights = True
     )
 
-    if display:
-        Debug(process, trainDataset, validationData)
+    if debug:
+        Debug(process, trainDataset, validationData, testDataset)
 
     history = model.fit (
         trainDataset,

@@ -45,7 +45,7 @@ class ValidateModel(keras.callbacks.Callback):
                 item = self.process.ConvertLabel(item)
                 transcripts.append(item)
 
-        errorRate = wer(transcripts, predictions)
+        errorRate = int(wer(transcripts, predictions) * 100)
 
         # This will add a custom metric to the models logs for the error rate
         logs['Error_Rate'] = errorRate

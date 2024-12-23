@@ -14,11 +14,14 @@ class Process:
     This class contains methods to handle the audio data and transcripts
     """
     def __init__(self): 
-        generalConfig            = ini().grabInfo("config.ini", "General")
-        self.preprocessConfig    = ini().grabInfo("config.ini", "Preprocess")
+        generalConfig          = ini().grabInfo("config.ini", "General")
+        self.processConfig     = ini().grabInfo("config.ini", "Process")
+        self.augmentConfig     = ini().grabInfo("config.ini", "Process.AugmentAudio")
+        self.spectrogramConfig = ini().grabInfo("config.ini", "Process.Spectrogram")
+        labelConfig            = ini().grabInfo("config.ini", "Process.Label")
 
-        seed            = int(generalConfig['seed'])
-        vocab      = self.preprocessConfig['vocabulary']
+        self.seed              = int(generalConfig['seed'])
+        vocab                  = labelConfig['vocabulary']
 
         characters = [x for x in vocab]
         characters.append(' ')
@@ -26,8 +29,8 @@ class Process:
         self.charToNum = keras.layers.StringLookup(vocabulary = characters, oov_token = "")
         self.numToChar = keras.layers.StringLookup(vocabulary = characters, oov_token = "", invert = True)
 
-        tf.random.set_seed(seed)
-        np.random.seed(seed)
+        tf.random.set_seed(self.seed)
+        np.random.seed(self.seed)
 
     def ConvertLabel(self, _label):
         """
@@ -40,6 +43,27 @@ class Process:
             The transcript of the corresponding labelc
         """
         return tf.strings.reduce_join(self.numToChar(_label)).numpy().decode("utf-8")
+    
+    def TrainData(self, _audio, _transcript):
+        """
+        This method is used when we are maping the audio paths and transcripts to their
+        spectrograms and labels when creating a dataset in the Training script. It simply calls
+        the _Audio and _Transcript methods and returns the spectrogram and label of the audio sample.
+
+        This method will utilize a different method then Data that will augment the audio samples before
+        converting them into a spectrogram.
+
+        Parameters:
+            - _audio: The path of the audio file; must be a .wav file
+            - _transcript: The transcript of the audio file
+
+        Returns:
+            The spectrogram and label of the audio sample
+        """
+        spectrogram = self.TrainAudio(_audio)
+        label = self._Transcript(_transcript)
+            
+        return spectrogram, label
     
     def Data(self, _audio, _transcript):
         """
@@ -56,7 +80,7 @@ class Process:
         """
         spectrogram = self.Audio(_audio)
         label = self._Transcript(_transcript)
-            
+
         return spectrogram, label
 
     def LoadCSV(self, _csvPath):
@@ -124,13 +148,7 @@ class Process:
 
     # ------------------------------------------------------------------------
     #   Audio processing
-    #       - Process the audio files in batches
-    #       - Each batch will follow this structure
-    #           - Read in the audio file
-    #           - Compute the Spectrogram for each audio file
-    #           - Normalize the Spectrorgam
     # ------------------------------------------------------------------------
-
     def Audio(self, _file):
         """
         This method transforms a given audio sample into a spectrogram using tensorflows stft method.
@@ -149,17 +167,51 @@ class Process:
         audio = tf.cast(audio, tf.float32)
 
         return self._Spectrogram(audio)
+
+    def TrainAudio(self, _file):
+        """
+        This method is similar to the Audio method, however this method will augment the training set
+        if the augment value is True in the ini file.
+
+        Parameters:
+            - _file: The file path to a given audio sample
+
+        Returns:
+            A spectrogram
+        """
+        file = tf.io.read_file(_file)
+        audio, _ = tf.audio.decode_wav(file)
+        audio = tf.squeeze(audio, axis = -1)
+
+        if eval(self.processConfig['augment']):
+            audio = self._Noise(audio)
+            audio = self._Volume(audio)
+
+        audio = tf.cast(audio, tf.float32)
+
+        return self._Spectrogram(audio)
     
-    def _Spectrogram(self, _audio):
-        length  = int(self.preprocessConfig['frame_length'])
-        step    = int(self.preprocessConfig['frame_step'])
-        fft     = int(self.preprocessConfig['fft'])
+    def _Noise(self, _audio):
+        """
+        This function will preform additive noise with a uniform distribution in range of a 
+        defined min and max value. These values can be configured in the ini file.
 
-        spectrogram = tf.signal.stft(_audio, frame_length = length, frame_step = step, fft_length = fft)
-        spectrogram = tf.abs(spectrogram)
-        spectrogram = tf.math.pow(spectrogram, 0.5)
+        Parameters:
+            - _audio: The float tensor of the wav file
 
-        return self._Normalize(spectrogram)
+        Returns:
+            The augmented audio file with additive noise
+        """
+        min = -(int(self.augmentConfig['noise_min']))
+        max = -(int(self.augmentConfig['noise_max']))
+
+        if min == 0 or max == 0:
+            return _audio
+        
+        noiseLevel = tf.random.uniform(shape = [], minval = min, maxval = max, seed = self.seed)
+        noise = tf.random.uniform(tf.shape(_audio)) * tf.math.pow(10.0, noiseLevel / 20.0)
+
+        return _audio + noise
     
     def _Normalize(self, _spectrogram):
         """
@@ -175,12 +227,80 @@ class Process:
         std = tf.math.reduce_std(_spectrogram, 1, keepdims = True)
 
         return (_spectrogram - means) / (std + 1e-10)
+    
+    def _Spectrogram(self, _audio):
+        """
+        This method will compute the Short-Time Fourier Transform (STFT) of a given audio sample.
+        This method will convert the results into log form and normalize the results.
+
+        Parameters:
+            - _audio: The float tensor of the wav file
+
+        Returns:
+            The Spectrogram of a wav file
+        """
+        length  = int(self.spectrogramConfig['frame_length'])
+        step    = int(self.spectrogramConfig['frame_step'])
+        fft     = int(self.spectrogramConfig['fft'])
+
+        spectrogram = tf.signal.stft(_audio, frame_length = length, frame_step = step, fft_length = fft)
+        spectrogram = tf.abs(spectrogram)
+        spectrogram = tf.math.pow(spectrogram, 0.5)
+
+        return self._Normalize(spectrogram)
+
+    def _TimeStretch(self, _audio):
+        """
+        This mehtod preforms Time Streching by resampling the audio based on a uniform distribution. This will alter the
+        tempo of the speaker, making them speak faster or slower. The ratio is defined in the ni file.
+
+        Parameters:
+            - _audio: The float tensor of the wav file
+
+        Returns:
+            The augmented audio file after its tempo is streched or compressed
+        """
+        strechRatio = int(self.augmentConfig['time_stretch_ratio'])
+
+        if strechRatio == 0:
+            return _audio
+
+        min = 1.0 - (strechRatio / 100.0)
+        max = 1.0 + (strechRatio / 100.0)
+
+        factor = tf.random.uniform(shape=[], minval = min, maxval = max)
+
+        length = tf.cast(tf.round(tf.cast(tf.shape(_audio)[0], tf.float32) / factor), tf.int32)
+
+        return tf.signal.resample(_audio, length)
+    
+    def _Volume(self, _audio):
+        """
+        This method will scale the amplitude of the audio sample based on a uniform distribution. This will
+        change the volume of the audio samples, making the speaker loader or quieter based on a ratio in the ini
+        file.
+
+        Parameters:
+            - _audio: The float tensor of the wav file
+
+        Returns:
+            The augmented audio file with its volume ajusted
+        """
+        volRatio = int(self.augmentConfig['volume_ratio'])
+
+        if volRatio == 0:
+            return _audio
+        
+        min = 1 - (volRatio / 100)
+        max = 1 + (volRatio / 100)
+        
+        volume = tf.random.uniform(shape = [], minval = min, maxval = max)
+
+        return _audio * volume
 
     # ------------------------------------------------------------------------
     #   Transcript processing
-    #
     # ------------------------------------------------------------------------
-
     def _Transcript(self, _transcript):
         """
         Process each transcript into its corresponding label. Where each character
