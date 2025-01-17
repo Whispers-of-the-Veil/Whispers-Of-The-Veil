@@ -74,12 +74,11 @@ crashlytics-build.properties
 # Ignore the mac system files
 .DS_Store
 
-# Ignore the data directory
-Assets/Plugins/SpeechRecognition/Data/
-# Ignore the LibriSpeech Directory
-Assets/Plugins/SpeechRecognition/LibriSpeech/
-
-Assets/Plugins/SpeechRecognition/tmpData/
-Assets/Plugins/SpeechRecognition/Model/
-
+# Ignore the python cache folder created when calling python -m
 __pycache__/
+
+# Ignore the ASR model and library files (too large to store on github)
+ASR.bytes
+ASRLib.dylib
+ASRLib.so
+ASRLib.dll

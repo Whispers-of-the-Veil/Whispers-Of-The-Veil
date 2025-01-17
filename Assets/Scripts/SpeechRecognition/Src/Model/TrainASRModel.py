@@ -12,7 +12,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 
 from Model.ASRModel import ASRModel
-from Grab_Ini import ini
+from Config.Grab_Ini import ini
 from Data.Preporcess import Process
 from Model.ValidateModel import ValidateModel
 

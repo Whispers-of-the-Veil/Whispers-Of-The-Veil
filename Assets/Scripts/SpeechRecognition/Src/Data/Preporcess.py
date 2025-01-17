@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 
-from Grab_Ini import ini
+from Config.Grab_Ini import ini
 
 class Process:
     """

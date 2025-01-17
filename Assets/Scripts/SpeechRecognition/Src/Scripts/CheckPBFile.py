@@ -29,7 +29,7 @@ def Predict(_graph, _inputData):
     """
     This function runs a forward pass on the _inputData using the frozen graph.
     
-    Parameters:
+    Parameters:s
         - _graph: A graph object
         - _inputData: ndarray object of the input data
 
@@ -37,8 +37,8 @@ def Predict(_graph, _inputData):
         The prediction
     """
     with tf.compat.v1.Session(graph = _graph) as sess:
-        inputNode = graph.get_tensor_by_name("x:0")
-        outputNode = graph.get_tensor_by_name("Identity:0")
+        inputNode = _graph.get_tensor_by_name("x:0")
+        outputNode = _graph.get_tensor_by_name("Identity:0")
 
         prediction = sess.run(outputNode, feed_dict = {inputNode: _inputData})
     return prediction

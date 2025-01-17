@@ -18,8 +18,6 @@ Python scripts require:
     <li>re</li>
 </ul>
 
-We will be utilizing the Barracuda package to interact with the model in unity.
-
 ## Model Architecture
 This model utilizes The Deepspeech 2 actitecture
     https://nvidia.github.io/OpenSeq2Seq/html/speech-recognition/deepspeech2.html
@@ -31,18 +29,21 @@ Located in the SpeecRecogntion/Training directory is the License for the Deepspe
 ![Model Architecture](Diagrams/ModelArchitecture.png)
 
 ## Training
-Before we start the training process, we need to make sure to have three csv files ready; Training, Validation, and 
-Testing. These files should have the following structure.
-
-    filename,transcript,
-    /complete/path/to/wav/file.wav,Transcript of wav file
+The training process requires three csv files; Training.csv, Validation.csv, and Test.csv. As the names imply, these csv 
+files should contain the Training, Validation, and Test datasets. They should have the following file structure:<br>
+    filename,transcript,<br>
+    /complete/path/to/wav/file.wav,Transcript of wav file<br>
 
 Please note: all wav files used in the Training, Validation, and Testing datasets should have the same sample rates. In
 our case, that would be 16000 samples.
 
-Certain parameters can be modified within the 'config.ini' file located at the root of the Training directory. For 
-example, we can enable or disable data augmentation for the Training dataset. The augmentation includes Additive noise, 
-time streching, and volume modulation.
+Certain parameters can be modified within the 'config.ini'. For example, we can enable or disable data augmentation for 
+the Training dataset. The augmentation includes Additive Nnoise, Time Streching, and Volume Modulation. You can modify the
+vocabluary to include punctuation or special characters depending on the use case. And you can modify the Learning Rate and
+Early stop parameters.
+
+Please note: Before you start the training process, please ensure that the paths to where you wish to save the model, 
+figures, and checkpoints are filled out.
 
 For our model, we used the Librispeech dataset with the following setup:
 *Round 1*: We utilized the 100 dataset for our Training data, the combined Dev-clean and Dev-other datasets for our 
@@ -57,6 +58,8 @@ time_strech_ratio was set to 10, Volume was set to 5.*
 *Round 3*: We utilized the 500 Dataset for our Training data *without any augmentation.* The validation and Testing Datasets 
 remained the same.
 
+*Each round consisted of 50 Epochs.*
+
 Once the csv files and the config.ini file are ready, run the following cmd to start the training process (Please be sure
 to center on the Training directory):
 
@@ -69,16 +72,7 @@ First we will need to run the ConvertToPB.py script using
 
     python -m scripts.ConvertToPB.py /path/to/model.keras /path/to/a/folder
 
-This script will output what the input and output nodes are; hold onto them, we will use them in the next cmd. Once
-everything has been converted to the protocol buffer format, we can then convert it to a format that unity expects
-using the tf2onnx module.
-
-    python -m tf2onnx.convert --input /path/to/model.pb --inputs <input node> --outputs <output node> --output /path/to/Model.onnx
-
-This will produce a model.onnx file, of which we can use in unity.
-
 ### Diagrams
-
 
 ## Usage
 
