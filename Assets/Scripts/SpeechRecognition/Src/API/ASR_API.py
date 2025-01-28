@@ -53,7 +53,7 @@ def main():
         recognition = Recognition()
 
         print("\nStarting Automatic-Speech-Recognition API...")
-        app.run(host='0.0.0.0', port = 8888)
+        app.run(host = '0.0.0.0', port = 8888)
     except Exception as e:
         print(f"Error starting the server: {str(e)}")
 

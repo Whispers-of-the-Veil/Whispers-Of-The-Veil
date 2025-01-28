@@ -65,13 +65,20 @@ to center on the Training directory):
 
     python -m Model.TrainASRModel TrainingDataset.csv ValidationDataset.csv TestDataset.csv
 
-### Compiling the API
-Run this cmd to compile the API script into an executable form
-
-    pyinstaller --onefile --add-data "models/ASR.keras:models" --add-data "Data/Process.py:Data" --add-data "Model/ASRModel.py:Model" --add-data "Grab_Ini.py:." --add-data "config.ini:." API/ASR_API.py
+Once the model has completed training you will be left with a .keras file located in the path_to_model you defined in the ini file. We can check the models preformance against test data by running the CheckKerasFile.py in the Src/Scripts directory. This script simply loads the model and displays the predictions it made on a test data set.    
 
 ### Diagrams
 
 ## Usage
+After training you will be left with a .keras file that contains the models weights. In order to interact with this model, we will be using a python API using Flask. This API will take in audio data in bytes form and return the prediction from the model.
+
+### Building API
+To compile/build the API source, we can run the build_api.sh script in the root of the Src directory. This bash script will build an executable file using pyinstaller using the following cmd:
+
+    pyinstaller --onefile --add-data "models/ASR.keras:models" --add-data "Data/Process.py:Data" --add-data "Model/ASRModel.py:Model" --add-data "Grab_Ini.py:." --add-data "config.ini:." API/ASR_API.py
+
+We can also clean up the build files, including the executable, buy supplying the clean argument when executing the build_api.sh script.
+
+    ./build_api.py clean
 
 ### Diagrams
