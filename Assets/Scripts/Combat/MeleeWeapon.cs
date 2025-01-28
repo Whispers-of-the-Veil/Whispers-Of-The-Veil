@@ -9,9 +9,11 @@ namespace Combat
 {
     public class MeleeWeapon : MonoBehaviour
     {
-        public int damage = 10; 
-        public float attackCooldown = 0.5f; 
+        public int damage = 10;
+        public float attackCooldown = 0.5f;
+        public float knockbackStrength = 5f;
         private bool canAttack = true;
+        private bool isAttacking = false;
 
         void Update()
         {
@@ -24,6 +26,7 @@ namespace Combat
         void Attack()
         {
             canAttack = false;
+            isAttacking = true;
 
             GetComponent<MeshCollider>().enabled = true;
 
@@ -34,6 +37,7 @@ namespace Combat
         void ResetAttack()
         {
             GetComponent<MeshCollider>().enabled = false;
+            isAttacking = false;
         }
 
         void EnableCooldown()
@@ -43,14 +47,23 @@ namespace Combat
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Enemy"))
+            if (isAttacking && other.CompareTag("Enemy"))
             {
                 EnemyController enemy = other.GetComponent<EnemyController>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(damage);
+
+                    // Apply knockback
+                    Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
+                    if (enemyRb != null)
+                    {
+                        Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
+                        enemyRb.AddForce(knockbackDirection * knockbackStrength, ForceMode.Impulse);
+                    }
                 }
             }
         }
     }
+
 }
