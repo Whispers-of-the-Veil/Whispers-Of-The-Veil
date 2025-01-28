@@ -2,7 +2,9 @@
 ## Introduction
 This library allows you to train your own Speech Recognition model, and utilize it in Unity.
 
-## Required Libraries
+## Requirements:
+As of writing this, this script requires Python 3.12.8. The newest version of python, version 3.13.1, doesnt support tensorflow.
+
 The following are the required libraries you need to install to utilize the training python scripts, and to integrate the model into untiy.
 
 Python scripts require:
@@ -12,11 +14,13 @@ Python scripts require:
     <li>pandas</li>
     <li>matplotlib</li>
     <li>jiwer</li>
-    <li>os</li>
-    <li>Sys</li>
-    <li>csv</li>
-    <li>re</li>
+    <li>pyinstaller</li>
+    <li>flask</li>
 </ul>
+
+These libraries can be installed using the requirements.txt - found in the Src directory - using the following cmd
+
+    pip install -r requirements.txt
 
 ## Model Architecture
 This model utilizes The Deepspeech 2 actitecture
