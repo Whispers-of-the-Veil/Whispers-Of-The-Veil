@@ -65,12 +65,9 @@ to center on the Training directory):
 
     python -m Model.TrainASRModel TrainingDataset.csv ValidationDataset.csv TestDataset.csv
 
-### Converting Model
-After training has completed, you will be left with a model saved with the .keras extension. In order to use this model
-outside of python we will need to run a few scripts.<br>
-First we will need to run the ConvertToPB.py script using
-
-    python -m scripts.ConvertToPB.py /path/to/model.keras /path/to/a/folder
+### Compiling the API
+Run this cmd to compile the API script into an executable form
+pyinstaller --onefile --add-data "models/ASR.keras:models" --add-data "Data/Process.py:Data" --add-data "Model/ASRModel.py:Model" --add-data "Grab_Ini.py:." --add-data "config.ini:." API/ASR_API.py
 
 ### Diagrams
 

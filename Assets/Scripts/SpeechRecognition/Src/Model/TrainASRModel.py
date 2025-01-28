@@ -12,8 +12,8 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
 
 from Model.ASRModel import ASRModel
-from Config.Grab_Ini import ini
-from Data.Preporcess import Process
+from Grab_Ini import ini
+from Data.Process import Process
 from Model.ValidateModel import ValidateModel
 
 def PlotErrorRate(_history, _path):

@@ -7,7 +7,7 @@ from tensorflow.keras.models import Model, load_model
 import sys
 
 from Model.ASRModel import ASRModel
-from Data.Preporcess import Process
+from Data.Process import Process
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

@@ -1250,8 +1250,8 @@ MonoBehaviour:
   maxHealth: 100
   isDead: 0
   damage: 0
-  attackSpeed: 0
   canAttack: 0
+  attackSpeed: 0
 --- !u!114 &85572966
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25084,8 +25084,8 @@ MonoBehaviour:
   maxHealth: 100
   isDead: 0
   damage: 50
-  attackSpeed: 10
   canAttack: 0
+  attackSpeed: 10
 --- !u!114 &1624573407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28252,6 +28252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3eabc8c515aed7a4e86c9ff2604cf157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cabinScene: Cabin
+  demoScene: Demo Scene
 --- !u!1 &1890406505
 GameObject:
   m_ObjectHideFlags: 0
@@ -32544,6 +32546,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7279896245814517681, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7146464247568833185}
+    - targetCorrespondingSourceObject: {fileID: 7279896245814517681, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7146464247568833193}
   m_SourcePrefab: {fileID: 100100000, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
 --- !u!1 &7146464247568833176 stripped
 GameObject:
@@ -32578,6 +32583,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 298876985}
+--- !u!114 &7146464247568833193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7146464247568833176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa7315830bf64a579a4d063a2094ac7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  URL: http://localhost:8888/ASR
+  SampleRate: 16000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

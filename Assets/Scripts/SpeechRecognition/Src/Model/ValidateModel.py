@@ -4,7 +4,7 @@ from tensorflow import keras
 from jiwer import wer
 
 from Model.ASRModel import ASRModel
-from Data.Preporcess import Process
+from Data.Process import Process
 
 class ValidateModel(keras.callbacks.Callback):
     def __init__(self, _dataset):
