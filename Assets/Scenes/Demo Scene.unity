@@ -15720,6 +15720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   attackCooldown: 0.5
+  knockbackStrength: 5
 --- !u!65 &978453422
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32596,6 +32597,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   URL: http://localhost:8888/ASR
+  keys:
+  - This is a test auto sample recording
   SampleRate: 16000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
