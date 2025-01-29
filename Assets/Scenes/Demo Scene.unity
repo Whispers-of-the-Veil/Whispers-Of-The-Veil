@@ -32685,8 +32685,10 @@ MonoBehaviour:
   URL: http://localhost:8888/ASR
   keys:
   - This is a test audio sample recording
+  - Test
   threshold: 5
   SampleRate: 16000
+  TimeLimit: 5
   speechBubble: {fileID: 3053831428049890844}
   textField: {fileID: 1262873546}
 --- !u!1660057539 &9223372036854775807

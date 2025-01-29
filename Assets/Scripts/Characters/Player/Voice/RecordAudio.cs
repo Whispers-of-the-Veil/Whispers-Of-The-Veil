@@ -198,8 +198,6 @@ namespace Characters.Player.Voice {
             yield return new WaitForSeconds(TimeLimit);
 
             if (isRecording) {
-                isRecording = false;
-
                 StopRecording();
 
                 StartCoroutine(GetPrediction(audio));
