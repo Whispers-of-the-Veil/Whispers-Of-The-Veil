@@ -5,7 +5,7 @@ a = Analysis(
     ['API/ASR_API.py'],
     pathex=[],
     binaries=[],
-    datas=[('models/ASR.keras', 'models'), ('Data/Process.py', 'Data'), ('Model/ASRModel.py', 'Model'), ('Grab_Ini.py', '.'), ('config.ini', '.')],
+    datas=[('models/ASR.keras', 'models'), ('Data/Process.py', 'Data'), ('Model/ASRModel.py', 'Model'), ('Grab_Ini.py', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
