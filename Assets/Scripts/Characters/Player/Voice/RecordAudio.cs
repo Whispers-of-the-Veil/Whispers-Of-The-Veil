@@ -24,6 +24,7 @@ namespace Characters.Player.Voice {
 
         [Header("Recording Options")]
         [SerializeField] int SampleRate = 16000;
+        [SerializeField] int TimeLimit = 5;
         private AudioClip micClip;
         private float[] audio;
         private bool isRecording;
@@ -32,11 +33,13 @@ namespace Characters.Player.Voice {
         [Header("Speech Bubble")]
         [SerializeField] GameObject speechBubble;
         [SerializeField] TextMeshProUGUI textField;
+        private bool reset;
 
         void Start () {
             speechBubble.SetActive(false);
 
             isRecording = false;
+            reset = true;
 
             if (Microphone.devices.Length > 0) {
                 microphoneDevice = Microphone.devices[0];
@@ -46,13 +49,15 @@ namespace Characters.Player.Voice {
         }
 
         void Update () {
-            if (Input.GetKeyDown(KeyCode.T)) {
+            if (Input.GetKeyDown(KeyCode.T) && !isRecording && reset) {
                 speechBubble.SetActive(true);
+                reset = false;
 
                 StartRecording();
+                StartCoroutine(RecordingLimit());
             }
 
-            if (Input.GetKeyUp(KeyCode.T)) {
+            if (Input.GetKeyUp(KeyCode.T) && isRecording) {
                 StopRecording();
 
                 StartCoroutine(GetPrediction(audio));
@@ -60,26 +65,22 @@ namespace Characters.Player.Voice {
         }
 
         private void StartRecording() {
-            if (!isRecording) {
-                Debug.Log("Started Recording...");
+            Debug.Log("Started Recording...");
 
-                micClip = Microphone.Start(microphoneDevice, false, 10, SampleRate);
-                isRecording = true;
-            }
+            micClip = Microphone.Start(microphoneDevice, false, 10, SampleRate);
+            isRecording = true;
         }
 
         private void StopRecording() {
-            if(isRecording) {
-                Debug.Log("Stoped Recording");
+            Debug.Log("Stoped Recording");
 
-                int samples = Microphone.GetPosition(microphoneDevice);
+            int samples = Microphone.GetPosition(microphoneDevice);
 
-                Microphone.End(microphoneDevice);
-                isRecording = false;
+            Microphone.End(microphoneDevice);
+            isRecording = false;
 
-                audio = new float[samples];
-                micClip.GetData(audio, 0);
-            }
+            audio = new float[samples];
+            micClip.GetData(audio, 0);
         }
         
         /// <summary>
@@ -182,10 +183,26 @@ namespace Characters.Player.Voice {
                 } else {
                     Debug.Log("Index fell outside the bounds of the keys array");
                 }
-                
-                yield return StartCoroutine(ResetSpeechBubble(5));
             } else {
                 Debug.LogError("Failed to send audio: " + www.error);
+            }
+
+            yield return StartCoroutine(ResetSpeechBubble(5));
+        }
+
+        /// <summary>
+        /// This function will stop the reocrding if it goas about the time limit
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator RecordingLimit() {
+            yield return new WaitForSeconds(TimeLimit);
+
+            if (isRecording) {
+                isRecording = false;
+
+                StopRecording();
+
+                StartCoroutine(GetPrediction(audio));
             }
         }
         
@@ -199,6 +216,8 @@ namespace Characters.Player.Voice {
             
             textField.text = "...";
             speechBubble.SetActive(false);
+
+            reset = true;
         }
     }
 }
