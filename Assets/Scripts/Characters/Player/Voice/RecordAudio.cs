@@ -3,11 +3,20 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Characters.Player.Voice {
+    [System.Serializable]
+    public class ParseJson {
+        public string prediction;
+    }
+
     public class RecordAudio : MonoBehaviour {
         [Header("API Settings")]
         [SerializeField] string URL;
+
+        [Header("Expected Keys")]
+        [SerializeField] string[] keys;
 
         [Header("Recording Options")]
         [SerializeField] int SampleRate = 16000;
@@ -73,7 +82,12 @@ namespace Characters.Player.Voice {
             yield return www.SendWebRequest();
 
             if (www.result == UnityWebRequest.Result.Success) {
-                Debug.Log("Transcript: " + www.downloadHandler.text);
+                var json = www.downloadHandler.text;
+                ParseJson response = JsonUtility.FromJson<ParseJson>(json);
+
+                string prediction = response.prediction;
+
+                Debug.Log("You said: " + prediction);
             } else {
                 Debug.LogError("Failed to send audio: " + www.error);
             }
