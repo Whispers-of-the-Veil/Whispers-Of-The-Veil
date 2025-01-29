@@ -24,14 +24,15 @@ def api_service():
 def main():
     try:
         print("Loading Config...")
-
+        apiConfig = ini().grabInfo("config.ini", "API")
+        port = int(apiConfig['port'])
 
         print("\nLoading model...")
         global speechRec
         speechRec = SpeechRec()
 
         print("\nStarting API...")
-        app.run(host = '0.0.0.0', port = 8888)
+        app.run(host = '0.0.0.0', port = port)
     except Exception as e:
         print(f"Error starting the server: {str(e)}")
 
