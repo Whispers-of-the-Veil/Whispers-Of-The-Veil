@@ -61,13 +61,7 @@ namespace Characters.Player {
             CheckForInventoryAdd();
             CheckForChestInteraction();
             CheckForBookInteraction();
-            if (Input.GetKeyDown(KeyCode.T))
-            {
-                if (Interactable != null)
-                {
-                    Interactable.Interact(this);
-                }
-            }
+            CheckForDialogue();
         }
     
         private void OnMove() {
@@ -204,14 +198,15 @@ namespace Characters.Player {
                 }
             }
         }
-        
-        
-
-
-
-
-        
-        
-    
+        private void CheckForDialogue()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                if (Interactable != null)
+                {
+                    Interactable.Interact(this);
+                }
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-//Owen Ingram
+// Owen Ingram
 
 using System.Collections;
 using System.Collections.Generic;
@@ -12,10 +12,17 @@ namespace Combat
         public int damage = 10;
         public float attackCooldown = 0.5f;
         public float knockbackStrength = 5f;
+        public int durability = 5;
+
         private bool canAttack = true;
         private bool isAttacking = false;
 
         void Update()
+        {
+            CheckForAttack();
+        }
+        
+        private void CheckForAttack()
         {
             if (Input.GetMouseButtonDown(0) && canAttack)
             {
@@ -54,16 +61,20 @@ namespace Combat
                 {
                     enemy.TakeDamage(damage);
 
-                    // Apply knockback
                     Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
                     if (enemyRb != null)
                     {
                         Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
                         enemyRb.AddForce(knockbackDirection * knockbackStrength, ForceMode.Impulse);
                     }
+
+                    durability--;
+                    if (durability <= 0)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
             }
         }
     }
-
 }
