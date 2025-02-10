@@ -1585,7 +1585,7 @@ GameObject:
   m_Component:
   - component: {fileID: 89406588}
   - component: {fileID: 89406589}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Key_Sprite
   m_TagString: Pickup
   m_Icon: {fileID: 0}
@@ -6969,7 +6969,7 @@ GameObject:
   - component: {fileID: 454004929}
   - component: {fileID: 454004928}
   - component: {fileID: 454004927}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Key
   m_TagString: Pickup
   m_Icon: {fileID: 0}
@@ -7081,7 +7081,7 @@ Transform:
   m_GameObject: {fileID: 454004926}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.006, y: 0.096, z: 0.656}
+  m_LocalPosition: {x: -4.006, y: 0.096, z: 0.2828}
   m_LocalScale: {x: 0.57354623, y: 0.5665092, z: 0.56296253}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9267,7 +9267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 593684576}
   - component: {fileID: 593684577}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Book_Sprite
   m_TagString: Pickup
   m_Icon: {fileID: 0}
@@ -15690,6 +15690,7 @@ MonoBehaviour:
   damage: 10
   attackCooldown: 0.5
   knockbackStrength: 5
+  durability: 5
 --- !u!65 &978453422
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -31328,7 +31329,7 @@ GameObject:
   - component: {fileID: 2055179025}
   - component: {fileID: 2055179026}
   - component: {fileID: 2055179027}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Book
   m_TagString: Pickup
   m_Icon: {fileID: 0}
@@ -31359,7 +31360,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2055179019}
   serializedVersion: 4
-  m_Mass: 0.002
+  m_Mass: 0.1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -32588,6 +32589,10 @@ PrefabInstance:
       propertyPath: dialogueUI
       value: 
       objectReference: {fileID: 714581851}
+    - target: {fileID: 3725467372447224649, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
+      propertyPath: pickupRange
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 6446517220111817566, guid: 3d098221328758941bc53aebbf7c21af, type: 3}
       propertyPath: m_Layer
       value: 3

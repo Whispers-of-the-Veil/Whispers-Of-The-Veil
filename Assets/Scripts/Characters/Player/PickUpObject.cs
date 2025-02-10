@@ -26,6 +26,7 @@ public class PickUpObject : MonoBehaviour
         Rigidbody objRb = gameObject.GetComponent<Rigidbody>();
         if (objRb != null) {
             objRb.isKinematic = false;  
+            
         }
         gameObject.transform.parent = null;
         
