@@ -9,6 +9,7 @@ TagManager:
   - Checkpoint
   - Chest
   - Door_Start
+  - Tree
   layers:
   - Default
   - TransparentFX

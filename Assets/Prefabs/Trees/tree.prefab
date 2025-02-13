@@ -65,7 +65,9 @@ PrefabInstance:
       value: tree
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -5142456346188676444, guid: d8e68bf3e3716b34c85d9c9aeb89d197, type: 3}
+    - {fileID: -8700617353114198275, guid: d8e68bf3e3716b34c85d9c9aeb89d197, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d8e68bf3e3716b34c85d9c9aeb89d197, type: 3}
