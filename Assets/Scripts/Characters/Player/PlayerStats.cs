@@ -23,7 +23,7 @@ namespace Characters.Player
             {
                 if (i < health)
                 {
-                    hearts[i].color = Color.red;
+                    //hearts[i].color = Color.red;
                 }
                 else
                 {
