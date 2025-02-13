@@ -3,36 +3,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using HealthHUD;
+using UnityEngine.UI;
 
 namespace Characters.Player
 {
     public class PlayerStats : CharacterStats
     {
-        private HUDHealth hud;
-        
+        [SerializeField] private Image[] hearts;
+
         private void Start()
         {
-            GetReferences();
             InitVariables();
+            UpdateHealth();
         }
 
-        private void GetReferences()
+        public void UpdateHealth()
         {
-            hud = GetComponent<HUDHealth>();
-        }
+            for (int i = 0; i < hearts.Length; i++)
+            {
+                if (i < health)
+                {
+                    hearts[i].color = Color.red;
+                }
+                else
+                {
+                    hearts[i].color = Color.black;
 
-        public override void CheckHealth()
-        {
-            base.CheckHealth();
-            hud.UpdateHealth(health, maxHealth);
+                }
+            }
         }
+        
 
         public override void Die()
         {
             isDead = true;
             CheckpointManager.Instance.RespawnPlayer(gameObject);
-            health = 100;
+            health = 3;
             Debug.Log("Player died, respawning");
         }
     }

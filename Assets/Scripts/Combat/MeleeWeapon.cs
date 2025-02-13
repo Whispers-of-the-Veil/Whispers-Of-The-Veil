@@ -12,7 +12,7 @@ namespace Combat
         public int damage = 10;
         public float attackCooldown = 0.5f;
         public float knockbackStrength = 5f;
-        public int durability = 5;
+        public int durability = 10;
 
         private bool canAttack = true;
         private bool isAttacking = false;

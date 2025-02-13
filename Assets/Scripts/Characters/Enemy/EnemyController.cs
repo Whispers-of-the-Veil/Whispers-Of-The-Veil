@@ -167,7 +167,7 @@ namespace Characters.Enemy {
 
         void Die()
         {
-            Debug.Log("Enemy defeated!");
+            Debug.Log("Enemy defeated");
             Destroy(gameObject);
         }
         
