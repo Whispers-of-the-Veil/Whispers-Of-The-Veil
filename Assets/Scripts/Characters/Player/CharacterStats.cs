@@ -52,7 +52,7 @@ namespace Characters.Player
         
         public virtual void InitVariables()
         {
-            maxHealth = 100;
+            maxHealth = 3;
             SetHealthTo(maxHealth);
             isDead = false;
         }

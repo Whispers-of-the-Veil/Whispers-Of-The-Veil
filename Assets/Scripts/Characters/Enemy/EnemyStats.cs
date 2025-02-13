@@ -11,6 +11,8 @@ namespace Characters.Enemy
     {
         [SerializeField] private int damage;
         [SerializeField] private bool canAttack;
+        
+        [SerializeField] private PlayerStats _playerStats;
         public float attackSpeed;
         
         private void Start()
@@ -21,6 +23,7 @@ namespace Characters.Enemy
         public void DealDamage(CharacterStats statsToDamage)
         {
             statsToDamage.TakeDamage(damage);
+            _playerStats.UpdateHealth();
         }
         
         public override void Die()
