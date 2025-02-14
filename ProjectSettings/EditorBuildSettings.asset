@@ -12,16 +12,16 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: f4902928d793c5b45a123300d8bf113d
   - enabled: 1
-    path: Assets/Scenes/Demo Scene.unity
+    path: Assets/Scenes/Test Scenes/Demo Scene.unity
     guid: d6bc510a272d19b47a29b9eb4d205f29
   - enabled: 1
-    path: Assets/Scenes/SS_FARZANA.unity
+    path: Assets/Scenes/Test Scenes/SS_FARZANA.unity
     guid: a9d53e207320ee241904fb273a359ddd
   - enabled: 1
     path: Assets/Scenes/Cabin.unity
     guid: 3d7bdec5ccd399349845e65c3ce9b440
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Test Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/Settings.unity
