@@ -6,8 +6,11 @@ using Characters.Player;
 
 namespace Environment.Hazards {
     public class Fog : MonoBehaviour {
+        public bool isDamging = true;
+        
         [Header("Damage")]
-        [SerializeField] int damage = 10;
+        [SerializeField] int damage = 10; // The amount of damage the player takes
+        [SerializeField] int interval = 2; // Damage interval in seconds
         private Coroutine damageCoroutine;
 
         [Header("Player")] 
@@ -24,14 +27,14 @@ namespace Environment.Hazards {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if (other.CompareTag("Player") && !isInFog) {
+            if (isDamging && other.CompareTag(player.gameObject.tag) && !isInFog) {
                 isInFog = true;
                 damageCoroutine = StartCoroutine(EnvDamage());
             }
         }
 
         private void OnTriggerExit(Collider other) {
-            if (other.CompareTag("Player")) {
+            if (isDamging && other.CompareTag(player.gameObject.tag)) {
                 isInFog = false;
 
                 if (damageCoroutine != null) {
@@ -46,7 +49,7 @@ namespace Environment.Hazards {
             while(isInFog) {
                 this.stats.TakeDamage(damage);
 
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(interval);
             }
         }
     }

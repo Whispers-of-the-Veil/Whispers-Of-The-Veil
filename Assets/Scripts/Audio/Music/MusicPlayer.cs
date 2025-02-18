@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Music {
+namespace Audio.Music {
     [RequireComponent(typeof (AudioSource))]
 
     public class MusicPlayer : MonoBehaviour {

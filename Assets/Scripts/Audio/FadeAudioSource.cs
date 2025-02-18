@@ -3,7 +3,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Music {
+namespace Audio {
     public static class FadeAudioSource {
         public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume){
             float currentTime = 0;
