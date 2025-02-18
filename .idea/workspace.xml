@@ -5,35 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd7a5c07-2de3-4614-8ce8-351987e5a0a8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/CharToIndiceMap.txt.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Model.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Model.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/README.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/AUTHORS_Deepspeech2Model.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/AUTHORS_Deepspeech2Model.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/Preporcess.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/Preporcess.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/Test.py.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/__pycache__.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/__pycache__.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Demo.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Grab_Ini.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Grab_Ini.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/LICENSE_Deepspeech2Model.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/LICENSE_Deepspeech2Model.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/ASRModel.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/ASRModel.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/TrainASRModel.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/TrainASRModel.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/ValidateModel.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/ValidateModel.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/__pycache__.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Model/__pycache__.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/config.ini.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/config.ini.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/CreateCSVFile.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/CreateCSVFile.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/UpdateCSVPaths.py.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/UpdateCSVPaths.py.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/convert_flac.sh.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/scripts/convert_flac.sh.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/TrainingSrc.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform/ComplexValues.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform/ComplexValues.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform/SignalTransformer.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Transform/SignalTransformer.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/src.meta" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Environment.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Environment/Hazards.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Environment/Hazards/Fog.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Environment/Hazards/Fog.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +22,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Training/Data/Preporcess.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Enemy/EnemyController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/CharacterStats.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerStats.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Environment/Hazards/Fog.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -54,18 +37,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;SpeechRecImp&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "GameScenses",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -76,6 +60,7 @@
       <updated>1736892565883</updated>
       <workItem from="1736892567142" duration="912000" />
       <workItem from="1736895600611" duration="1868000" />
+      <workItem from="1739813321169" duration="4870000" />
     </task>
     <servers />
   </component>
@@ -87,7 +72,6 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LOCAL_CHANGES_DETAILS_PREVIEW_SHOWN" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
 </project>
