@@ -31,6 +31,8 @@ namespace Characters.Player {
         [SerializeField] private DialogueUI dialogueUI;
 
         public DialogueUI DialogueUI => dialogueUI;
+        private bool isFrozen = false;
+
         
         public IInteractable Interactable { get; set; }
         
@@ -53,8 +55,9 @@ namespace Characters.Player {
         }
     
         // Update is called once per frame
-        private void Update() {
-            if (DialogueUI.IsOpen) return;
+        private void Update()
+        {
+            checkFrozen();
             OnMove();
             CheckForPickup();
             CheckForSprint();
@@ -77,6 +80,11 @@ namespace Characters.Player {
     
         // Updated at a fixed framerate; used for physics calculations
         private void FixedUpdate() {
+            //if the character is in the frozen state then they cannot move(for dialogue)
+            if (isFrozen) {
+                _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
+                return;
+            }
             _movement = new Vector3(this._movementX, 0, this._movementZ);
             _direction = transform.right * _movementX + transform.forward * _movementZ;
             _direction.Normalize();
@@ -207,6 +215,15 @@ namespace Characters.Player {
                     Interactable.Interact(this);
                 }
             }
+        }
+
+        private void checkFrozen()
+        {
+            if (DialogueUI.IsOpen) {
+                isFrozen = true;  // Stop movement when dialogue starts
+                return;
+            } 
+            isFrozen = false;
         }
     }
 }
