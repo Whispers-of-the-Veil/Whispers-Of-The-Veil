@@ -486,6 +486,10 @@ PrefabInstance:
       value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 2534058753691466491, guid: 40add4304b037418eac1363bd423feba, type: 3}
+      propertyPath: weather
+      value: 
+      objectReference: {fileID: 2121098859}
+    - target: {fileID: 2534058753691466491, guid: 40add4304b037418eac1363bd423feba, type: 3}
       propertyPath: inventory
       value: 
       objectReference: {fileID: 158421653}
@@ -493,6 +497,10 @@ PrefabInstance:
       propertyPath: dialogueUI
       value: 
       objectReference: {fileID: 837746911}
+    - target: {fileID: 2534058753691466491, guid: 40add4304b037418eac1363bd423feba, type: 3}
+      propertyPath: rainingSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7285689331095572056, guid: 40add4304b037418eac1363bd423feba, type: 3}
       propertyPath: healthBar
       value: 
@@ -18894,6 +18902,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7182157396734197731, guid: 0bead03f3fb024a539813d4c6d2230d3, type: 3}
   m_PrefabInstance: {fileID: 2117050687}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2121098859 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2946244539856159979, guid: 0195dd29b75f0f8caae3c2e470148d24, type: 3}
+  m_PrefabInstance: {fileID: 6578379708452683491}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f108fddc300454706ae7f82c814f3010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2124743392
 PrefabInstance:
   m_ObjectHideFlags: 0

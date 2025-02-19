@@ -1,5 +1,6 @@
 using Dialogue;
 using UnityEngine;
+using Environment;
 
 namespace Characters.Player {
     public class PlayerController : MonoBehaviour
@@ -10,7 +11,9 @@ namespace Characters.Player {
         private GameObject heldBook;
         [Header("Movement")]
         [SerializeField] public float speed;
+        [SerializeField] public float rainingSpeed;
         [SerializeField] private float sprintSpeedMultiplier = 1.5f;  // Sprint speed multiplier
+        [SerializeField] RainController weather;
         private Vector2 _movementVector;
         private float _movementX, _movementZ;
         private Vector3 _movement, _direction, _velocity;
@@ -81,9 +84,16 @@ namespace Characters.Player {
             _direction = transform.right * _movementX + transform.forward * _movementZ;
             _direction.Normalize();
 
-            // Apply sprint multiplier if sprinting
-            float currentSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
-            _velocity = _direction * currentSpeed;
+            // if raining, decrease player's movement
+            if (weather.isRaining) {
+                // Apply sprint multiplier if sprinting
+                float currentSpeed = _isSprinting ? rainingSpeed * sprintSpeedMultiplier : rainingSpeed;
+                _velocity = _direction * currentSpeed;
+            } else {
+                float currentSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
+                _velocity = _direction * currentSpeed;
+            }
+
 
             // Set velocity directly instead of using AddForce to prevent unintended movement
             _rb.velocity = new Vector3(_velocity.x, _rb.velocity.y, _velocity.z);

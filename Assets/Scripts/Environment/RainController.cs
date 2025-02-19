@@ -19,7 +19,7 @@ namespace Environment {
 
         [Header("Frequency")] 
         [SerializeField] private bool autoControl = true;
-        [SerializeField] bool isRaining;
+        [SerializeField] public bool isRaining;
         [Range(0, 100)] [SerializeField] float rainFrequency;
         [Range(0, 100)] [SerializeField] float thunderFrequency;
         [SerializeField] float rainDuration = 5;                    // In minutes
