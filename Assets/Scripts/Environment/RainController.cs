@@ -2,28 +2,34 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Audio;
+using System.Runtime.Serialization;
 
 namespace Environment {
     public class RainController : MonoBehaviour {
         [Header("Audio")]
-        [SerializeField] AudioClip rainSound;
-        [Range(0, 1)] [SerializeField] private float rainVolume;
+        [SerializeField] AudioClip[] rainSound;
+        [Range(0, 100)] [SerializeField] private float rainVolume;
         [SerializeField] AudioClip thunderSound;
-        [Range(0, 1)] [SerializeField] private float thunderVolume;
+        [Range(0, 100)] [SerializeField] private float thunderVolume;
         [SerializeField] float fadeDuration;
         private AudioSource rainAudio;
         private AudioSource thunderAudio; 
         private bool canPlay = true;
+        private bool isPlayingThunder;
 
         [Header("Frequency")] 
         [SerializeField] private bool autoControl = true;
         [SerializeField] bool isRaining;
         [Range(0, 100)] [SerializeField] float rainFrequency;
         [Range(0, 100)] [SerializeField] float thunderFrequency;
-        [SerializeField] float duration = 5;
+        [SerializeField] float rainDuration = 5;                    // In minutes
+        [SerializeField] float thunderInterval = 30;                // In seconds
         private bool running;
         
         [Header("Intensity")]
+        [SerializeField] float rate = 500;                           // The number of rain particles
+                                                                     // Anything above 500 will cause heavy rain and
+                                                                     // thunder; below and its just light rain
         private ParticleSystem rain;
         private ParticleSystem fog;
 
@@ -51,7 +57,10 @@ namespace Environment {
                 SetClips();
 
                 // Set the volume of the audio source
-                thunderAudio.volume = thunderVolume;
+                thunderAudio.volume = thunderVolume / 100;
+
+                var emission = rain.emission;
+                emission.rateOverTime = rate;
             } catch (UnassignedReferenceException) {
                 Debug.LogError("RainController: One or both of the audio clips are missing");
                 canPlay = false;
@@ -65,16 +74,13 @@ namespace Environment {
             }
             
             if (!rainAudio.isPlaying && canPlay && isRaining) {
-                StartCoroutine(FadeAudioSource.StartFade(rainAudio, fadeDuration, rainVolume));
+                StartCoroutine(FadeAudioSource.StartFade(rainAudio, fadeDuration, rainVolume / 100));
                 rainAudio.Play();
             }
             
-            if (!thunderAudio.isPlaying && canPlay && isRaining) {
-                if (UnityEngine.Random.Range(0, 100) < thunderFrequency) {
-                    thunderAudio.Play();
-                }
+            if (!isPlayingThunder) {
+                StartCoroutine(StartThunder());
             }
-
         }
 
         private void FixedUpdate() {
@@ -97,13 +103,31 @@ namespace Environment {
         }
 
         void SetClips() {
-            if (rainSound == null || thunderSound == null) {
+            if (rainSound.Length == 0 || thunderSound == null) {
                 throw new UnassignedReferenceException();
             }
             
-            // Set the clip the the Audio Source
-            rainAudio.clip = rainSound;
-            thunderAudio.clip = thunderSound;
+            // If the intensity is set high, play the heavy sound effect with thunder
+            if (rate < 300) {
+                rainAudio.clip = rainSound[0];
+            } else {
+                rainAudio.clip = rainSound[1];
+                thunderAudio.clip = thunderSound;
+            }
+        }
+
+        IEnumerator StartThunder() {
+            isPlayingThunder = true;
+
+            if (!thunderAudio.isPlaying && canPlay && isRaining) {
+                if (UnityEngine.Random.Range(0, 100) < thunderFrequency) {
+                    thunderAudio.Play();
+                }
+            }
+
+            yield return new WaitForSeconds(thunderInterval);
+
+            isPlayingThunder = false;
         }
 
         IEnumerator StartRain() {
@@ -117,7 +141,7 @@ namespace Environment {
                 Debug.Log("RainController: Stopped rain");
             }
             
-            yield return new WaitForSeconds(duration * 60);
+            yield return new WaitForSeconds(rainDuration * 60);
             
             running = false;
         }
