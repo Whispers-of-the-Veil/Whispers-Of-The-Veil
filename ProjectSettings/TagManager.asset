@@ -10,6 +10,7 @@ TagManager:
   - Chest
   - Door_Start
   - Tree
+  - Fog
   layers:
   - Default
   - TransparentFX
