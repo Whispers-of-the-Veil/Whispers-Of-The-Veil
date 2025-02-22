@@ -83,9 +83,10 @@ namespace Characters.Player {
         // Updated at a fixed framerate; used for physics calculations
         private void FixedUpdate() {
             if (isFrozen) {
-                _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
+                body.velocity = new Vector2(0, body.velocity.y);
                 return;
             }
+
             float tmpSpeed;
             if (horizontal != 0 && vertical != 0) {
                 horizontal *= moveLimiter;
