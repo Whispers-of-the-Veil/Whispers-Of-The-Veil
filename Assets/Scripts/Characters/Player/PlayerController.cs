@@ -1,5 +1,6 @@
 using Dialogue;
 using UnityEngine;
+using Environment;
 
 namespace Characters.Player {
     public class PlayerController : MonoBehaviour
@@ -9,15 +10,17 @@ namespace Characters.Player {
         private bool isHoldingBook = false;
         private GameObject heldBook;
         [Header("Movement")]
-        [SerializeField] public float speed;
+        [SerializeField] public float speed = 3f;
+        [SerializeField] public float rainingSpeed = 2.5f;
+        [SerializeField] float moveLimiter = 0.7f;
         [SerializeField] private float sprintSpeedMultiplier = 1.5f;  // Sprint speed multiplier
-        private Vector2 _movementVector;
-        private float _movementX, _movementZ;
-        private Vector3 _movement, _direction, _velocity;
+        [SerializeField] RainController weather;
+        private float horizontal;
+        private float vertical;
         private bool _isSprinting;
 
         [Header("Components")]
-        private Rigidbody _rb;
+        private Rigidbody2D body;
         
         [Header("Inventory")]
         public Inventory inventory;
@@ -38,7 +41,7 @@ namespace Characters.Player {
         
         // Start is called before the first frame update
         private void Start() {
-            this._rb = GetComponent<Rigidbody>();
+            body = GetComponent<Rigidbody2D>();
             inventory.ItemUsed += Inventory_ItemUsed; 
             //Cursor.lockState = CursorLockMode.Locked;
         }
@@ -68,9 +71,8 @@ namespace Characters.Player {
         }
     
         private void OnMove() {
-            this._movementVector = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            this._movementX = this._movementVector.x;
-            this._movementZ = this._movementVector.y;
+            horizontal = Input.GetAxisRaw("Horizontal");
+            vertical = Input.GetAxisRaw("Vertical");
         }
 
         private void CheckForSprint() {
@@ -80,21 +82,23 @@ namespace Characters.Player {
     
         // Updated at a fixed framerate; used for physics calculations
         private void FixedUpdate() {
-            //if the character is in the frozen state then they cannot move(for dialogue)
             if (isFrozen) {
                 _rb.velocity = new Vector3(0, _rb.velocity.y, 0);
                 return;
             }
-            _movement = new Vector3(this._movementX, 0, this._movementZ);
-            _direction = transform.right * _movementX + transform.forward * _movementZ;
-            _direction.Normalize();
+            float tmpSpeed;
+            if (horizontal != 0 && vertical != 0) {
+                horizontal *= moveLimiter;
+                vertical *= moveLimiter;
+            } 
 
-            // Apply sprint multiplier if sprinting
-            float currentSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
-            _velocity = _direction * currentSpeed;
+            if (weather.isRaining) {
+                tmpSpeed = _isSprinting ? rainingSpeed * sprintSpeedMultiplier : rainingSpeed;
+            } else {
+                tmpSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
+            }
 
-            // Set velocity directly instead of using AddForce to prevent unintended movement
-            _rb.velocity = new Vector3(_velocity.x, _rb.velocity.y, _velocity.z);
+            body.velocity = new Vector2(horizontal * tmpSpeed, vertical * tmpSpeed);
         }
 
         private void CheckForPickup() {

@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Audio;
 using System.Runtime.Serialization;
+using Environment.Hazards;
 
 namespace Environment {
     public class RainController : MonoBehaviour {
@@ -19,7 +20,7 @@ namespace Environment {
 
         [Header("Frequency")] 
         [SerializeField] private bool autoControl = true;
-        [SerializeField] bool isRaining;
+        [SerializeField] public bool isRaining;
         [Range(0, 100)] [SerializeField] float rainFrequency;
         [Range(0, 100)] [SerializeField] float thunderFrequency;
         [SerializeField] float rainDuration = 5;                    // In minutes
@@ -27,11 +28,11 @@ namespace Environment {
         private bool running;
         
         [Header("Intensity")]
-        [SerializeField] float rate = 500;                           // The number of rain particles
+        [SerializeField] float rainDensity = 500;                           // The number of rain particles
                                                                      // Anything above 500 will cause heavy rain and
                                                                      // thunder; below and its just light rain
         private ParticleSystem rain;
-        private ParticleSystem fog;
+        private FogController fog;
 
         void Awake() {
             try {
@@ -41,7 +42,9 @@ namespace Environment {
                 
                 // Find the Particle system components
                 rain = GameObject.Find("Rain").GetComponent<ParticleSystem>();
-                fog = GameObject.Find("Fog").GetComponent<ParticleSystem>();
+                
+                fog = GetComponent<FogController>();
+                
             } catch (NullReferenceException) {
                 string error = "RainController: This GameObject requires two AudioSource components and two particle " +
                                "systems attached as children; One or more is currently missing. " +
@@ -58,9 +61,6 @@ namespace Environment {
 
                 // Set the volume of the audio source
                 thunderAudio.volume = thunderVolume / 100;
-
-                var emission = rain.emission;
-                emission.rateOverTime = rate;
             } catch (UnassignedReferenceException) {
                 Debug.LogError("RainController: One or both of the audio clips are missing");
                 canPlay = false;
@@ -68,8 +68,14 @@ namespace Environment {
         }
         
         void Update() {
+            HandleParticles();
+        
+            // Set the number of emission for the rain particle
+            var emission = rain.emission;
+            emission.rateOverTime = rainDensity;
+            
             // If we set the automatic control, and it is currently running
-            if (autoControl && !running) {
+            if (autoControl && !running && !fog.isFoggy) {
                 StartCoroutine(StartRain());
             }
             
@@ -83,22 +89,20 @@ namespace Environment {
             }
         }
 
-        private void FixedUpdate() {
+        private void HandleParticles() {
             // Stop the particle systems if the weather effect isnt raining
             if (!isRaining) {
                 rain.Stop(false, ParticleSystemStopBehavior.StopEmitting);
-                fog.Stop(false, ParticleSystemStopBehavior.StopEmitting);
-
+    
                 if (rainAudio.isPlaying) {
                     rainAudio.Stop();
                 }
-
+    
                 if (thunderAudio.isPlaying) {
                     thunderAudio.Stop();
                 }
             } else {
                 rain.Play();
-                fog.Play();
             }
         }
 
@@ -108,7 +112,7 @@ namespace Environment {
             }
             
             // If the intensity is set high, play the heavy sound effect with thunder
-            if (rate < 300) {
+            if (rainDensity < 300) {
                 rainAudio.clip = rainSound[0];
             } else {
                 rainAudio.clip = rainSound[1];
@@ -135,9 +139,11 @@ namespace Environment {
             
             if (UnityEngine.Random.Range(0, 100) < rainFrequency) {
                 isRaining = true;
+                fog.isFoggy = true;
                 Debug.Log("RainController: Starting rain");
             } else {
                 isRaining = false;
+                fog.isFoggy = false;
                 Debug.Log("RainController: Stopped rain");
             }
             
