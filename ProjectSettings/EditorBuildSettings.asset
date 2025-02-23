@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Test Scenes/SS_FARZANA.unity
     guid: a9d53e207320ee241904fb273a359ddd
   - enabled: 1
-    path: Assets/Scenes/Cabin.unity
+    path: Assets/Scenes/Test Scenes/Cabin.unity
     guid: 3d7bdec5ccd399349845e65c3ce9b440
   - enabled: 1
     path: Assets/Scenes/Test Scenes/SampleScene.unity
