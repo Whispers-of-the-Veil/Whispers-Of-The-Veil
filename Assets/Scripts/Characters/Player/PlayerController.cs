@@ -105,10 +105,14 @@ namespace Characters.Player {
         private void CheckForPickup() {
             if (_heldObject == null && Input.GetKeyDown(KeyCode.E)) {
                 
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
-                
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange);
+
                 foreach (var hitCollider in hitColliders) 
                 {
+                    
+                    if(hitCollider.gameObject == this.gameObject)
+                        continue;
+
                     if (hitCollider.CompareTag("Pickup") && hitCollider.isTrigger) {
                         Key key = hitCollider.GetComponent<Key>();
                         hasKey = true;
@@ -155,6 +159,7 @@ namespace Characters.Player {
                 IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
                 if (item != null)
                 {
+                    Debug.Log("Inventory item found: " + _heldObject.name);
                     inventory.AddItem(item);
                     
                     Book book = _heldObject.GetComponent<Book>();
@@ -162,6 +167,10 @@ namespace Characters.Player {
                         isHoldingBook = false; 
                     }
                     
+                }
+                else
+                {
+                    Debug.LogWarning("Held object " + _heldObject.name + " does not implement IInventoryItem!");
                 }
             }
         }
@@ -171,7 +180,7 @@ namespace Characters.Player {
             if (Input.GetKeyDown(KeyCode.F))
             {
                 // Check for objects within interaction range
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, (float).25);
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, (float).25);
                 foreach (var hitCollider in hitColliders)
                 {
                     if (hitCollider.CompareTag("Chest"))
@@ -230,5 +239,11 @@ namespace Characters.Player {
             } 
             isFrozen = false;
         }
+        
+        public void SetHeldObject(GameObject obj)
+        {
+            _heldObject = obj;
+        }
+
     }
 }
