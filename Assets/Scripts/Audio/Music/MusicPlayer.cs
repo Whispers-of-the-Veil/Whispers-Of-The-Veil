@@ -24,7 +24,7 @@ namespace Audio.Music {
         }
 
         private void Update() {
-            if (!audioSource.isPlaying){
+            if (!audioSource.isPlaying && (clips.Length != 0 || clips == null)) {
                 audioSource.clip = GetRandomClip();
                 StartCoroutine(FadeAudioSource.StartFade(audioSource, duration, targetVolume));
                 audioSource.Play();
