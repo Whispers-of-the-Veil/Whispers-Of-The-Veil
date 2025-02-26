@@ -16,7 +16,7 @@ namespace Dialogue
             this.dialogueObject = dialogueObject;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (other.CompareTag("Player") && other.TryGetComponent(out PlayerController player))
             {
@@ -24,7 +24,7 @@ namespace Dialogue
             }
         }
 
-        private void OnTriggerExit(Collider other)
+        private void OnTriggerExit2D(Collider2D other)
         {
             if (other.CompareTag("Player") && other.TryGetComponent(out PlayerController player))
             {
