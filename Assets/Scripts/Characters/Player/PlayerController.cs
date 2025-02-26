@@ -29,10 +29,12 @@ namespace Characters.Player {
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
         [SerializeField] private float pickupRange = .25f;  
-     
+        [SerializeField] private float dropDistance = 0.25f;
         
         [Header("Dialogue")]
         [SerializeField] private DialogueUI dialogueUI;
+
+
 
         public DialogueUI DialogueUI => dialogueUI;
         private bool isFrozen = false;
@@ -143,20 +145,22 @@ namespace Characters.Player {
         }
 
         private void DropObject() {
-            PickUpObject target = _heldObject.GetComponent<PickUpObject>();
-            target.Drop();
-            _heldObject = null;
-            Book book = target.GetComponent<Book>();
-            if (book != null)
-            {
-                isHoldingBook = false;
+            if (_heldObject != null) {
+                Vector3 dropPosition = holdPoint.position + new Vector3(0, -dropDistance, 0);
+                
+                PickUpObject target = _heldObject.GetComponent<PickUpObject>();
+                if (target != null) {
+                    target.Drop();
+                }
+
+                _heldObject.transform.parent = null;
+                _heldObject.transform.position = dropPosition;
+                _heldObject = null;
             }
         }
 
-        private void CheckForInventoryAdd()
-        {
-            if (_heldObject != null && Input.GetKeyDown(KeyCode.Q))
-            {
+        private void CheckForInventoryAdd() {
+            if (_heldObject != null && Input.GetKeyDown(KeyCode.Q)) {
                 IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
                 if (item != null)
                 {
@@ -170,7 +174,6 @@ namespace Characters.Player {
                     
                     _heldObject = null;
                 }
-                
             }
         }
         
