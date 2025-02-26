@@ -18,6 +18,7 @@ namespace Characters.Player {
         private float horizontal;
         private float vertical;
         private bool _isSprinting;
+        private GameObject _heldObject;
 
         [Header("Components")]
         private Rigidbody2D body;
@@ -28,7 +29,7 @@ namespace Characters.Player {
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
         [SerializeField] private float pickupRange = .25f;  
-        private GameObject _heldObject;
+     
         
         [Header("Dialogue")]
         [SerializeField] private DialogueUI dialogueUI;
@@ -159,19 +160,17 @@ namespace Characters.Player {
                 IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
                 if (item != null)
                 {
-                    Debug.Log("Inventory item found: " + _heldObject.name);
+
                     inventory.AddItem(item);
                     
                     Book book = _heldObject.GetComponent<Book>();
-                    if (book != null) { // 
+                    if (book != null) { 
                         isHoldingBook = false; 
                     }
                     
+                    _heldObject = null;
                 }
-                else
-                {
-                    Debug.LogWarning("Held object " + _heldObject.name + " does not implement IInventoryItem!");
-                }
+                
             }
         }
         
@@ -243,6 +242,11 @@ namespace Characters.Player {
         public void SetHeldObject(GameObject obj)
         {
             _heldObject = obj;
+        }
+        
+        public GameObject GetHeldObject()
+        {
+            return _heldObject;
         }
 
     }
