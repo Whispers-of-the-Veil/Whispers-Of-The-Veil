@@ -112,7 +112,7 @@ namespace Environment {
             }
             
             // If the intensity is set high, play the heavy sound effect with thunder
-            if (rainDensity < 300) {
+            if (rainDensity < 7000) {
                 rainAudio.clip = rainSound[0];
             } else {
                 rainAudio.clip = rainSound[1];

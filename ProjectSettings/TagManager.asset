@@ -48,22 +48,16 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground
+    uniqueID: 2312543379
+    locked: 0
   - name: Player
     uniqueID: 1659201753
     locked: 0
-  - name: Props
-    uniqueID: 2524338339
-    locked: 0
-  - name: Test
-    uniqueID: 2691527293
-    locked: 0
-  - name: Ground
-    uniqueID: 1031089989
-    locked: 0
-  - name: Trees
+  - name: Environment
     uniqueID: 222793271
     locked: 0
-  - name: fog
+  - name: Fog
     uniqueID: 3085153369
     locked: 0
   - name: Rain

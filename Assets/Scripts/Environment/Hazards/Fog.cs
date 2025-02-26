@@ -9,7 +9,7 @@ namespace Environment.Hazards {
         public bool isDamging = true;
         
         [Header("Damage")]
-        [SerializeField] int damage = 10; // The amount of damage the player takes
+        [SerializeField] int damage = 1; // The amount of damage the player takes
         [SerializeField] int interval = 2; // Damage interval in seconds
         private Coroutine damageCoroutine;
 
@@ -26,14 +26,16 @@ namespace Environment.Hazards {
             
         }
 
-        private void OnTriggerEnter(Collider other) {
+        private void OnTriggerEnter2D(Collider2D other) {
+            Debug.Log("Entered Fog");
             if (isDamging && other.CompareTag(player.gameObject.tag) && !isInFog) {
                 isInFog = true;
                 damageCoroutine = StartCoroutine(EnvDamage());
             }
         }
 
-        private void OnTriggerExit(Collider other) {
+        private void OnTriggerExit2D(Collider2D other) {
+            Debug.Log("Exited Fog");
             if (isDamging && other.CompareTag(player.gameObject.tag)) {
                 isInFog = false;
 

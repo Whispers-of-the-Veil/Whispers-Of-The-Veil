@@ -18,6 +18,7 @@ namespace Characters.Player {
         private float horizontal;
         private float vertical;
         private bool _isSprinting;
+        private GameObject _heldObject;
 
         [Header("Components")]
         private Rigidbody2D body;
@@ -28,10 +29,12 @@ namespace Characters.Player {
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
         [SerializeField] private float pickupRange = .25f;  
-        private GameObject _heldObject;
+        [SerializeField] private float dropDistance = 0.25f;
         
         [Header("Dialogue")]
         [SerializeField] private DialogueUI dialogueUI;
+
+
 
         public DialogueUI DialogueUI => dialogueUI;
         private bool isFrozen = false;
@@ -105,10 +108,14 @@ namespace Characters.Player {
         private void CheckForPickup() {
             if (_heldObject == null && Input.GetKeyDown(KeyCode.E)) {
                 
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, pickupRange);
-                
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, pickupRange);
+
                 foreach (var hitCollider in hitColliders) 
                 {
+                    
+                    if(hitCollider.gameObject == this.gameObject)
+                        continue;
+
                     if (hitCollider.CompareTag("Pickup") && hitCollider.isTrigger) {
                         Key key = hitCollider.GetComponent<Key>();
                         hasKey = true;
@@ -138,30 +145,34 @@ namespace Characters.Player {
         }
 
         private void DropObject() {
-            PickUpObject target = _heldObject.GetComponent<PickUpObject>();
-            target.Drop();
-            _heldObject = null;
-            Book book = target.GetComponent<Book>();
-            if (book != null)
-            {
-                isHoldingBook = false;
+            if (_heldObject != null) {
+                Vector3 dropPosition = holdPoint.position + new Vector3(0, -dropDistance, 0);
+                
+                PickUpObject target = _heldObject.GetComponent<PickUpObject>();
+                if (target != null) {
+                    target.Drop();
+                }
+
+                _heldObject.transform.parent = null;
+                _heldObject.transform.position = dropPosition;
+                _heldObject = null;
             }
         }
 
-        private void CheckForInventoryAdd()
-        {
-            if (_heldObject != null && Input.GetKeyDown(KeyCode.Q))
-            {
+        private void CheckForInventoryAdd() {
+            if (_heldObject != null && Input.GetKeyDown(KeyCode.Q)) {
                 IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
                 if (item != null)
                 {
+
                     inventory.AddItem(item);
                     
                     Book book = _heldObject.GetComponent<Book>();
-                    if (book != null) { // 
+                    if (book != null) { 
                         isHoldingBook = false; 
                     }
                     
+                    _heldObject = null;
                 }
             }
         }
@@ -171,7 +182,7 @@ namespace Characters.Player {
             if (Input.GetKeyDown(KeyCode.F))
             {
                 // Check for objects within interaction range
-                Collider[] hitColliders = Physics.OverlapSphere(transform.position, (float).25);
+                Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, (float).25);
                 foreach (var hitCollider in hitColliders)
                 {
                     if (hitCollider.CompareTag("Chest"))
@@ -230,5 +241,16 @@ namespace Characters.Player {
             } 
             isFrozen = false;
         }
+        
+        public void SetHeldObject(GameObject obj)
+        {
+            _heldObject = obj;
+        }
+        
+        public GameObject GetHeldObject()
+        {
+            return _heldObject;
+        }
+
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour
 {
-    private const int SLOTS = 9;
+    private const int SLOTS = 6;
 
     private List<IInventoryItem> mItems = new List<IInventoryItem>();
     
@@ -20,17 +20,18 @@ public class Inventory : MonoBehaviour
     {
         if (mItems.Count < SLOTS)
         {
-            Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
-            if (collider.enabled)
+            Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
+            if (collider != null)
             {
                 collider.enabled = false;
                 mItems.Add(item);
                 item.OnPickup();
 
-                if (ItemAdded != null)
-                {
-                    ItemAdded(this, new InventoryEventArgs(item)); 
-                }
+                ItemAdded?.Invoke(this, new InventoryEventArgs(item));
+            }
+            else
+            {
+                Debug.LogWarning("Collider2D is missing or already disabled for " + ((MonoBehaviour)item).name);
             }
         }
     }
@@ -42,7 +43,7 @@ public class Inventory : MonoBehaviour
             mItems.Remove(item);
             item.OnDrop();
             
-            Collider collider = (item as MonoBehaviour).GetComponent<Collider>();
+            Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
             if (collider != null)
             {
                 collider.enabled = true;
@@ -62,4 +63,6 @@ public class Inventory : MonoBehaviour
             ItemUsed(this, new InventoryEventArgs(item));
         }
     }
+    
+  
 }

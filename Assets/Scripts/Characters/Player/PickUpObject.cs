@@ -1,40 +1,46 @@
 //Sasha Koroleva
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Characters.Player;
+
 public class PickUpObject : MonoBehaviour
 {
     public void PickUp(Transform holdPoint)
     {
-        Rigidbody objRb = gameObject.GetComponent<Rigidbody>();
-        if (objRb != null) {
-            objRb.isKinematic = true;  // Disable physics on the object while held
+        // Move the object to the hold point and attach it to the parent
+        transform.position = holdPoint.position;
+        transform.rotation = holdPoint.rotation;
+        transform.parent = holdPoint;
+        
+        // Disable the BoxCollider2D so it doesn't interfere while held
+        BoxCollider2D box = GetComponent<BoxCollider2D>();
+        if (box != null)
+        {
+            box.enabled = false;
         }
-        gameObject.transform.position = holdPoint.position;
-        gameObject.transform.rotation = holdPoint.rotation;  // Match rotation to holdPoint
-        gameObject.transform.parent = holdPoint;
         
-        BoxCollider box = gameObject.GetComponent<BoxCollider>();
-        box.enabled = false;
-        
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sortingOrder = 5; 
+        }
     }
     
     public void Drop()
     {
-        Rigidbody objRb = gameObject.GetComponent<Rigidbody>();
-        if (objRb != null) {
-            objRb.isKinematic = false;  
-            
-        }
-        gameObject.transform.parent = null;
-        
-        BoxCollider box = gameObject.GetComponent<BoxCollider>();
-        box.enabled = true;
-        Collider collider = gameObject.GetComponent<Collider>();
-        collider.enabled = true;
+        // Detach the object from the hold point
+        transform.parent = null;
         
 
+        BoxCollider2D box = GetComponent<BoxCollider2D>();
+        if (box != null)
+        {
+            box.enabled = true;
+        }
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            sr.sortingOrder = 0;
+        }
     }
 }
+
