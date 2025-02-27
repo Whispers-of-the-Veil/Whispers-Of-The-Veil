@@ -7,6 +7,8 @@
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Forest - Night Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Forest - Night Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Voice/RecordAudio.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Voice/RecordAudio.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,6 +27,12 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Toolbar/InventoryItem.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Toolbar/InventoryItemBase.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/alexa/Downloads/Whispers-Of-The-Veil-main/Whispers-Of-The-Veil-main/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/alexa/Downloads/Whispers-Of-The-Veil-main/Whispers-Of-The-Veil-main/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/alexa/Downloads/Whispers-Of-The-Veil-main/Whispers-Of-The-Veil-main/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/alexa/Downloads/Whispers-Of-The-Veil-main/Whispers-Of-The-Veil-main/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://Chest.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />

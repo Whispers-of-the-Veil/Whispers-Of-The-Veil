@@ -5,7 +5,7 @@ using Environment;
 namespace Characters.Player {
     public class PlayerController : MonoBehaviour
     {
-        private bool hasKey = false;
+        public bool hasKey = false;
         private GameObject heldKey;
         private bool isHoldingBook = false;
         private GameObject heldBook;
@@ -192,7 +192,7 @@ namespace Characters.Player {
                         {
                             if (hasKey)
                             {
-                                chest.Open(heldKey);
+                                chest.Open();
                                 hasKey = false; // Use the key
                             }
                             else
