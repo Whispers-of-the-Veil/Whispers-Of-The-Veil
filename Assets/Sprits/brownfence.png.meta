@@ -1,0 +1,612 @@
+fileFormatVersion: 2
+guid: d99e18135358248da9d09edf89b750e2
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: brownfence_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 952
+        width: 212
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8791feba45ba64f1a833e834b848738a
+      internalID: 2068349909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_1
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 976
+        width: 174
+        height: 171
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5eb50f1cb8a45417ba2ce7a503447f36
+      internalID: 706794181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_2
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 1016
+        width: 208
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: e330eb89de43f43278c0f765138b5d8e
+      internalID: 70914201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_3
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 1040
+        width: 173
+        height: 174
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a8340fe07cd04a95ad2709b68f396e8
+      internalID: -1494258966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_4
+      rect:
+        serializedVersion: 2
+        x: 1724
+        y: 1020
+        width: 160
+        height: 132
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a5c835475a45e47508a7bc13c8cc9868
+      internalID: -656190397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_5
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 540
+        width: 216
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce11fc7b0968f4829af44b107cb982a7
+      internalID: -1055900266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_6
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 564
+        width: 174
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aa0b15373c2f4b349b799140c363364
+      internalID: -803988195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_7
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 608
+        width: 208
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b560515c39f64b4882d34566a36040e
+      internalID: 540853964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_8
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 631
+        width: 173
+        height: 172
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6946c1b729964b91bbc2da41a53189a
+      internalID: 946259281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_9
+      rect:
+        serializedVersion: 2
+        x: 1724
+        y: 608
+        width: 160
+        height: 136
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd782f689653e4fce88782a80c1d5a3d
+      internalID: 2054975491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_10
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 132
+        width: 216
+        height: 204
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: ccdf0c980e5d44c2a9872e55ccd2514d
+      internalID: -1722274606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_11
+      rect:
+        serializedVersion: 2
+        x: 576
+        y: 156
+        width: 173
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3699aa2c2de354cfe98d29c19dc65e34
+      internalID: 8099162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_12
+      rect:
+        serializedVersion: 2
+        x: 956
+        y: 196
+        width: 208
+        height: 201
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: -50, y: 86}
+        - {x: -47, y: 4}
+        - {x: 69, y: -66}
+        - {x: 71, y: 16}
+        - {x: 69, y: -66}
+        - {x: 81, y: -61}
+        - {x: 83, y: 23}
+        - {x: -32, y: 90}
+        - {x: -50, y: 86}
+        - {x: -32, y: 90}
+        - {x: 83, y: 23}
+        - {x: 71, y: 16}
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1c7a01d4873c4e309e8f36e61533816
+      internalID: 1856231913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_13
+      rect:
+        serializedVersion: 2
+        x: 1272
+        y: 220
+        width: 173
+        height: 175
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape:
+      - - {x: 62, y: 81.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -59, y: 27.5}
+        - {x: -48, y: 25.5}
+        - {x: -47, y: -66.5}
+        - {x: -58, y: -63.5}
+        - {x: -47, y: -66.5}
+        - {x: 64, y: -1.5}
+        - {x: 62, y: 81.5}
+        - {x: 47, y: 83.5}
+        - {x: -59, y: 27.5}
+        - {x: -58, y: -63.5}
+        - {x: -59, y: 27.5}
+        - {x: 47, y: 83.5}
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ec3bdc194b8f468e9088cccb66b157e
+      internalID: 1084876079
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: brownfence_14
+      rect:
+        serializedVersion: 2
+        x: 1724
+        y: 200
+        width: 160
+        height: 136
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4f75b07ac57d4bff86a0976af3e1e40
+      internalID: -1344330100
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 3ce96ea29bb204fbea7b93ebc0dc1815
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      brownfence_0: 2068349909
+      brownfence_1: 706794181
+      brownfence_10: -1722274606
+      brownfence_11: 8099162
+      brownfence_12: 1856231913
+      brownfence_13: 1084876079
+      brownfence_14: -1344330100
+      brownfence_2: 70914201
+      brownfence_3: -1494258966
+      brownfence_4: -656190397
+      brownfence_5: -1055900266
+      brownfence_6: -803988195
+      brownfence_7: 540853964
+      brownfence_8: 946259281
+      brownfence_9: 2054975491
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

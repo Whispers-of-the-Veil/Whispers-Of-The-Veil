@@ -14,7 +14,6 @@ namespace Characters.Player.Voice {
     }
 
     public class RecordAudio : MonoBehaviour {
-        public static event Action<string> OnCommandRecognized;
         [Header("API Settings")]
         [SerializeField] string URL;
 
@@ -181,7 +180,6 @@ namespace Characters.Player.Voice {
                     Debug.Log("You said something the game wasnt expecting");
                 } else if (index < keys.Length) {
                     Debug.Log("The closest expected string is: " + keys[index]);
-                    OnCommandRecognized?.Invoke(keys[index]);
                 } else {
                     Debug.Log("Index fell outside the bounds of the keys array");
                 }
