@@ -1,0 +1,3326 @@
+fileFormatVersion: 2
+guid: 49507c4b3f5aa4165bcbb9f0b3282379
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 30
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 288
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a7163678667f4281a752320b56a1a2e
+      internalID: 1364454395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_1
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 288
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90d4c862fded64f5b8a1c4a43a9786d9
+      internalID: -1067105098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_2
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 288
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1e036d54a0394eae86defc75e43828e
+      internalID: -416640447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_3
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 288
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c7248ef4d0094cfab85730a2eb11d93
+      internalID: -64482261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_4
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d86e7e4a6861479bb96a4cfb4c990bd
+      internalID: 747858035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_5
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82875e9bb7243497d8c1c299b43ff4b8
+      internalID: 1208485721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_6
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7cb4a8fc321b8489cbbba5b9bb8f0b4c
+      internalID: 1979397423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_7
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4481497b85ff451c8ea7391acf350b8
+      internalID: -2054373196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_8
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8abc61e625615425c9a6abf8df4409af
+      internalID: -966556213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_9
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fa72b795e51e4e6dadf9b5bc293f4ae
+      internalID: -1869729524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_10
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77c85c164c7a04c919b7906461a425ea
+      internalID: 493025276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_11
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6cb480748e0ba4ef39084336a5caed64
+      internalID: 1389189315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_12
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f6a9fb90ac284ef696c943da28dd795
+      internalID: 999547091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_13
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 296
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3477a5ea46ef64644970e28ecb78c862
+      internalID: 1479438891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 263
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9edda975cd20c438c9a8a39c0c3fefdd
+      internalID: -1109148523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_15
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 263
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3bba9fdec9b245c198c51346d5d4da7
+      internalID: -629510018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_16
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 263
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e4eeea2bb8094a65bafa7112b99a663
+      internalID: 1919709399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_17
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 263
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74313fc1fca054daa913486eb440fc37
+      internalID: -117856371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_18
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 278
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5906273fe2e40462d9c295424bcd3995
+      internalID: -1145428510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_19
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 278
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fe2310ab2bfb4cae88266897ab0b905
+      internalID: 2127932046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_20
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 278
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 475c4629e39d04faca29008f80b1d891
+      internalID: 2073378990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_21
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 278
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a8de6fa9bb7d4e1881d0ca499e42ef4
+      internalID: -963033211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_22
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 274
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f458c9fbe3f2741a399f2d03038249e1
+      internalID: -2020487630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_23
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 274
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff19e6a03fd99458f962fe8b03ca1dca
+      internalID: 1588502819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_24
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 274
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8488465e2d83f4252830056b67a80f88
+      internalID: 1837473158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_25
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 274
+        width: 34
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74129a38eddc04e6fb60a16d52c121f0
+      internalID: -752170749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_26
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 283
+        width: 32
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6f7ca9987e434dde8c0d23ac4fa41bf
+      internalID: 123113716
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_27
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 230
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d287afff9d0c46b0afe9161f7d0e93a
+      internalID: -2057768563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_28
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 230
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cec8fa405ed344a39034cea2bb5f764
+      internalID: -1277764400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_29
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 230
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc897f5a201b4b4f95afe4f9efdd2b4
+      internalID: -2004708070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_30
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 230
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 464e2948e803e4eef955f9af9eed13d1
+      internalID: 469198208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_31
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 251
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 537fb560f70084504bc444bb158360c2
+      internalID: -2001959157
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_32
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 251
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a0995d9dc161f4998a7e7d6819bcab6d
+      internalID: 2078694983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_33
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 251
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56d3d87619b2d4d54abfb716e82dc7fb
+      internalID: 519775562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_34
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 251
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a01cd9fbdedc4dbbaba2c26a81f090e
+      internalID: -1047544818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_35
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 251
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78f9716dc886e40969b92667cedbc0cb
+      internalID: -1011355723
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_36
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 251
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9007f06cefee246d2ba251bd3108e28f
+      internalID: -1612964086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_37
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 251
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 988e010d77ce04557a12fc1f3be52c1e
+      internalID: -576204374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_38
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 251
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60adfb95a7e404a568e7b08e3a165799
+      internalID: 1698489881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_39
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 220
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7053b9a40a8cc4841b0e2516a5bd17c6
+      internalID: 893672940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_40
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 205
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09d8948e8d65140ee95e4365880620a4
+      internalID: 1986097014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_41
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 205
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d36e22204d44f4d5fbabeb86706712d7
+      internalID: 923163353
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_42
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 205
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 094448da05c2c4b8e8accff993cd433c
+      internalID: 343383311
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_43
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 205
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 118b1ef797e844c97a891077a8365246
+      internalID: -1592233251
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_44
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 220
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74268dc8ccf2a4f7085982dac9934eaa
+      internalID: -327484173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_45
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 220
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74222cbc99a18470f9d12516c67151f3
+      internalID: -1998394707
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_46
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 222
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d29ab221039264fd29b0768f4b9223af
+      internalID: 368962687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_47
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 222
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0040696fdb914fa7ad9a195483f9e43
+      internalID: -1528364466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_48
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 220
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a25e37a0cb7742248597cba1bb896fd
+      internalID: -505816795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_49
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 220
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42a864d2b73ff4f4ab3a8803472ac6e3
+      internalID: -1316407055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_50
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 220
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7275252468d443f4a86ef0aafd7fa2c
+      internalID: -2132994171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_51
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 220
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ce7f774e929d4db0b7cbf9f8181df63
+      internalID: 1481737650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_52
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 172
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfc79a28765cb44c9bbe3a8329c91228
+      internalID: 2144847873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_53
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 172
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5fab9bfc0a10e4759bde7cd1ed13d575
+      internalID: -1168143862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_54
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 172
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 462efbb865bae44b2807f4a9a0e8d78a
+      internalID: -598731534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_55
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 172
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3a81e87348b24f38861928999afea91
+      internalID: -218553151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_56
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c92c0a963c524587862e9a813702356
+      internalID: 466245730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_57
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0edcab68cb49947b4a6a4c9f67ea3697
+      internalID: 1226315678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_58
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b261946a987a0499092fae0913fbce09
+      internalID: -1669168809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_59
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0551074838a214832be82b587b9a97cc
+      internalID: 59527862
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_60
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8819f3a9076f045778db999d3c141d56
+      internalID: 892570480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_61
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a1d0d7a7ad2a47f687e145301a7b8a0
+      internalID: 131260557
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_62
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 576640fc5d1f34aedae3c8d86cdc7036
+      internalID: 2075766243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_63
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bf7c8771a8434d1185ddf2d74715724
+      internalID: -1831367616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_64
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8121375d3a7784e32bee485c5a7e201e
+      internalID: 2031024684
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_65
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 195
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab60617fa28474364839270b76a04592
+      internalID: 116698539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_66
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 177
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f85169366c78e45e5ab0b0d096f4173d
+      internalID: -115226243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_67
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 177
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b94f3baeef694ad19a13ffd21b0cfb1
+      internalID: -970393310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_68
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 177
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 43b779d3f925143bba24ad52b1177017
+      internalID: 954816479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_69
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 177
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5cbf038c24ccd4c35b946d8955152bfe
+      internalID: 1289309695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_70
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 173
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c713f26240954859be5787d21a8d19f
+      internalID: 165230421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_71
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 173
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a0cd47e2e26243169bdddbf74afbb55
+      internalID: 1638454563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_72
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 173
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8436778ae4e3461289321c376e09d2f
+      internalID: -230288463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_73
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 173
+        width: 34
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69a5d1ed5bd894f96bfa5a8e1e137701
+      internalID: -239890140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_74
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 182
+        width: 32
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c29dc52f96ff4a3ba9940d0c89adce0
+      internalID: -198922248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_75
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 147
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e894ca918e0514fa390425a2912f61f0
+      internalID: 170531144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_76
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 147
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c2c64bce86f64e47bef85cb28d083cc
+      internalID: -1587701303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_77
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 147
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab7c71fcabd37461a96a293af3684a17
+      internalID: 677824565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_78
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 147
+        width: 32
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff31740666047449d8b0b27bd91787e6
+      internalID: -926213647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_79
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 150
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55e3892daa28647b1ad81536496ff342
+      internalID: -1846773742
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_80
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 150
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4ceef1cc2bbcb4948953a517b54be3a7
+      internalID: 1953298757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_81
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 150
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 388de7cb64bb14796996c33bbfaa9540
+      internalID: 313100996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_82
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 150
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40f6a475227284a73a6db5213e9ebec8
+      internalID: 224735994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_83
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 150
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45b9106fe9d034bad95ef2c294a768fc
+      internalID: -486902134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_84
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 150
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 524d6c985a87b44869e9b678509f6efd
+      internalID: -455191297
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_85
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 150
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dac2e3136fb9f465b892b73b199049c5
+      internalID: -2082008375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_86
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 150
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fcc524aa11b849b98b4c93eb5ac2bab
+      internalID: -242192453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_87
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 109
+        width: 32
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc07481d9d3a54b28a53dc61009f5d0c
+      internalID: 751716088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_88
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 109
+        width: 32
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f04d3ccbc3bb641d8b277f400acac133
+      internalID: 39452399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_89
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 108
+        width: 32
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1871dde9f2c145a3b53ff5dfe722fb9
+      internalID: -243358350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_90
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 110
+        width: 32
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2c0bab41f459436682c98a020ea0cf0
+      internalID: -443961790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_91
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 119
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b4db5f7b8738c44cca1e16e802129410
+      internalID: -815240933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_92
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 119
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d9149414d5ad243e087e4510b7d72894
+      internalID: -535993025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_93
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 121
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52d21992aa72944d6948b53a6449dc56
+      internalID: 1745226051
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_94
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 121
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3eeae3e2df4f648f4b8f8b6424642c7e
+      internalID: -396710900
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_95
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 119
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46d71a85b29b949c9b154fdef1df5454
+      internalID: 1751389085
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_96
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 119
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 061391aeed62f4f42a11a5cf05a5c10c
+      internalID: -1985026844
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_97
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 119
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1243f9f5ca9444f538b28bbd8072de6b
+      internalID: -1780032962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_98
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 119
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed55b34f816d94b529adc71b8080e5dc
+      internalID: -829177780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_99
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 74
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f174ba37cb3044557b3c36326b3df65f
+      internalID: -700645518
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_100
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 72
+        width: 32
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d0f42e6e6a5043489ed46c714ff5e89
+      internalID: 1604643566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_101
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 72
+        width: 32
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f9324d2aace448e6915e7d2563696c7
+      internalID: 24132625
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_102
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 74
+        width: 32
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c596f768d75d24a4d873bf36c0632ed4
+      internalID: -871389604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_103
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4342778061f02454bb3f33ac9dfd525c
+      internalID: -1510515292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_104
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8c436a33c845470dae0e0629db68dc1
+      internalID: -1372915271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_105
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53c0cd61921f0469581a846b516724e3
+      internalID: -1116333044
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_106
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a95b449fec214fcfa24afd2ec5b983f
+      internalID: 1495152372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_107
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41cbecd209f7f49208d07198a9b036dd
+      internalID: -2113056338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_108
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a95704371557b400797114e1227d9143
+      internalID: -1803938350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_109
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f073588f745c84e2a83375f26fb7914a
+      internalID: 550357840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_110
+      rect:
+        serializedVersion: 2
+        x: 356
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e3b5f9851662f41299fac70b89c850b1
+      internalID: 880244994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_111
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75a20fff9a2154e42a03995763dd092d
+      internalID: -634219090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_112
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 94
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c37b59fb58fb44fbcb92030e776f0e92
+      internalID: -1544494142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_113
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 76
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 647cd843f6b60482d91070289f5d9dfc
+      internalID: -826284215
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_114
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 76
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0900bd8c1293747548b40f67994db641
+      internalID: -1442322308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_115
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 76
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d37734ba2b3f6469388cf920dee75f7a
+      internalID: -2031251759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_116
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 76
+        width: 31
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 540ca937099a04c5997712687da0dfc7
+      internalID: -1805477725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_117
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 72
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff836190ee5944173a3b40b29b4e572c
+      internalID: -1279276885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_118
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 72
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ace7b3fed235f4f9cb7b8095089a753c
+      internalID: 605126675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_119
+      rect:
+        serializedVersion: 2
+        x: 328
+        y: 72
+        width: 33
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ea6fd8bba90e0471695e3f39ab095460
+      internalID: 7860088
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_120
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 72
+        width: 34
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7dd9e492ef1bf48cf91006e53f94b279
+      internalID: 55474885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_121
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 81
+        width: 32
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a46eef7dc427d4c5dac1699556800e4c
+      internalID: 373377594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_122
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 41
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87a3fe5003aa944adb12caa9480ed1f8
+      internalID: 1309114677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_123
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 39
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3671b148716d84787a8208ad4356a651
+      internalID: 566987071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_124
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 39
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f890ccaade2084082b414d85894665de
+      internalID: -345920500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_125
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 41
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 600ab5aa27fd3457e8f619a1c54e366d
+      internalID: 1430522310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_126
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 49
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4af4fe57391894c97ba30bcd1c70f7ba
+      internalID: 1136590333
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_127
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 49
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb8675d6374c249fe8f2ba78adfc387e
+      internalID: -1996023165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_128
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 49
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd3b6147e6c8243b1a163eea7ffc2b95
+      internalID: 1197264840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_129
+      rect:
+        serializedVersion: 2
+        x: 229
+        y: 49
+        width: 32
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd8c7410cfca94ec69110e606d8da7ff
+      internalID: 938657533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_130
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eaab8d6e07f734ffd8ba9d0c687dd5f0
+      internalID: 1687606657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_131
+      rect:
+        serializedVersion: 2
+        x: 298
+        y: 49
+        width: 35
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e83817682c044857bcb4f05a5c66891
+      internalID: 879531520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_132
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 49
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41c7b2b28dfd7481990fba8c3e5bc3e4
+      internalID: 1666725970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_133
+      rect:
+        serializedVersion: 2
+        x: 368
+        y: 49
+        width: 33
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7baf68d93c24840eca4a3619f57d9e22
+      internalID: 711641515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_134
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 8
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7100cb2220be444784c7b6fd29d2ac0
+      internalID: -2059249291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_135
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 6
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c752fbde982c45df84e74741db7dbea
+      internalID: -1576499966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_136
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 6
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a97dd0d4d510408e9b9c29f4af2ffec
+      internalID: 2144044632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_137
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 8
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0046138c609354c6d87ec361ff8d321c
+      internalID: 604931992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_138
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 18
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70ce0606661c74f188b4fca85b53fbf7
+      internalID: -2042209688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_139
+      rect:
+        serializedVersion: 2
+        x: 169
+        y: 18
+        width: 36
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1046d61e40c94be3a63a7434d79b020
+      internalID: 1733892508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_140
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 20
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72cfb52c4f8774d61ac81efc9643d027
+      internalID: -1472655213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_141
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 20
+        width: 34
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d5714d6b173d438b8beda35bf92c04c
+      internalID: -1735543421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_142
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 18
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbcd280a02a024bfe9d068783e5c4986
+      internalID: -242257188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_143
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 18
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8df017c5b7ae241f8bb31b86df7d28fd
+      internalID: -181361554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_144
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 18
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c6a36893566a4feab23272e8fde190a
+      internalID: -906642956
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: spirithome_rooftiles_sliceguide_export_145
+      rect:
+        serializedVersion: 2
+        x: 378
+        y: 18
+        width: 33
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37979fe7f349d42bab93dfb5528b2abc
+      internalID: -70661009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: da5fd125892d64b6da89760d357312cf
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      spirithome_rooftiles_sliceguide_export_0: 1364454395
+      spirithome_rooftiles_sliceguide_export_1: -1067105098
+      spirithome_rooftiles_sliceguide_export_10: 493025276
+      spirithome_rooftiles_sliceguide_export_100: 1604643566
+      spirithome_rooftiles_sliceguide_export_101: 24132625
+      spirithome_rooftiles_sliceguide_export_102: -871389604
+      spirithome_rooftiles_sliceguide_export_103: -1510515292
+      spirithome_rooftiles_sliceguide_export_104: -1372915271
+      spirithome_rooftiles_sliceguide_export_105: -1116333044
+      spirithome_rooftiles_sliceguide_export_106: 1495152372
+      spirithome_rooftiles_sliceguide_export_107: -2113056338
+      spirithome_rooftiles_sliceguide_export_108: -1803938350
+      spirithome_rooftiles_sliceguide_export_109: 550357840
+      spirithome_rooftiles_sliceguide_export_11: 1389189315
+      spirithome_rooftiles_sliceguide_export_110: 880244994
+      spirithome_rooftiles_sliceguide_export_111: -634219090
+      spirithome_rooftiles_sliceguide_export_112: -1544494142
+      spirithome_rooftiles_sliceguide_export_113: -826284215
+      spirithome_rooftiles_sliceguide_export_114: -1442322308
+      spirithome_rooftiles_sliceguide_export_115: -2031251759
+      spirithome_rooftiles_sliceguide_export_116: -1805477725
+      spirithome_rooftiles_sliceguide_export_117: -1279276885
+      spirithome_rooftiles_sliceguide_export_118: 605126675
+      spirithome_rooftiles_sliceguide_export_119: 7860088
+      spirithome_rooftiles_sliceguide_export_12: 999547091
+      spirithome_rooftiles_sliceguide_export_120: 55474885
+      spirithome_rooftiles_sliceguide_export_121: 373377594
+      spirithome_rooftiles_sliceguide_export_122: 1309114677
+      spirithome_rooftiles_sliceguide_export_123: 566987071
+      spirithome_rooftiles_sliceguide_export_124: -345920500
+      spirithome_rooftiles_sliceguide_export_125: 1430522310
+      spirithome_rooftiles_sliceguide_export_126: 1136590333
+      spirithome_rooftiles_sliceguide_export_127: -1996023165
+      spirithome_rooftiles_sliceguide_export_128: 1197264840
+      spirithome_rooftiles_sliceguide_export_129: 938657533
+      spirithome_rooftiles_sliceguide_export_13: 1479438891
+      spirithome_rooftiles_sliceguide_export_130: 1687606657
+      spirithome_rooftiles_sliceguide_export_131: 879531520
+      spirithome_rooftiles_sliceguide_export_132: 1666725970
+      spirithome_rooftiles_sliceguide_export_133: 711641515
+      spirithome_rooftiles_sliceguide_export_134: -2059249291
+      spirithome_rooftiles_sliceguide_export_135: -1576499966
+      spirithome_rooftiles_sliceguide_export_136: 2144044632
+      spirithome_rooftiles_sliceguide_export_137: 604931992
+      spirithome_rooftiles_sliceguide_export_138: -2042209688
+      spirithome_rooftiles_sliceguide_export_139: 1733892508
+      spirithome_rooftiles_sliceguide_export_14: -1109148523
+      spirithome_rooftiles_sliceguide_export_140: -1472655213
+      spirithome_rooftiles_sliceguide_export_141: -1735543421
+      spirithome_rooftiles_sliceguide_export_142: -242257188
+      spirithome_rooftiles_sliceguide_export_143: -181361554
+      spirithome_rooftiles_sliceguide_export_144: -906642956
+      spirithome_rooftiles_sliceguide_export_145: -70661009
+      spirithome_rooftiles_sliceguide_export_15: -629510018
+      spirithome_rooftiles_sliceguide_export_16: 1919709399
+      spirithome_rooftiles_sliceguide_export_17: -117856371
+      spirithome_rooftiles_sliceguide_export_18: -1145428510
+      spirithome_rooftiles_sliceguide_export_19: 2127932046
+      spirithome_rooftiles_sliceguide_export_2: -416640447
+      spirithome_rooftiles_sliceguide_export_20: 2073378990
+      spirithome_rooftiles_sliceguide_export_21: -963033211
+      spirithome_rooftiles_sliceguide_export_22: -2020487630
+      spirithome_rooftiles_sliceguide_export_23: 1588502819
+      spirithome_rooftiles_sliceguide_export_24: 1837473158
+      spirithome_rooftiles_sliceguide_export_25: -752170749
+      spirithome_rooftiles_sliceguide_export_26: 123113716
+      spirithome_rooftiles_sliceguide_export_27: -2057768563
+      spirithome_rooftiles_sliceguide_export_28: -1277764400
+      spirithome_rooftiles_sliceguide_export_29: -2004708070
+      spirithome_rooftiles_sliceguide_export_3: -64482261
+      spirithome_rooftiles_sliceguide_export_30: 469198208
+      spirithome_rooftiles_sliceguide_export_31: -2001959157
+      spirithome_rooftiles_sliceguide_export_32: 2078694983
+      spirithome_rooftiles_sliceguide_export_33: 519775562
+      spirithome_rooftiles_sliceguide_export_34: -1047544818
+      spirithome_rooftiles_sliceguide_export_35: -1011355723
+      spirithome_rooftiles_sliceguide_export_36: -1612964086
+      spirithome_rooftiles_sliceguide_export_37: -576204374
+      spirithome_rooftiles_sliceguide_export_38: 1698489881
+      spirithome_rooftiles_sliceguide_export_39: 893672940
+      spirithome_rooftiles_sliceguide_export_4: 747858035
+      spirithome_rooftiles_sliceguide_export_40: 1986097014
+      spirithome_rooftiles_sliceguide_export_41: 923163353
+      spirithome_rooftiles_sliceguide_export_42: 343383311
+      spirithome_rooftiles_sliceguide_export_43: -1592233251
+      spirithome_rooftiles_sliceguide_export_44: -327484173
+      spirithome_rooftiles_sliceguide_export_45: -1998394707
+      spirithome_rooftiles_sliceguide_export_46: 368962687
+      spirithome_rooftiles_sliceguide_export_47: -1528364466
+      spirithome_rooftiles_sliceguide_export_48: -505816795
+      spirithome_rooftiles_sliceguide_export_49: -1316407055
+      spirithome_rooftiles_sliceguide_export_5: 1208485721
+      spirithome_rooftiles_sliceguide_export_50: -2132994171
+      spirithome_rooftiles_sliceguide_export_51: 1481737650
+      spirithome_rooftiles_sliceguide_export_52: 2144847873
+      spirithome_rooftiles_sliceguide_export_53: -1168143862
+      spirithome_rooftiles_sliceguide_export_54: -598731534
+      spirithome_rooftiles_sliceguide_export_55: -218553151
+      spirithome_rooftiles_sliceguide_export_56: 466245730
+      spirithome_rooftiles_sliceguide_export_57: 1226315678
+      spirithome_rooftiles_sliceguide_export_58: -1669168809
+      spirithome_rooftiles_sliceguide_export_59: 59527862
+      spirithome_rooftiles_sliceguide_export_6: 1979397423
+      spirithome_rooftiles_sliceguide_export_60: 892570480
+      spirithome_rooftiles_sliceguide_export_61: 131260557
+      spirithome_rooftiles_sliceguide_export_62: 2075766243
+      spirithome_rooftiles_sliceguide_export_63: -1831367616
+      spirithome_rooftiles_sliceguide_export_64: 2031024684
+      spirithome_rooftiles_sliceguide_export_65: 116698539
+      spirithome_rooftiles_sliceguide_export_66: -115226243
+      spirithome_rooftiles_sliceguide_export_67: -970393310
+      spirithome_rooftiles_sliceguide_export_68: 954816479
+      spirithome_rooftiles_sliceguide_export_69: 1289309695
+      spirithome_rooftiles_sliceguide_export_7: -2054373196
+      spirithome_rooftiles_sliceguide_export_70: 165230421
+      spirithome_rooftiles_sliceguide_export_71: 1638454563
+      spirithome_rooftiles_sliceguide_export_72: -230288463
+      spirithome_rooftiles_sliceguide_export_73: -239890140
+      spirithome_rooftiles_sliceguide_export_74: -198922248
+      spirithome_rooftiles_sliceguide_export_75: 170531144
+      spirithome_rooftiles_sliceguide_export_76: -1587701303
+      spirithome_rooftiles_sliceguide_export_77: 677824565
+      spirithome_rooftiles_sliceguide_export_78: -926213647
+      spirithome_rooftiles_sliceguide_export_79: -1846773742
+      spirithome_rooftiles_sliceguide_export_8: -966556213
+      spirithome_rooftiles_sliceguide_export_80: 1953298757
+      spirithome_rooftiles_sliceguide_export_81: 313100996
+      spirithome_rooftiles_sliceguide_export_82: 224735994
+      spirithome_rooftiles_sliceguide_export_83: -486902134
+      spirithome_rooftiles_sliceguide_export_84: -455191297
+      spirithome_rooftiles_sliceguide_export_85: -2082008375
+      spirithome_rooftiles_sliceguide_export_86: -242192453
+      spirithome_rooftiles_sliceguide_export_87: 751716088
+      spirithome_rooftiles_sliceguide_export_88: 39452399
+      spirithome_rooftiles_sliceguide_export_89: -243358350
+      spirithome_rooftiles_sliceguide_export_9: -1869729524
+      spirithome_rooftiles_sliceguide_export_90: -443961790
+      spirithome_rooftiles_sliceguide_export_91: -815240933
+      spirithome_rooftiles_sliceguide_export_92: -535993025
+      spirithome_rooftiles_sliceguide_export_93: 1745226051
+      spirithome_rooftiles_sliceguide_export_94: -396710900
+      spirithome_rooftiles_sliceguide_export_95: 1751389085
+      spirithome_rooftiles_sliceguide_export_96: -1985026844
+      spirithome_rooftiles_sliceguide_export_97: -1780032962
+      spirithome_rooftiles_sliceguide_export_98: -829177780
+      spirithome_rooftiles_sliceguide_export_99: -700645518
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
