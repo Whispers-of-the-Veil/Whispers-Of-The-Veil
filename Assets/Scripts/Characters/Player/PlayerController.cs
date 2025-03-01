@@ -224,7 +224,7 @@ namespace Characters.Player {
         }
         private void CheckForDialogue()
         {
-            if (Input.GetKeyDown(KeyCode.T))
+            if (Input.GetKeyDown(KeyCode.U))
             {
                 if (Interactable != null)
                 {

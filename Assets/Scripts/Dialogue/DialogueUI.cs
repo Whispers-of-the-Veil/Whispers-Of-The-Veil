@@ -10,7 +10,6 @@ namespace Dialogue
     {
         [SerializeField] private GameObject dialogueBox;
         [SerializeField] private TMP_Text textLabel;
-        [SerializeField] private GameObject toolbar;
         
         public bool IsOpen { get; private set; }
         
@@ -19,9 +18,9 @@ namespace Dialogue
 
         private void Start()
         {
-
             typeWriteEffect = GetComponent<TypeWriteEffect>();
             responseHandler = GetComponent<ResponseHandler>();
+            
             CloseDialogueBox();
         }
 
@@ -29,7 +28,6 @@ namespace Dialogue
         {
             IsOpen = true;
             dialogueBox.SetActive(true);
-            toolbar.SetActive(false);
             StartCoroutine(StepThroughDialogue(dialogueObject));
         }
 
@@ -82,7 +80,6 @@ namespace Dialogue
         {
             IsOpen = false;
             dialogueBox.SetActive(false);
-            toolbar.SetActive(true);
             textLabel.text = string.Empty;
         }
     }
