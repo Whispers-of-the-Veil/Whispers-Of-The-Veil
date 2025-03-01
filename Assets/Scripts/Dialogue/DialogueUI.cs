@@ -1,6 +1,5 @@
-//Owen Ingram
-
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 
@@ -10,6 +9,7 @@ namespace Dialogue
     {
         [SerializeField] private GameObject dialogueBox;
         [SerializeField] private TMP_Text textLabel;
+        [SerializeField] private Image npcImage;
         
         public bool IsOpen { get; private set; }
         
@@ -28,6 +28,13 @@ namespace Dialogue
         {
             IsOpen = true;
             dialogueBox.SetActive(true);
+            
+            if (npcImage != null)
+            {
+                npcImage.sprite = dialogueObject.NpcSprite;
+                npcImage.gameObject.SetActive(true);
+            }
+
             StartCoroutine(StepThroughDialogue(dialogueObject));
         }
 
@@ -81,6 +88,10 @@ namespace Dialogue
             IsOpen = false;
             dialogueBox.SetActive(false);
             textLabel.text = string.Empty;
+            if (npcImage != null)
+            {
+                npcImage.gameObject.SetActive(false);
+            }
         }
     }
 }
