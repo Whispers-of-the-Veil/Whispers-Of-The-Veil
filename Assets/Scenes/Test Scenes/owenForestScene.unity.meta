@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 <<<<<<<< HEAD:Assets/Scenes/Test Scenes/owenForestScene.unity.meta
 <<<<<<< Updated upstream
 guid: 47168ed608888cf46aa91b7b60137991
@@ -8,6 +9,9 @@ guid: 2ca8272e7df76264e811b1ac1c5dae92
 ========
 guid: 8f5b7aba871a8bf4fac21e36a0ee4b8a
 >>>>>>>> main:Assets/Scenes/Test Scenes/sashaScene.unity.meta
+=======
+guid: fcff2a56fe6e46147a87ff5b2375a817
+>>>>>>> Stashed changes
 DefaultImporter:
   externalObjects: {}
   userData: 
