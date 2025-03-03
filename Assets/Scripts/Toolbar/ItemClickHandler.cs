@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Characters.Player;
 
+
 public class ItemClickHandler : MonoBehaviour
 {
     public Inventory _inventory;
