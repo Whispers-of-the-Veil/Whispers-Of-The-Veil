@@ -1,11 +1,14 @@
 using Characters.Enemy;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
+        [Header("Entities")]
         [SerializeField] public GameObject[] enemies; // An array of enemy gameobjects that can hear the player voice
 
-        [Header("Components")] 
+        [Header("Components")]
+        [SerializeField] public float minValue;
         private AudioSource _audioSource;
         
         private void Start() {

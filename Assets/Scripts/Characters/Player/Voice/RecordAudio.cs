@@ -32,16 +32,8 @@ namespace Characters.Player.Voice {
         private bool isRecording;
         private string microphoneDevice;
 
-        [Header("Speech Bubble")]
-        [SerializeField] GameObject speechBubble;
-        [SerializeField] TextMeshProUGUI textField;
-        private bool reset;
-
         void Start () {
-            speechBubble.SetActive(false);
-
             isRecording = false;
-            reset = true;
 
             if (Microphone.devices.Length > 0) {
                 microphoneDevice = Microphone.devices[0];
@@ -51,10 +43,8 @@ namespace Characters.Player.Voice {
         }
 
         void Update () {
-            if (Input.GetKeyDown(KeyCode.T) && !isRecording && reset) {
-                speechBubble.SetActive(true);
-                reset = false;
-
+            
+            if (Input.GetKeyDown(KeyCode.T) && !isRecording) {
                 StartRecording();
                 StartCoroutine(RecordingLimit());
             }
@@ -174,7 +164,6 @@ namespace Characters.Player.Voice {
                 }
 
                 Debug.Log("You said: " + prediction);
-                textField.text = prediction;
                 
                 yield return StartCoroutine(CheckExpected(prediction));
                 
@@ -189,8 +178,6 @@ namespace Characters.Player.Voice {
             } else {
                 Debug.LogError("Failed to send audio: " + www.error);
             }
-
-            yield return StartCoroutine(ResetSpeechBubble(5));
         }
 
         /// <summary>
@@ -205,20 +192,6 @@ namespace Characters.Player.Voice {
 
                 StartCoroutine(GetPrediction(audio));
             }
-        }
-        
-        /// <summary>
-        /// Resets the speech bubble after a specified amount of time
-        /// </summary>
-        /// <param name="time">The amount of time to wait before disabling the speechbubble</param>
-        /// <returns></returns>
-        private IEnumerator ResetSpeechBubble(int time) {
-            yield return new WaitForSeconds(time);
-            
-            textField.text = "...";
-            speechBubble.SetActive(false);
-
-            reset = true;
         }
     }
 }

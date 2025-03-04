@@ -402,15 +402,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6230e35c5ae1b5dbda658a8b2dd7603f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasKey: 0
   speed: 3
   rainingSpeed: 2.5
   moveLimiter: 0.7
   sprintSpeedMultiplier: 1.5
-  weather: {fileID: 0}
-  inventory: {fileID: 0}
+  weather: {fileID: 7170891254809870389, guid: 9519e64351d1041d38f957780892e7f8, type: 3}
+  inventory: {fileID: 4616351280504063300, guid: 5fbecb77a5ebf07bd851126fc49d9006, type: 3}
   holdPoint: {fileID: 3525987265052427598}
   pickupRange: 0.5
-  dialogueUI: {fileID: 0}
+  dropDistance: 0.25
+  dialogueUI: {fileID: 5542912589374151375, guid: 3a091f80f21484a26a617a031af9aa32, type: 3}
 --- !u!114 &7340290357935729892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,5 +461,5 @@ MonoBehaviour:
   threshold: 5
   SampleRate: 16000
   TimeLimit: 5
-  speechBubble: {fileID: 0}
+  speechBubble: {fileID: 2100759755597779630, guid: 6791046301ab1465ebddb2168269b5e3, type: 3}
   textField: {fileID: 0}
