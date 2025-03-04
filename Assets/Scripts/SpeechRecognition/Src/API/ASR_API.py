@@ -3,7 +3,6 @@ from flask import Flask, jsonify, request
 from io import BytesIO
 
 from Recognition import SpeechRec
-
 from Grab_Ini import ini
 
 app = Flask(__name__)
@@ -15,7 +14,9 @@ def api_service():
         audio_bytes = request.data
 
         audio_data = np.frombuffer(audio_bytes, dtype=np.float32)
+
         prediction = speechRec.Predict(audio_data)
+        prediction = speechRec.PostProcess(prediction)
         
         return jsonify({"prediction": prediction}), 200
     except Exception as e:

@@ -2,7 +2,7 @@
 if [ -z "$1" ]; then
     echo "Building API"
 
-    pyinstaller --onefile --add-data "models/ASR.keras:models" --add-data "Data/Process.py:Data" --add-data "Model/ASRModel.py:Model" --add-data "Grab_Ini.py:." API/ASR_API.py
+    pyinstaller --onefile --add-data "models/ASR.keras:models" --add-data "Data/Process.py:Data" --add-data "Data/NLP.py:Data" --add-data "Model/ASRModel.py:Model" --add-data "Grab_Ini.py:." --hidden-import language_tool_python API/ASR_API.py
 
     cp config.ini dist/config.ini
 elif [ "$1" == "clean" ]; then
