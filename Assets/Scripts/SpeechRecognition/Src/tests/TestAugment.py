@@ -26,7 +26,6 @@ class TestAugment(unittest.TestCase):
     def test_volume(self):
         augment = Augment()
 
-        # Mock the random.uniform function
         mock_uniform = Mock(return_value=tf.constant(1.05))
         tf.random.uniform = mock_uniform
 
