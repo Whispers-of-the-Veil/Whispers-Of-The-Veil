@@ -18,6 +18,11 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(IInventoryItem item)
     {
+        if(item == null)
+        {
+            throw new System.ArgumentNullException(nameof(item), "Item cannot be null.");
+        }
+        
         if (mItems.Count < SLOTS)
         {
             Collider2D collider = (item as MonoBehaviour).GetComponent<Collider2D>();
