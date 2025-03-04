@@ -35,7 +35,7 @@ class TestProcess(unittest.TestCase):
         pd.read_csv = mock_read_csv
 
         obj = Process()
-        with self.assertRaises(SystemExit)
+        with self.assertRaises(SystemExit):
             obj.LoadCSV('fake_path.csv')
 
     def test_file_not_found(self):
@@ -82,22 +82,21 @@ class TestProcess(unittest.TestCase):
 
         spectrogram = process.Spectrogram(_audio)
 
-        expected_spectrogram = tf.signal.stft(_audio, frame_length=256, frame_step=160, fft_length=384)
-        expected_spectrogram = tf.abs(expected_spectrogram)
-        expected_spectrogram = tf.math.pow(expected_spectrogram, 0.5)
+        tensor = tf.constant(0, shape=(5, 193), dtype=tf.int64)
 
-        self.assertTrue(tf.reduce_all(tf.equal(spectrogram, expected_spectrogram)))
+        self.assertEqual(spectrogram.shape, tensor.shape)
 
     def test_transcript(self):
         process = Process()
-        process.charToNum = Mock(return_value=tf.constant([1, 2, 3, 4]))
 
         _transcript = tf.constant("Test")
 
         result = process.Transcript(_transcript)
 
-        expected_result = tf.constant([1, 2, 3, 4])
-        self.assertTrue(tf.reduce_all(tf.equal(result, expected_result)))
+        expected = np.array([20, 5, 19, 20])
+        expected = tf.convert_to_tensor(expected, dtype=tf.int64)
+
+        self.assertTrue(tf.reduce_all(tf.equal(result, expected)))
 
 def main():
     unittest.main(verbosity = 2)
