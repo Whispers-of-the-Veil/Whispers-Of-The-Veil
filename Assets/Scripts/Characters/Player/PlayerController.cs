@@ -224,7 +224,7 @@ namespace Characters.Player {
         }
         private void CheckForDialogue()
         {
-            if (Input.GetKeyDown(KeyCode.U))
+            if (Input.GetKeyDown(KeyCode.U) && !dialogueUI.IsOpen)
             {
                 if (Interactable != null)
                 {
@@ -232,6 +232,7 @@ namespace Characters.Player {
                 }
             }
         }
+
 
         private void checkFrozen()
         {

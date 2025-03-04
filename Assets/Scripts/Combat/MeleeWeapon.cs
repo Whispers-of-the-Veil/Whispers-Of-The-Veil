@@ -1,5 +1,3 @@
-// Owen Ingram
-
 using System.Collections;
 using System.Collections.Generic;
 using Characters.Enemy;
@@ -16,6 +14,14 @@ namespace Combat
 
         private bool canAttack = true;
         private bool isAttacking = false;
+
+        private Collider2D weaponCollider;
+
+        void Awake()
+        {
+            weaponCollider = GetComponent<Collider2D>();
+            weaponCollider.enabled = false;
+        }
 
         void Update()
         {
@@ -35,7 +41,7 @@ namespace Combat
             canAttack = false;
             isAttacking = true;
 
-            GetComponent<MeshCollider>().enabled = true;
+            weaponCollider.enabled = true;
 
             Invoke(nameof(ResetAttack), 0.1f);
             Invoke(nameof(EnableCooldown), attackCooldown);
@@ -43,7 +49,7 @@ namespace Combat
 
         void ResetAttack()
         {
-            GetComponent<MeshCollider>().enabled = false;
+            weaponCollider.enabled = false;
             isAttacking = false;
         }
 
@@ -52,7 +58,7 @@ namespace Combat
             canAttack = true;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if (isAttacking && other.CompareTag("Enemy"))
             {
@@ -61,11 +67,11 @@ namespace Combat
                 {
                     enemy.TakeDamage(damage);
 
-                    Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
+                    Rigidbody2D enemyRb = enemy.GetComponent<Rigidbody2D>();
                     if (enemyRb != null)
                     {
-                        Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
-                        enemyRb.AddForce(knockbackDirection * knockbackStrength, ForceMode.Impulse);
+                        Vector2 knockbackDirection = (other.transform.position - transform.position).normalized;
+                        enemyRb.AddForce(knockbackDirection * knockbackStrength, ForceMode2D.Impulse);
                     }
 
                     durability--;
