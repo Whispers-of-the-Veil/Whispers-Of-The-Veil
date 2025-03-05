@@ -19,6 +19,8 @@ namespace Characters.Player {
         private float vertical;
         private bool _isSprinting;
         private GameObject _heldObject;
+        
+        
 
         [Header("Components")]
         private Rigidbody2D body;

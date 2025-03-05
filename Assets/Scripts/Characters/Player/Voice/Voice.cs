@@ -22,11 +22,12 @@ namespace Characters.Player.Voice {
 
         [Header("Entities")]
         [SerializeField] public GameObject[] enemies; // An array of enemy gameobjects that can hear the player voice
-        [SerializeField] float DetectVoiceThreshold = 0.03f;
+        [SerializeField] float DetectVoiceThreshold = 0.02f;
 
         [Header("Expected Keys")]
         [SerializeField] string[] keys;
         [SerializeField] int threshold;
+        [SerializeField] int PuzzleInRange = 3;
         private int index;
 
         [Header("Recording Options")]
@@ -34,11 +35,20 @@ namespace Characters.Player.Voice {
         [SerializeField] int RecordingLength = 5;
         private AudioClip micClip;
         private float[] audio;
-        private bool isRecording;
+        private Queue<float[]> recordings = new Queue<float[]>();
+        private bool isRecording = false;
+        private bool isProcessing = false;
         private string microphoneDevice;
 
+        [Header("Speech Bubble")]
+        private GameObject speechBubble;
+        private TextMeshProUGUI textField;
+
         void Start () {
-            isRecording = false;
+            speechBubble = GameObject.Find("SpeechBubble");
+            textField = GameObject.Find("SpeechBubble/Text").GetComponent<TextMeshProUGUI>();
+
+            speechBubble.SetActive(false);
 
             if (Microphone.devices.Length > 0) {
                 microphoneDevice = Microphone.devices[0];
@@ -50,6 +60,19 @@ namespace Characters.Player.Voice {
         void Update () {
             if (!isRecording) {
                 StartCoroutine(HandleRecording());
+            }
+
+            if (recordings.Count > 0 && !isProcessing) {
+                isProcessing = true;
+
+                speechBubble.SetActive(true);
+
+                float[] clip = recordings.Dequeue();
+
+                Debug.LogError("Processing item in queue: " + recordings.Count + " items remaining");
+                StartCoroutine(GetPrediction(clip));
+
+                StartCoroutine(ResetSpeechBubble(3));
             }
         }
 
@@ -79,17 +102,19 @@ namespace Characters.Player.Voice {
             Debug.Log(rmsValue);
 
             if (rmsValue > DetectVoiceThreshold) {
-                Debug.Log("The player spoke");
+                recordings.Enqueue(audio);
 
                 StartCoroutine(Detect());
-
-                StartCoroutine(GetPrediction(audio));
             }
 
             Debug.Log("Stoped Recording");
             isRecording = false;
         }
 
+        /// <summary>
+        /// Called the VoiceDetected method on each enitity. That method determines if the player was within range
+        /// of that entity and trigger an aggrivated coroutine if they were.
+        /// </summary>
         private IEnumerator Detect() {
             foreach (var enemy in enemies) {
                 enemy.GetComponent<EnemyController>().VoiceDetected();
@@ -161,6 +186,26 @@ namespace Characters.Player.Voice {
         }
 
         /// <summary>
+        /// Determines if the player is within range of a puzzle object -- defined by the puzzle layer.
+        /// </summary>
+        /// <returns>Returns true if they are; false otherwise</returns>
+        private bool CheckIfNearPuzzle() {
+            Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, PuzzleInRange, LayerMask.GetMask("Puzzle"));
+
+            // Loop through all colliders and check line of sight
+            foreach (Collider2D puzzleCollider in puzzleColliders) {
+                Vector2 directionToPuzzle = (puzzleCollider.transform.position - transform.position).normalized;
+
+                // Perform a 2D raycast to check for line of sight to the puzzle
+                if (Physics2D.Raycast(transform.position, directionToPuzzle, PuzzleInRange, LayerMask.GetMask("Puzzle"))) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Get the prediction from the model API
         /// </summary>
         /// <param name="audioData">The audio data collected from the microphone</param>
@@ -187,20 +232,42 @@ namespace Characters.Player.Voice {
                 }
 
                 Debug.Log("You said: " + prediction);
-                
-                yield return StartCoroutine(CheckExpected(prediction));
-                
-                if (index == -1) {
-                    Debug.Log("You said something the game wasnt expecting");
-                } else if (index < keys.Length) {
-                    Debug.Log("The closest expected string is: " + keys[index]);
-                    OnCommandRecognized?.Invoke(keys[index]);
+                textField.text = prediction;
+
+                // Check if we are near a puzzle. if we are, check the prediction agains the
+                // keys array
+                if (CheckIfNearPuzzle()) {
+                    Debug.Log("Near puzzle");
+                    yield return StartCoroutine(CheckExpected(prediction));
+
+                    if (index == -1) {
+                        Debug.Log("You said something the game wasnt expecting");
+                    } else if (index < keys.Length) {
+                        Debug.Log("The closest expected string is: " + keys[index]);
+                        OnCommandRecognized?.Invoke(keys[index]);
+                    } else {
+                        Debug.Log("Index fell outside the bounds of the keys array");
+                    }
                 } else {
-                    Debug.Log("Index fell outside the bounds of the keys array");
+                    Debug.Log("Not near a puzzle");
                 }
             } else {
                 Debug.LogError("Failed to send audio: " + www.error);
             }
+
+            isProcessing = false;
+        }
+
+        /// <summary>
+        /// Resets the speech bubble after a specified amount of time
+        /// </summary>
+        /// <param name="time">The amount of time to wait before disabling the speechbubble</param>
+        /// <returns></returns>
+        private IEnumerator ResetSpeechBubble(int time) {
+            yield return new WaitForSeconds(time);
+            
+            textField.text = "...";
+            speechBubble.SetActive(false);
         }
     }
 }
