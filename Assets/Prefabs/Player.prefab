@@ -184,7 +184,7 @@ GameObject:
   - component: {fileID: 2413266402340619363}
   - component: {fileID: 7340290357935729892}
   - component: {fileID: 7557604048196142964}
-  - component: {fileID: 1082887625957732678}
+  - component: {fileID: 4164559071668398503}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -444,7 +444,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &1082887625957732678
+--- !u!114 &4164559071668398503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -453,13 +453,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7188177131963908965}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa7315830bf64a579a4d063a2094ac7, type: 3}
+  m_Script: {fileID: 11500000, guid: c318281acfb04904bbecfdf933bee1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  URL: http://localhost:8888/ASR
+  URL: http://127.0.0.1:8888/ASR
+  enemies: []
+  DetectVoiceThreshold: 0.03
   keys: []
   threshold: 5
   SampleRate: 16000
-  TimeLimit: 5
-  speechBubble: {fileID: 2100759755597779630, guid: 6791046301ab1465ebddb2168269b5e3, type: 3}
-  textField: {fileID: 0}
+  RecordingLength: 5

@@ -16,12 +16,12 @@ public class Chest : MonoBehaviour
     private const string playerTag = "Player";
     void OnEnable()
     {
-        RecordAudio.OnCommandRecognized += OnVoiceCommand;
+        Voice.OnCommandRecognized += OnVoiceCommand;
     }
 
     void OnDisable()
     {
-        RecordAudio.OnCommandRecognized -= OnVoiceCommand;
+        Voice.OnCommandRecognized -= OnVoiceCommand;
     }
 
     // Callback triggered when a command is recognized.
