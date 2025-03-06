@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial 2
   m_EditorClassIdentifier: 
   dialogue:
-  - Its a fox! Maybe I can sneak up on it if I stay quiet...
+  - Press shift to sprint.
   responses: []
   npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}
