@@ -1,9 +1,6 @@
-// Owen Ingram
-
 using System.Collections;
-using System.Collections.Generic;
-using Characters.Enemy;
 using UnityEngine;
+using Characters.Enemy;
 
 namespace Combat
 {
@@ -11,70 +8,46 @@ namespace Combat
     {
         public int damage = 10;
         public float attackCooldown = 0.5f;
-        public float knockbackStrength = 5f;
-        public int durability = 10;
-
         private bool canAttack = true;
-        private bool isAttacking = false;
 
-        void Update()
+        private void Update()
         {
-            CheckForAttack();
-        }
-        
-        private void CheckForAttack()
-        {
-            if (Input.GetMouseButtonDown(0) && canAttack)
+            // Check if the weapon is being held (has a parent) and the player clicks to attack
+            if (transform.parent != null && Input.GetMouseButtonDown(0) && canAttack)
             {
                 Attack();
             }
         }
 
-        void Attack()
+        public void Attack()
         {
-            canAttack = false;
-            isAttacking = true;
-
-            GetComponent<MeshCollider>().enabled = true;
-
-            Invoke(nameof(ResetAttack), 0.1f);
-            Invoke(nameof(EnableCooldown), attackCooldown);
-        }
-
-        void ResetAttack()
-        {
-            GetComponent<MeshCollider>().enabled = false;
-            isAttacking = false;
-        }
-
-        void EnableCooldown()
-        {
-            canAttack = true;
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (isAttacking && other.CompareTag("Enemy"))
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 0.5f);
+            foreach (Collider2D enemy in hitEnemies)
             {
-                EnemyController enemy = other.GetComponent<EnemyController>();
-                if (enemy != null)
+                if (enemy.CompareTag("Enemy"))
                 {
-                    enemy.TakeDamage(damage);
-
-                    Rigidbody enemyRb = enemy.GetComponent<Rigidbody>();
-                    if (enemyRb != null)
+                    EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                    if (enemyController != null)
                     {
-                        Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
-                        enemyRb.AddForce(knockbackDirection * knockbackStrength, ForceMode.Impulse);
-                    }
-
-                    durability--;
-                    if (durability <= 0)
-                    {
-                        Destroy(gameObject);
+                        enemyController.TakeDamage(damage);
+                        StartCoroutine(AttackCooldown());
                     }
                 }
             }
+        }
+
+        private IEnumerator AttackCooldown()
+        {
+            canAttack = false;
+            yield return new WaitForSeconds(attackCooldown);
+            canAttack = true;
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            // Visualize attack range in the editor
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, 0.5f);
         }
     }
 }

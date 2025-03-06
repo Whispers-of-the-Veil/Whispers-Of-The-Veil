@@ -25,3 +25,4 @@ MonoBehaviour:
     dialogueObject: {fileID: 11400000, guid: c8d723a1f4e1d72408da955b2b942843, type: 2}
   - reponseText: Controls?
     dialogueObject: {fileID: 11400000, guid: 9da4714c9b5e6bc48b8329880d482939, type: 2}
+  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}

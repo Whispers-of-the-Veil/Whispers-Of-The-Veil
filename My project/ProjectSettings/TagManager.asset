@@ -3,17 +3,25 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Pickup
+  - Enemy
+  - Checkpoint
+  - Chest
+  - Door_Start
+  - Tree
+  - Fog
+  - DialogTrigger
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - player
   - Water
   - UI
-  - 
-  - 
-  - 
+  - PickupObjects
+  - Boarder
+  - Puzzle
   - 
   - 
   - 
@@ -40,4 +48,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 2312543379
+    locked: 0
+  - name: Player
+    uniqueID: 1659201753
+    locked: 0
+  - name: Environment
+    uniqueID: 222793271
+    locked: 0
+  - name: Fog
+    uniqueID: 3085153369
+    locked: 0
+  - name: Rain
+    uniqueID: 2046225861
+    locked: 0
+  - name: Furniture
+    uniqueID: 4131961027
     locked: 0
