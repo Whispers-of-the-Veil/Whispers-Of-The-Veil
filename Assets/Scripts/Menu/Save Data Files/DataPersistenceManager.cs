@@ -80,20 +80,47 @@ public class DataPersistenceManager : MonoBehaviour
 
         SceneManager.sceneLoaded += (scene, mode) =>
         {
+            Debug.Log("Scene loaded, looking for player...");
+
             GameObject player = GameObject.FindGameObjectWithTag("Player");
 
             if (player == null && playerPrefab != null)
             {
-                Debug.LogWarning("Player was missing! Instantiating new Player...");
+                Debug.LogWarning("No Player found! Instantiating from prefab...");
                 player = Instantiate(playerPrefab);
                 player.name = "Player"; 
             }
 
             if (player != null)
             {
-                player.transform.position = new Vector3(data.playerX, data.playerY, data.playerZ);
+                float savedX = data.playerX;
+                float savedY = data.playerY;
+                float savedZ = data.playerZ;
+
+                Debug.Log($"Loaded Position: X={savedX}, Y={savedY}, Z={savedZ}");
+
+                // Apply saved position
+                player.transform.position = new Vector3(savedX, savedY, savedZ);
+
+                // If saved position is (0,0,0), fallback to SpawnPoint
+                if (savedX == 0 && savedY == 0 && savedZ == 0)
+                {
+                    GameObject spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
+                    if (spawnPoint != null)
+                    {
+                        player.transform.position = spawnPoint.transform.position;
+                        Debug.Log("Player moved to SpawnPoint.");
+                    }
+                    else
+                    {
+                        Debug.LogError("No SpawnPoint found in this scene!");
+                    }
+                }
             }
-            Debug.Log($"Player position loaded: {data.playerX}, {data.playerY}, {data.playerZ}");
+            else
+            {
+                Debug.LogError("Failed to find or create a player!");
+            }
         };
     }
 }
