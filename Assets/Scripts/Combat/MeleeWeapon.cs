@@ -8,6 +8,10 @@ namespace Combat
     {
         public int damage = 10;
         public float attackCooldown = 0.5f;
+        public float knockbackForce = 3f; // Strength of knockback
+        public float knockbackDuration = 0.2f; // Time the knockback lasts
+        public int durability = 5; // Starting durability of the weapon
+
         private bool canAttack = true;
 
         private void Update()
@@ -27,12 +31,50 @@ namespace Combat
                 if (enemy.CompareTag("Enemy"))
                 {
                     EnemyController enemyController = enemy.GetComponent<EnemyController>();
-                    if (enemyController != null)
+                    Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
+
+                    if (enemyController != null && enemyRigidbody != null)
                     {
                         enemyController.TakeDamage(damage);
+                        
+                        // Calculate knockback direction and apply force
+                        Vector2 knockbackDirection = enemy.transform.position - transform.position;
+                        knockbackDirection.Normalize(); // Make sure the direction is consistent
+                        enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                        
+                        StartCoroutine(ApplyKnockbackDuration(enemyRigidbody, enemy)); // Apply knockback for a limited time
                         StartCoroutine(AttackCooldown());
                     }
+
+                    // Decrease durability and destroy the weapon if it's out of durability
+                    durability--;
+                    if (durability <= 0)
+                    {
+                        Destroy(gameObject);
+                    }
                 }
+            }
+        }
+
+        private IEnumerator ApplyKnockbackDuration(Rigidbody2D enemyRigidbody, Collider2D enemy)
+        {
+            // Apply knockback for a limited duration, after which the force will stop
+            float timer = 0f;
+            while (timer < knockbackDuration)
+            {
+                if (enemy == null || enemyRigidbody == null)
+                {
+                    yield break; // Exit the coroutine if the enemy or Rigidbody is destroyed
+                }
+
+                timer += Time.deltaTime;
+                yield return null;
+            }
+
+            // Once duration is over, stop the knockback by applying no further force
+            if (enemyRigidbody != null)
+            {
+                enemyRigidbody.velocity = Vector2.zero;
             }
         }
 

@@ -250,7 +250,7 @@ namespace Characters.Enemy {
             }
 
             // After attacking, allow the enemy to either patrol or investigate
-            hasStopped = false; // Reset the flag after the attack
+             // Reset the flag after the attack
         }
 
 
