@@ -6,20 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Inventory.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Inventory.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Book.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Book.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Forest - Night Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Forest - Night Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Grassy Plans.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Grassy Plans.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/farzanaForest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/farzanaForest.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/SfarzanaForest 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/SfarzanaForest 1.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/Inventory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/InventoryItemBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/InventoryItemBase.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/HUD.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/HUD.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/ItemClickHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/ItemClickHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Key.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Key.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Dialogue/DialogueUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Dialogue/DialogueUI.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Environment/Hazards/Fog.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Environment/Hazards/Fog.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Menu/PauseMenu.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Menu/PauseMenu.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,23 +48,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Attach to Unity Editor.Attach to Unity Editor.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "XThreadsFramesViewSplitterKey": "0.922049",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Attach to Unity Editor.Attach to Unity Editor.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.59096044&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.44f1\Editor\Unity.exe" />
@@ -99,10 +95,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="11408">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="32796">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="11408" />
+      <option name="pid" value="32796" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -149,6 +145,8 @@
       <workItem from="1741069177953" duration="2539000" />
       <workItem from="1741220610393" duration="9866000" />
       <workItem from="1741235705553" duration="10262000" />
+      <workItem from="1741275140521" duration="3232000" />
+      <workItem from="1741278458421" duration="2172000" />
     </task>
     <servers />
   </component>
@@ -191,6 +189,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs</url>
+          <line>227</line>
+          <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Characters\Player\PlayerController.cs" containingFunctionPresentation="Method 'CheckForBookInteraction'">
+            <startOffsets>
+              <option value="7847" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7895" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

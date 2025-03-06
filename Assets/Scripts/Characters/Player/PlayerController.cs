@@ -37,7 +37,7 @@ namespace Characters.Player {
         [SerializeField] private float dropDistance = 0.25f;
         
         [Header("Dialogue")]
-        private DialogueUI dialogueUI;
+        [SerializeField] private DialogueUI dialogueUI;
 
 
 

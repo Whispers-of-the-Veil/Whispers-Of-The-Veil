@@ -19,6 +19,10 @@ namespace Environment.Hazards {
         private bool isInFog = false;
     
         void Start() {
+            if (player == null)
+            {
+                player = GameObject.Find("Player");
+            }
             this.stats = player.gameObject.GetComponent<CharacterStats>();
         }
     

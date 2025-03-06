@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -10,11 +11,29 @@ namespace Dialogue
         [SerializeField] private GameObject dialogueBox;
         [SerializeField] private TMP_Text textLabel;
         [SerializeField] private Image npcImage;
-        
+        public static DialogueUI instance;
         public bool IsOpen { get; private set; }
         
         private ResponseHandler responseHandler;
         private TypeWriteEffect typeWriteEffect;
+
+        private void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            instance = null;
+        }
 
         private void Start()
         {
@@ -27,8 +46,11 @@ namespace Dialogue
         public void ShowDialogue(DialogueObject dialogueObject)
         {
             IsOpen = true;
-            dialogueBox.SetActive(true);
-            
+            if (dialogueBox != null)
+            {
+                dialogueBox.SetActive(true);
+            }
+
             if (npcImage != null)
             {
                 npcImage.sprite = dialogueObject.NpcSprite;
