@@ -44,6 +44,10 @@ namespace Characters.Enemy {
         private bool isPatroling = false;
         
         private void Start() {
+            if (target == null) {
+                target = GameObject.Find("Player").GetComponent<Transform>();
+            }
+            
             alertEmote = GameObject.Find("Emotes/Alert");
             angryEmote = GameObject.Find("Emotes/Angry");
             frustratedEmote = GameObject.Find("Emotes/Frustrated");

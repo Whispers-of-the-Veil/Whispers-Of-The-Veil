@@ -49,6 +49,13 @@ namespace Characters.Player {
         
         // Start is called before the first frame update
         private void Start() {
+            if (dialogueUI == null) {
+                dialogueUI = GameObject.Find("Canvas").GetComponent<DialogueUI>();
+            }
+            if (weather == null) {
+                weather = GameObject.Find("Weather").GetComponent<RainController>();
+            }
+            
             body = GetComponent<Rigidbody2D>();
             inventory.ItemUsed += Inventory_ItemUsed; 
             //Cursor.lockState = CursorLockMode.Locked;
