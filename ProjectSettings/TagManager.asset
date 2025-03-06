@@ -21,7 +21,7 @@ TagManager:
   - UI
   - PickupObjects
   - Boarder
-  - Puzzle
+  - 
   - 
   - 
   - 
@@ -64,6 +64,6 @@ TagManager:
   - name: Rain
     uniqueID: 2046225861
     locked: 0
-  - name: Furniture
-    uniqueID: 4131961027
+  - name: weapon
+    uniqueID: 1795277447
     locked: 0
