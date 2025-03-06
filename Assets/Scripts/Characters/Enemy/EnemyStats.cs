@@ -9,7 +9,7 @@ namespace Characters.Enemy
 {
     public class EnemyStats : CharacterStats
     {
-        [SerializeField] private int damage;
+        [SerializeField] private float damage;
         [SerializeField] private bool canAttack;
         
         [SerializeField] private PlayerStats _playerStats;
@@ -38,7 +38,7 @@ namespace Characters.Enemy
             SetHealthTo(maxHealth);
             isDead = false;
 
-            int dmg = damage;
+            float dmg = damage;
             attackSpeed = 1.5f;
             canAttack = true;
         }
