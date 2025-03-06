@@ -1,5 +1,3 @@
-//Owen Ingram
-
 using System.Collections;
 using System.Collections.Generic;
 using Characters.Player;
@@ -21,6 +19,7 @@ namespace Dialogue
             if (other.CompareTag("Player") && other.TryGetComponent(out PlayerController player))
             {
                 player.Interactable = this;
+                Interact(player); // Automatically trigger dialogue when the player enters the collider
             }
         }
 
@@ -34,7 +33,7 @@ namespace Dialogue
                 }
             }
         }
-        
+
         public void Interact(PlayerController player)
         {
             foreach (DialogueResponseEvents responseEvents in GetComponents<DialogueResponseEvents>())
