@@ -37,7 +37,7 @@ namespace Characters.Player {
         [SerializeField] private float dropDistance = 0.25f;
         
         [Header("Dialogue")]
-        [SerializeField] private DialogueUI dialogueUI;
+        private DialogueUI dialogueUI;
 
 
 
@@ -98,8 +98,9 @@ namespace Characters.Player {
     
         // Updated at a fixed framerate; used for physics calculations
         private void FixedUpdate() {
-            if (isFrozen) {
-                body.velocity = new Vector2(0, body.velocity.y);
+            if (isFrozen)
+            {
+                body.velocity = Vector2.zero;
                 return;
             }
 
