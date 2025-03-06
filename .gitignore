@@ -79,6 +79,7 @@ __pycache__/
 
 # Ignore the ASR model
 ASR.keras
+ASR.keras.meta
 
 # Ignore the build directory
 dist/
