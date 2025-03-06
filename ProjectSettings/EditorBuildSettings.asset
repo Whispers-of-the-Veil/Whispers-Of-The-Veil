@@ -11,18 +11,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main Menu.unity
     guid: f4902928d793c5b45a123300d8bf113d
-  - enabled: 0
-    path: Assets/Scenes/Test Scenes/Demo Scene.unity
-    guid: d6bc510a272d19b47a29b9eb4d205f29
   - enabled: 1
-    path: Assets/Scenes/Test Scenes/farzanaForest.unity
-    guid: 38208620a18011d4f89c1a8858bf6e12
+    path: Assets/Scenes/Introduction/Grassy Plans.unity
+    guid: 9c68a64b145a34741b10f1c1182b1068
+  - enabled: 1
+    path: Assets/Scenes/Introduction/Forest - Day Scene.unity
+    guid: 88214f190aa6e41b185928e8c438ab8c
+  - enabled: 1
+    path: Assets/Scenes/Test Scenes/SfarzanaForest 1.unity
+    guid: 3c5500e7faac6c946bbfbcee90e50671
   - enabled: 1
     path: Assets/Scenes/Test Scenes/CabinMain.unity
     guid: db032b284d807ec4fb38ed70ff1f4aa6
-  - enabled: 0
-    path: Assets/Scenes/Test Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/Settings.unity
     guid: 284ce1a9583cd684187e2fed92919a39
