@@ -9,8 +9,15 @@ using Characters.Player;
 
 public class ItemClickHandler : MonoBehaviour
 {
-    public Inventory _inventory;
-    public Transform holdPoint;
+    public Inventory _inventory
+    {
+        get { return Inventory.instance; }
+    }
+
+    public PlayerManager _playerManager
+    {
+        get { return PlayerManager.instance; }
+    }
     public void OnItemClicked()
     {
 
@@ -42,9 +49,9 @@ public class ItemClickHandler : MonoBehaviour
 
         GameObject itemObj = (item as MonoBehaviour).gameObject;
         itemObj.SetActive(true);
-        itemObj.transform.parent = holdPoint;
-        itemObj.transform.position = holdPoint.position;
-        itemObj.transform.rotation = holdPoint.rotation;
+        itemObj.transform.parent = _playerManager.holdPoint.transform;
+        itemObj.transform.position = _playerManager.holdPoint.transform.position;
+        itemObj.transform.rotation = _playerManager.holdPoint.transform.rotation;
 
         playerController.SetHeldObject(itemObj);
 

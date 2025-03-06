@@ -618,7 +618,6 @@ MonoBehaviour:
   moveLimiter: 0.7
   sprintSpeedMultiplier: 1.5
   weather: {fileID: 7170891254809870389, guid: 9519e64351d1041d38f957780892e7f8, type: 3}
-  inventory: {fileID: 4616351280504063300, guid: 5fbecb77a5ebf07bd851126fc49d9006, type: 3}
   holdPoint: {fileID: 3525987265052427598}
   pickupRange: 0.5
   dropDistance: 0.25
@@ -635,6 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08aeca410b9e12f45b195e28fa017865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdPoint: {fileID: 2293290981672332294}
 --- !u!114 &7557604048196142964
 MonoBehaviour:
   m_ObjectHideFlags: 0

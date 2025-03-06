@@ -9,11 +9,15 @@ public class Chest : MonoBehaviour
 {
     [SerializeField] private Sprite openChestSprite;
     [SerializeField] private GameObject antidotePrefab;
-    // Reference to the key object the player must be holding in order to open the chest.
-    [SerializeField] private GameObject keyObject;
     private bool isOpen = false;
 
     private const string playerTag = "Player";
+    public Key key
+    {
+        get => Key.instance;
+    }
+
+
     void OnEnable()
     {
         Voice.OnCommandRecognized += OnVoiceCommand;
@@ -42,6 +46,7 @@ public class Chest : MonoBehaviour
                         // Open the chest and consume the key.
                         Open();
                         controller.hasKey = false;
+                        
                     }
                     else
                     {
@@ -85,14 +90,11 @@ public class Chest : MonoBehaviour
                 return;
             }
 
-            Vector3 spawnPosition = transform.position + Vector3.up * 0.5f;
+            Vector3 spawnPosition = transform.position + Vector3.up * -0.8f;
             Instantiate(antidotePrefab, spawnPosition, Quaternion.identity);
             
             // Destroy the key after using it to open the chest.
-            if (keyObject != null)
-            {
-                Destroy(keyObject);
-            }
+            Destroy(Key.instance);
             isOpen = true;
             Debug.Log("Chest opened via voice command!");
         }

@@ -1,12 +1,15 @@
 //Farzana Tanni
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    private static PlayerManager instance;
+
+    public GameObject holdPoint;
+    public static PlayerManager instance;
 
     void Awake()
     {
@@ -19,6 +22,12 @@ public class PlayerManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+
         }
+    }
+
+    private void OnDestroy()
+    {
+        instance = null;
     }
 }

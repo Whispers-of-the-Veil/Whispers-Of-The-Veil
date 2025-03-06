@@ -10,11 +10,30 @@ public class Inventory : MonoBehaviour
 {
     private const int SLOTS = 6;
 
-    private List<IInventoryItem> mItems = new List<IInventoryItem>();
+    public List<IInventoryItem> mItems = new List<IInventoryItem>();
     
+    public static Inventory instance;
     public static event EventHandler<InventoryEventArgs> ItemAdded;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
     public event EventHandler<InventoryEventArgs> ItemUsed;
+
+    protected void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        instance = null;
+    }
 
     public void AddItem(IInventoryItem item)
     {

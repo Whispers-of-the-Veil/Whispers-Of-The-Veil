@@ -11,6 +11,8 @@ public class Key : InventoryItemBase
     {
         get { return "Key"; }
     }
+    
+    public static Key instance;
 
     public override void OnUse()
     {

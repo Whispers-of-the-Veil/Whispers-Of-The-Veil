@@ -55,6 +55,9 @@ TagManager:
   - name: Player
     uniqueID: 1659201753
     locked: 0
+  - name: Furniture
+    uniqueID: 4131961027
+    locked: 0
   - name: Environment
     uniqueID: 222793271
     locked: 0
@@ -64,6 +67,9 @@ TagManager:
   - name: Rain
     uniqueID: 2046225861
     locked: 0
+<<<<<<< Updated upstream
   - name: weapon
     uniqueID: 1795277447
     locked: 0
+=======
+>>>>>>> Stashed changes

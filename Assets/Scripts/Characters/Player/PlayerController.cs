@@ -25,9 +25,11 @@ namespace Characters.Player {
 
         [Header("Components")]
         private Rigidbody2D body;
-        
-        [Header("Inventory")]
-        public Inventory inventory;
+
+        public Inventory inventory
+        {
+            get => Inventory.instance;
+        }
         
         [Header("Pickup Settings")]
         [SerializeField] private Transform holdPoint;  
