@@ -49,7 +49,7 @@ public class PlayerManager : MonoBehaviour
 
     private void MoveToSpawnPoint()
     {
-        GameObject spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("Spawnpoint");
         if (spawnPoint != null)
         {
             transform.position = spawnPoint.transform.position; 
