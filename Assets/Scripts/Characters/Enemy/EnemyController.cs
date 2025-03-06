@@ -73,13 +73,11 @@ namespace Characters.Enemy {
             if (CheckInSight() && !hasStopped) {
                 StartCoroutine(ShowEmote(angryEmote));
                 HasSeen();
-            }
-            else {
-                if (!isPatroling && !isInvestigating) {
-                    StartCoroutine(DelayPatrol());
-                }
+            } else if (!isPatroling && !isInvestigating && !hasStopped) {
+                StartCoroutine(DelayPatrol());
             }
         }
+
         
         /// <summary>
         /// Briefly display a given emote
@@ -96,32 +94,28 @@ namespace Characters.Enemy {
         /// </summary>
         private void HasSeen() {
             Vector2 directionToPlayer = ((Vector2)target.position - (Vector2)transform.position).normalized;
-
-            // Calculate the stopping position
             Vector2 stopPosition = (Vector2)target.position - (directionToPlayer * stoppingDistance);
-            
+
             NavMeshHit hit;
             if (NavMesh.SamplePosition(stopPosition, out hit, stoppingDistance, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);
                 agent.speed = speed * 2;
             }
-            else {
-                // Attack logic if within stopping distance
-                if (!hasStopped) {
-                    timeOfLastAttack = Time.time;
-                    hasStopped = true; // Enemy has stopped to attack
-                }
 
+            float distanceToPlayer = Vector2.Distance(transform.position, target.position);
+            if (distanceToPlayer <= stoppingDistance) {
                 if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
                     timeOfLastAttack = Time.time;
-                    CharacterStats targetStats = target.GetComponent<CharacterStats>();
-                    if (targetStats != null) {
-                        AttackTarget(targetStats);
-                        Debug.Log("attacking player");
-                    }
+                    AttackPlayer();
+                    hasStopped = false; // Reset here so the enemy can move again after attacking
                 }
+            } else {
+                hasStopped = false;
             }
         }
+
+
+
         
         /// <summary>
         /// Determine if the player can be seen by the enemy
@@ -130,18 +124,18 @@ namespace Characters.Enemy {
         private bool CheckInSight() {
             Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, sightRange, LayerMask.GetMask("player"));
 
-            // Loop through all colliders and check line of sight
             foreach (Collider2D puzzleCollider in puzzleColliders) {
                 Vector2 directionToPlayer = (puzzleCollider.transform.position - transform.position).normalized;
 
-                // Perform a 2D raycast to check for line of sight to the puzzle
                 if (Physics2D.Raycast(transform.position, directionToPlayer, sightRange, LayerMask.GetMask("player"))) {
+                    //Debug.Log("Player detected in sight!");
                     return true;
                 }
             }
-
+            //Debug.Log("Player not detected in sight.");
             return false;
         }
+
         
         // Patrolling ---------------------------------------------------------------------------------------------------
         /// <summary>
@@ -248,12 +242,18 @@ namespace Characters.Enemy {
             Destroy(gameObject);
         }
         
-        private void AttackTarget(CharacterStats statsToDamage)
-        {
-            //perform player damage to enemy stats script
-            Debug.Log("attacking players");
-            stats.DealDamage(statsToDamage);
+        private void AttackPlayer() {
+            CharacterStats playerStats = target.GetComponent<CharacterStats>();
+            if (playerStats != null) {
+                stats.DealDamage(playerStats);
+                Debug.Log("Enemy attacked the player!");
+            }
+
+            // After attacking, allow the enemy to either patrol or investigate
+            hasStopped = false; // Reset the flag after the attack
         }
+
+
 
         private void GetReferences()
         {

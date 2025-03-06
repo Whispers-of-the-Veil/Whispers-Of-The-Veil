@@ -9,7 +9,7 @@ namespace Characters.Player
     public class CharacterStats : MonoBehaviour
     {
         
-        [SerializeField] protected int health;
+        [SerializeField] protected float health = 3f; // Use float to allow fractional health
         [SerializeField] protected int maxHealth;
         [SerializeField] protected bool isDead;
         // Start is called before the first frame update
@@ -43,12 +43,13 @@ namespace Characters.Player
             CheckHealth();
         }
         
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
-            int healthAfterDamage = health - damage;
-            SetHealthTo(healthAfterDamage);
-            Debug.Log($"Player took {damage} damage. Health left: {health}");
+            health -= damage;
+            health = Mathf.Clamp(health, 0f, 3f); // Ensure health stays within bounds (0 to 3)
+            Debug.Log($"Player took {damage} damage. Remaining health: {health}");
         }
+
         
         public virtual void InitVariables()
         {
@@ -56,5 +57,6 @@ namespace Characters.Player
             SetHealthTo(maxHealth);
             isDead = false;
         }
+        
     }
 }
