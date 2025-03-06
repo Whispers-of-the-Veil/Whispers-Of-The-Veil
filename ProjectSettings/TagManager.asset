@@ -11,6 +11,7 @@ TagManager:
   - Door_Start
   - Tree
   - Fog
+  - DialogTrigger
   layers:
   - Default
   - TransparentFX
@@ -62,4 +63,7 @@ TagManager:
     locked: 0
   - name: Rain
     uniqueID: 2046225861
+    locked: 0
+  - name: weapon
+    uniqueID: 1795277447
     locked: 0

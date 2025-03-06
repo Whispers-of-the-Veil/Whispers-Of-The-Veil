@@ -1,6 +1,7 @@
 using Dialogue;
 using UnityEngine;
 using Environment;
+using Combat;
 
 namespace Characters.Player {
     public class PlayerController : MonoBehaviour
@@ -71,6 +72,7 @@ namespace Characters.Player {
             CheckForChestInteraction();
             CheckForBookInteraction();
             CheckForDialogue();
+            CheckForAttack();
         }
     
         private void OnMove() {
@@ -229,6 +231,18 @@ namespace Characters.Player {
                 if (Interactable != null)
                 {
                     Interactable.Interact(this);
+                }
+            }
+        }
+
+        private void CheckForAttack()
+        {
+            if (_heldObject != null && Input.GetMouseButtonDown(0)) // Left click to attack
+            {
+                MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
+                if (weapon != null)
+                {
+                    weapon.Attack();
                 }
             }
         }

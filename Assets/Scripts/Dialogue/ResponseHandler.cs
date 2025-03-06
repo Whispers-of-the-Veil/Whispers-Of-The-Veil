@@ -30,7 +30,7 @@ namespace Dialogue
 
         public void ShowResponses(Response[] responses)
         {
-            float responseBoxHeight = 0;
+            float responseBoxHeight = 20f;
 
             for (int i = 0; i < responses.Length; i++)
             {
