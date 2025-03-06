@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("Destroying duplicate player");
             Destroy(gameObject);
         }
     }
