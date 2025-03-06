@@ -621,7 +621,7 @@ MonoBehaviour:
   holdPoint: {fileID: 3525987265052427598}
   pickupRange: 0.5
   dropDistance: 0.25
-  dialogueUI: {fileID: 8646177190491259789, guid: 3a091f80f21484a26a617a031af9aa32, type: 3}
+  dialogueUI: {fileID: 0}
 --- !u!114 &7340290357935729892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,7 +673,8 @@ MonoBehaviour:
   shutDownURL: http://127.0.0.1:8888/close
   enemies: []
   DetectVoiceThreshold: 0.01
-  keys: []
+  keys:
+  - open chest
   threshold: 5
   PuzzleInRange: 3
   SampleRate: 16000
