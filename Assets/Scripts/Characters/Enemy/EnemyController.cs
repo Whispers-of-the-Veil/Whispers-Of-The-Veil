@@ -1,116 +1,107 @@
 // Lucas Davis(10-166)
 //Owen Ingram(167-195)
 
-using System;
-using System.Collections;
-using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine;
+using System.Collections;
 using Characters.Player;
 
 namespace Characters.Enemy {
-    public class EnemyController : MonoBehaviour {
-        [Header("States")] 
-        [SerializeField] public float alertDuration;
-        private bool alert, playerInSight;
-
-        [Header("Movement")] 
-        [SerializeField] public Transform playerTransform;
-        [SerializeField] public float speed;
-        [SerializeField] public float radius;
-        private Vector3 direction, velocity;
-        private bool isMoving = false;
-
-        [Header("Senses")]
-        [SerializeField] public LayerMask player;
-        [SerializeField] public float sightRange;       // How far can this enemy see
-        [SerializeField] public float hearingRange;     // How far can this enemy hear
-        [SerializeField] public int heardLimit;
-        private RaycastHit hit;
-        private Vector3 directionToPlayer, randomPosition;
-        private int heardCount;
-
-        [Header("Components")]
-        [SerializeField] public GameObject alertEmote;
-        private Rigidbody rb;
- 
-        //combat
+    public class EnemyController : MonoBehaviour
+    {
+        [Header("Combat")]
+        [SerializeField] private float stoppingDistance = 2.0f;
+        [SerializeField] public int health = 30;
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         private EnemyStats stats = null;
-        [SerializeField] Transform target;
-        [SerializeField] private float stoppingDistance = 2.0f;
-        public int health = 30;
         
-        // Start is called before the first frame update
+        [Header("Emotes")]
+        private GameObject alertEmote;
+        private GameObject angryEmote;
+        private GameObject frustratedEmote;
+        
+        [Header("Movement")]
+        [SerializeField] Transform target;
+        [SerializeField] float speed = 2f;
+        [SerializeField] float patrolRadius = 5f;
+        [SerializeField] float minIvenstigateDistance; 
+        [SerializeField] float maxIvenstigateDistance;
+        private NavMeshAgent agent;
+        
+        [Header("Senses")]
+        [SerializeField] public float sightRange;       // How far can this enemy see
+        [SerializeField] public float hearingRange;     // How far can this enemy hear
+        [SerializeField] public int heardLimit;
+        private int heardCount;
+        
+        [Header("States")] 
+        [SerializeField] float investigateDelay;
+        [SerializeField] float patrolDelay;
+        [SerializeField] float investigationTimeout;
+        private bool isMoving = false;
+        private bool isInvestigating = false;
+        private bool isPatroling = false;
+        
         private void Start() {
-            this.alertEmote.SetActive(false);
-            this.rb = GetComponent<Rigidbody>();
+            alertEmote = GameObject.Find("Emotes/Alert");
+            angryEmote = GameObject.Find("Emotes/Angry");
+            frustratedEmote = GameObject.Find("Emotes/Frustrated");
+            
+            alertEmote.SetActive(false);
+            angryEmote.SetActive(false);
+            frustratedEmote.SetActive(false);
+            
+            // Navmesh agent
+            agent = GetComponent<NavMeshAgent>();
+            agent.updateRotation = false;
+            agent.updateUpAxis = false;
+            
             GetReferences();
         }
 
-        // Update is called once per frame
         private void Update() {
-            this.playerInSight = CheckPlayerInSight();
             
-            // If the enemy heard the player a set amount of times, they know where you are
-            if (heardCount >= heardLimit) {
-                alert = false; // reset the alert flag
-                MoveEnemy(playerTransform.position);
-            }
         }
         
         private void FixedUpdate() {
             // If player is in sight, move to them
-            if (playerInSight && !hasStopped) {
-                alert = false; // reset the alert flag
-                MoveEnemy(playerTransform.position);
+            if (CheckInSight() && !hasStopped) {
+                StartCoroutine(ShowEmote(angryEmote));
+                HasSeen();
             }
-            
-            // If the enemy was alerted, look for the player
-            if (alert && !isMoving) {
-                StartCoroutine(Agitated());
-            }
-        }
-
-        private Vector3 GetRandomDirection() {
-            Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * radius;
-            randomDirection.y = 0;
-            
-            return transform.position + randomDirection;
-        }
-
-        // Check if the player is within sight
-        private bool CheckPlayerInSight() {
-            // If the player is within the enemies sight Range
-            if (Physics.CheckSphere(transform.position, sightRange, player)) {
-                directionToPlayer = (playerTransform.position - transform.position).normalized;
-
-                // Perform a raycast to check if there is a direct line of sight to the player
-                if (Physics.Raycast(transform.position, directionToPlayer, out hit, sightRange)) {
-                    // Check if the raycast hit the player
-                    if (hit.transform.CompareTag("Player")) {
-                        this.alertEmote.SetActive(false);
-                        return true;
-                    }
+            else {
+                if (!isPatroling && !isInvestigating) {
+                    StartCoroutine(DelayPatrol());
                 }
             }
-
-            return false;
         }
+        
+        /// <summary>
+        /// Briefly display a given emote
+        /// </summary>
+        IEnumerator ShowEmote(GameObject emote) {
+            emote.SetActive(true);
+            yield return new WaitForSeconds(2);
+            emote.SetActive(false);
+        }
+        
+        // Attack -------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// If the enemy has seen the player. It will move and engage in combat with them
+        /// </summary>
+        private void HasSeen() {
+            Vector2 directionToPlayer = ((Vector2)target.position - (Vector2)transform.position).normalized;
 
-        private void MoveEnemy(Vector3 targetPosition) {
-            // Calculate direction and velocity towards the target
-            direction = (targetPosition - transform.position).normalized;
-            velocity = direction * speed;
-
-            // Calculate the distance to the target
-            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-
-            // Move if the target is outside the stopping distance
-            if (distanceToTarget > stoppingDistance) {
-                rb.MovePosition(transform.position + velocity * Time.fixedDeltaTime);
-                hasStopped = false; // Reset attack state when moving
-            } else {
+            // Calculate the stopping position
+            Vector2 stopPosition = (Vector2)target.position - (directionToPlayer * stoppingDistance);
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(stopPosition, out hit, stoppingDistance, NavMesh.AllAreas)) {
+                agent.SetDestination(hit.position);
+                agent.speed = speed * 2;
+            }
+            else {
                 // Attack logic if within stopping distance
                 if (!hasStopped) {
                     timeOfLastAttack = Time.time;
@@ -128,41 +119,123 @@ namespace Characters.Enemy {
             }
         }
         
-        // Reset enemy alert state
-        private void ResetAlert() {
-            this.alert = false;
-            this.alertEmote.SetActive(false);
-            heardCount = 0;
+        /// <summary>
+        /// Determine if the player can be seen by the enemy
+        /// </summary>
+        /// <returns>Returns true if they are; false otherwise</returns>
+        private bool CheckInSight() {
+            Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, sightRange, LayerMask.GetMask("player"));
+
+            // Loop through all colliders and check line of sight
+            foreach (Collider2D puzzleCollider in puzzleColliders) {
+                Vector2 directionToPlayer = (puzzleCollider.transform.position - transform.position).normalized;
+
+                // Perform a 2D raycast to check for line of sight to the puzzle
+                if (Physics2D.Raycast(transform.position, directionToPlayer, sightRange, LayerMask.GetMask("player"))) {
+                    return true;
+                }
+            }
+
+            return false;
         }
         
-        // Players voice was detected; change states alert and passive if they are within range
-        public void VoiceDetected() {
-            if (Physics.CheckSphere(transform.position, hearingRange, player)) {
-                this.alertEmote.SetActive(true);
-                this.alert = true;
-                
-                heardCount++;
+        // Patrolling ---------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Delays the enemy starting their patrol
+        /// </summary>
+        IEnumerator DelayPatrol() {
+            isPatroling = true;
+            yield return new WaitForSeconds(patrolDelay);
+            Patrol();
+        }
 
-                if (!IsInvoking(nameof(ResetAlert))) {
-                    Invoke(nameof(ResetAlert), alertDuration);
+        /// <summary>
+        /// Get a random position around the entity and move it to that point
+        /// </summary>
+        private void Patrol() {
+            Vector2 randomPatrolPoint = (Vector2)transform.position + Random.insideUnitCircle * patrolRadius;
+            NavMeshHit hit;
+        
+            if (NavMesh.SamplePosition(randomPatrolPoint, out hit, patrolRadius, NavMesh.AllAreas)) {
+                agent.SetDestination(hit.position);
+                agent.speed = speed;
+            }
+            
+            isPatroling = false;
+        }
+        
+        // Investigate --------------------------------------------------------------------------------------------------
+        
+        /// <summary>
+        /// Called outside this script (by the Voice.cs script). Checks if they player was within range of the entity
+        /// when they spoke. If they were, the entity starts investigating the sound.
+        /// </summary>
+        public void VoiceDetected() {
+            if (CheckInHeardRange()) {
+                StartCoroutine(ShowEmote(alertEmote));
+
+                if (!isInvestigating) {
+                    StartCoroutine(DelayInvetigate());
                 }
             }
         }
+        
+        /// <summary>
+        /// Checks if they player is within hearing range of an entity
+        /// </summary>
+        /// <returns>True if they are; false otherwise</returns>
+        private bool CheckInHeardRange() {
+            Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, hearingRange, LayerMask.GetMask("player"));
 
-        IEnumerator Agitated() {
-            isMoving = true;
-            
-            randomPosition = GetRandomDirection();
-            
-            // Move the enemy towards the random position until it reaches the target
-            while (Vector3.Distance(transform.position, randomPosition) > 0.1f) {
-                MoveEnemy(randomPosition);
-                yield return new WaitForFixedUpdate(); // Wait for the next physics update
+            // Loop through all colliders and check line of sight
+            foreach (Collider2D puzzleCollider in puzzleColliders) {
+                Vector2 directionToPlayer = (puzzleCollider.transform.position - transform.position).normalized;
+
+                // Perform a 2D raycast to check for line of sight to the puzzle
+                if (Physics2D.Raycast(transform.position, directionToPlayer, hearingRange, LayerMask.GetMask("player"))) {
+                    return true;
+                }
             }
+
+            return false;            
+        }
+
+        /// <summary>
+        /// Delays the entity Investigating the sound
+        /// </summary>
+        IEnumerator DelayInvetigate() {
+            isInvestigating = true;
+            yield return new WaitForSeconds(investigateDelay);
+            InvestigateSound();
+        }
+        
+        /// <summary>
+        /// Get a random position just short of the player, and move the entity to it
+        /// </summary>
+        void InvestigateSound() {
+            Vector2 directionToSound = ((Vector2)target.position - (Vector2)transform.position).normalized;
+            float randomDistance = Random.Range(minIvenstigateDistance, maxIvenstigateDistance);
+            Vector2 randomOffset = Random.insideUnitCircle * 1.5f;
             
-            yield return new WaitForSeconds(2);
+            Vector2 targetPosition = (Vector2)transform.position + directionToSound * randomDistance + randomOffset;
             
-            isMoving = false;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(targetPosition, out hit, maxIvenstigateDistance, NavMesh.AllAreas)) {
+                agent.SetDestination(hit.position);
+                agent.speed = speed;
+            }
+
+            StartCoroutine(InvestigationTimeout());
+        }
+        
+        /// <summary>
+        /// Time out the investigation if the player wasnt found
+        /// </summary>
+        IEnumerator InvestigationTimeout() {
+            yield return new WaitForSeconds(investigationTimeout);
+            StartCoroutine(ShowEmote(frustratedEmote));
+            isInvestigating = false;
+            isPatroling = false;
         }
 
         void Die()

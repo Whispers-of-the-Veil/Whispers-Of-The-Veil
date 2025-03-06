@@ -1,5 +1,7 @@
 # Lucas Davis
 
+import os
+import sys
 import numpy as np
 import pandas as pd
 
@@ -12,11 +14,16 @@ class Process:
     """
     This class contains methods to handle the audio data and transcripts
     """
-    def __init__(self): 
-        generalConfig          = ini().grabInfo("config.ini", "General")
-        self.processConfig     = ini().grabInfo("config.ini", "Process")
-        self.spectrogramConfig = ini().grabInfo("config.ini", "Process.Spectrogram")
-        labelConfig            = ini().grabInfo("config.ini", "Process.Label")
+    def __init__(self):
+        if getattr(sys, 'frozen', False):
+            path = os.path.join(os.path.dirname(sys.executable), "config.ini")
+        else:
+            path = "config.ini"
+        
+        generalConfig          = ini().grabInfo(path, "General")
+        self.processConfig     = ini().grabInfo(path, "Process")
+        self.spectrogramConfig = ini().grabInfo(path, "Process.Spectrogram")
+        labelConfig            = ini().grabInfo(path, "Process.Label")
 
         self.seed              = int(generalConfig['seed'])
         vocab                  = labelConfig['vocabulary']

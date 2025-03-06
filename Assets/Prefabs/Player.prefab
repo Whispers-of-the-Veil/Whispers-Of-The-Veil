@@ -668,14 +668,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   URL: http://127.0.0.1:8888/ASR
   enemies: []
-  DetectVoiceThreshold: 0.02
+  DetectVoiceThreshold: 0.01
   keys: []
   threshold: 5
   PuzzleInRange: 3
   SampleRate: 16000
   RecordingLength: 5
-  speechBubble: {fileID: 7642191227845499857}
-  textField: {fileID: 6042809810984442358}
 --- !u!1 &7642191227845499857
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7677936350128683340
 RectTransform:
   m_ObjectHideFlags: 0

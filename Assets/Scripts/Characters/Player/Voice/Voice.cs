@@ -18,7 +18,8 @@ namespace Characters.Player.Voice {
         public static event Action<string> OnCommandRecognized;
         
         [Header("API Settings")]
-        [SerializeField] string URL;
+        [SerializeField] string URL = "http://127.0.0.1:8888/ASR";
+        [SerializeField] string shutDownURL = "http://127.0.0.1:8888/close";
 
         [Header("Entities")]
         [SerializeField] public GameObject[] enemies; // An array of enemy gameobjects that can hear the player voice
@@ -51,7 +52,7 @@ namespace Characters.Player.Voice {
             speechBubble.SetActive(false);
 
             if (Microphone.devices.Length > 0) {
-                microphoneDevice = Microphone.devices[0];
+                microphoneDevice = Microphone.devices[1];
             } else {
                 Debug.LogError("No microphone detected!");
             }
@@ -69,7 +70,7 @@ namespace Characters.Player.Voice {
 
                 float[] clip = recordings.Dequeue();
 
-                Debug.LogError("Processing item in queue: " + recordings.Count + " items remaining");
+                Debug.Log("Processing item in queue: " + recordings.Count + " items remaining");
                 StartCoroutine(GetPrediction(clip));
 
                 StartCoroutine(ResetSpeechBubble(3));
@@ -210,6 +211,7 @@ namespace Characters.Player.Voice {
         /// </summary>
         /// <param name="audioData">The audio data collected from the microphone</param>
         private IEnumerator GetPrediction(float[] audioData) {
+            string prediction;
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
 
@@ -225,34 +227,36 @@ namespace Characters.Player.Voice {
 
                 ParseJson response = JsonUtility.FromJson<ParseJson>(json);
 
-                string prediction = response.prediction;
+                prediction = response.prediction;
 
                 if (prediction == null || prediction.Length == 0) {
                     prediction = " ";
                 }
+            } else {
+                Debug.Log("Failed to send audio: " + www.error);
+                
+                prediction = "Hmm, my head feels fuzzy. Maybe I should wait a moment...";
+            }
+            
+            Debug.Log("You said: " + prediction);
+            textField.text = prediction;
 
-                Debug.Log("You said: " + prediction);
-                textField.text = prediction;
+            // Check if we are near a puzzle. if we are, check the prediction agains the
+            // keys array
+            if (CheckIfNearPuzzle()) {
+                Debug.Log("Near puzzle");
+                yield return StartCoroutine(CheckExpected(prediction));
 
-                // Check if we are near a puzzle. if we are, check the prediction agains the
-                // keys array
-                if (CheckIfNearPuzzle()) {
-                    Debug.Log("Near puzzle");
-                    yield return StartCoroutine(CheckExpected(prediction));
-
-                    if (index == -1) {
-                        Debug.Log("You said something the game wasnt expecting");
-                    } else if (index < keys.Length) {
-                        Debug.Log("The closest expected string is: " + keys[index]);
-                        OnCommandRecognized?.Invoke(keys[index]);
-                    } else {
-                        Debug.Log("Index fell outside the bounds of the keys array");
-                    }
+                if (index == -1) {
+                    Debug.Log("You said something the game wasnt expecting");
+                } else if (index < keys.Length) {
+                    Debug.Log("The closest expected string is: " + keys[index]);
+                    OnCommandRecognized?.Invoke(keys[index]);
                 } else {
-                    Debug.Log("Not near a puzzle");
+                    Debug.Log("Index fell outside the bounds of the keys array");
                 }
             } else {
-                Debug.LogError("Failed to send audio: " + www.error);
+                Debug.Log("Not near a puzzle");
             }
 
             isProcessing = false;
@@ -268,6 +272,18 @@ namespace Characters.Player.Voice {
             
             textField.text = "...";
             speechBubble.SetActive(false);
+        }
+
+        /// <summary>
+        /// When the game is closed, send a web request for the API to shut down
+        /// </summary>
+        void OnApplicationQuit() {
+            Debug.Log("Shutting Down API...");
+            UnityWebRequest www = UnityWebRequest.Get(shutDownURL);
+            
+            var request = www.SendWebRequest();
+
+            while (!request.isDone) { }
         }
     }
 }
