@@ -1,15 +1,12 @@
-//Farzana Tanni
+// Farzana Tanni
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager : MonoBehaviour
 {
-
-    public GameObject holdPoint;
     public static PlayerManager instance;
+    public GameObject holdPoint;
 
     void Awake()
     {
@@ -22,12 +19,45 @@ public class PlayerManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-
         }
     }
 
     private void OnDestroy()
     {
         instance = null;
+    }
+
+    void Start()
+    {
+        MoveToSpawnPoint(); 
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        MoveToSpawnPoint(); 
+    }
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void MoveToSpawnPoint()
+    {
+        GameObject spawnPoint = GameObject.FindGameObjectWithTag("SpawnPoint");
+        if (spawnPoint != null)
+        {
+            transform.position = spawnPoint.transform.position; 
+            Debug.Log($"Player moved to spawn point at {spawnPoint.transform.position}");
+        }
+        else
+        {
+            Debug.LogWarning("No spawn point found in this scene!");
+        }
     }
 }
