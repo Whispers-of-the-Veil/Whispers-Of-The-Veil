@@ -16,6 +16,7 @@ Python scripts require:
     <li>jiwer</li>
     <li>pyinstaller</li>
     <li>flask</li>
+    <li>language_tool_python</li>
 </ul>
 
 These libraries can be installed using the requirements.txt - found in the Src directory - using the following cmd
