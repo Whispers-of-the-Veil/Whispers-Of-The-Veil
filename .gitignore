@@ -83,3 +83,6 @@ ASR.keras.meta
 
 # Ignore the build directory
 dist/
+
+#Ignore spec file
+ASR_API.spec
