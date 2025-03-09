@@ -254,39 +254,39 @@ namespace Characters.Player.Voice {
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
 
-            try {
+            
                 // Check if we are near a puzzle. if we are, check the prediction agains the
                 // keys array
                 if (CheckIfNearPuzzle()) {
                     Debug.Log("Near puzzle");
                     yield return StartCoroutine(CheckExpected(prediction));
 
-                    if (index == -1) {
-                        Debug.Log("You said something the game wasnt expecting");
-                        textField.text = "hmm, that was weird... I should try that again.";
+                    try {
+                        if (index == -1) {
+                            Debug.Log("You said something the game wasnt expecting");
+                            textField.text = "hmm, that was weird... I should try that again.";
 
-                        sfxManager.PlaySFX(wrongClip, transform, 1f);
+                            sfxManager.PlaySFX(wrongClip, transform, 1f);
+                        }
+                        else if (index < keys.Length) {
+                            Debug.Log("The closest expected string is: " + keys[index]);
+                            textField.text = keys[index];
+
+                            sfxManager.PlaySFX(correctClip, transform, 1f);
+
+                            OnCommandRecognized?.Invoke(keys[index]);
+                        }
+                        else {
+                            throw new Exception("Index fell outside the bounds of the key array");
+                        }
                     }
-                    else if (index < keys.Length) {
-                        Debug.Log("The closest expected string is: " + keys[index]);
-                        textField.text = keys[index];
-
-                        sfxManager.PlaySFX(correctClip, transform, 1f);
-
-                        OnCommandRecognized?.Invoke(keys[index]);
-                    }
-                    else {
-                        throw new Exception("Index fell outside the bounds of the key array");
+                    catch (Exception e) {
+                        Debug.Log(e.Message);
                     }
                 }
-            }
-            catch (Exception e) {
-                Debug.LogError(e.Message);
-            }
-            finally {
-                StartCoroutine(ResetSpeechBubble(3));
-                isProcessing = false;
-            }
+
+            StartCoroutine(ResetSpeechBubble(3));
+            isProcessing = false;
         }
 
         /// <summary>

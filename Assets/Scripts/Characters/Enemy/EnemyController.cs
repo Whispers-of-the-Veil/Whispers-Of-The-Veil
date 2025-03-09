@@ -5,6 +5,7 @@ using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
 using Characters.Player;
+using UnityEditor.PackageManager;
 
 namespace Characters.Enemy {
     public class EnemyController : MonoBehaviour
@@ -27,6 +28,7 @@ namespace Characters.Enemy {
         [SerializeField] float patrolRadius = 5f;
         [SerializeField] float minIvenstigateDistance; 
         [SerializeField] float maxIvenstigateDistance;
+        [SerializeField] Transform boundedArea;
         private NavMeshAgent agent;
         
         [Header("Senses")]
@@ -151,10 +153,21 @@ namespace Characters.Enemy {
         /// Get a random position around the entity and move it to that point
         /// </summary>
         private void Patrol() {
-            Vector2 randomPatrolPoint = (Vector2)transform.position + Random.insideUnitCircle * patrolRadius;
+            Vector2 position;
+            
+            // If the boundedArea wasn't defined, randomly pick a position relative to the enemies position.
+            // Otherwise, do so relative to the bounded area
+            if (boundedArea == null) {
+                position = (Vector2)transform.position + Random.insideUnitCircle * patrolRadius;
+            }
+            else {
+                position = (Vector2)boundedArea.position + Random.insideUnitCircle * patrolRadius;
+            }
+
+            
             NavMeshHit hit;
         
-            if (NavMesh.SamplePosition(randomPatrolPoint, out hit, patrolRadius, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(position, out hit, patrolRadius, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);
                 agent.speed = speed;
             }
