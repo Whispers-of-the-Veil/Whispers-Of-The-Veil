@@ -7,19 +7,28 @@ using System.Text;
 using System.Globalization;
 using TMPro;
 using Characters.Enemy;
+using Audio.SFX;
+using Unity.VisualScripting;
 
 namespace Characters.Player.Voice {
     [System.Serializable]
     public class ParseJson {
         public string prediction;
     }
-
+    
     public class Voice : MonoBehaviour {
         public static event Action<string> OnCommandRecognized;
         
         [Header("API Settings")]
         [SerializeField] string URL = "http://127.0.0.1:8888/ASR";
         [SerializeField] string shutDownURL = "http://127.0.0.1:8888/close";
+        
+        [Header("Audio")]
+        [SerializeField] AudioClip correctClip;
+        [SerializeField] AudioClip wrongClip;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
 
         [Header("Entities")]
         [SerializeField] public GameObject[] enemies; // An array of enemy gameobjects that can hear the player voice
@@ -66,14 +75,10 @@ namespace Characters.Player.Voice {
             if (recordings.Count > 0 && !isProcessing) {
                 isProcessing = true;
 
-                speechBubble.SetActive(true);
-
                 float[] clip = recordings.Dequeue();
 
                 Debug.Log("Processing item in queue: " + recordings.Count + " items remaining");
                 StartCoroutine(GetPrediction(clip));
-
-                StartCoroutine(ResetSpeechBubble(3));
             }
         }
 
@@ -211,6 +216,9 @@ namespace Characters.Player.Voice {
         /// </summary>
         /// <param name="audioData">The audio data collected from the microphone</param>
         private IEnumerator GetPrediction(float[] audioData) {
+            speechBubble.SetActive(true);
+
+            // -----------------------------------------------------------------------------
             string prediction;
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
@@ -222,44 +230,63 @@ namespace Characters.Player.Voice {
 
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success) {
+            if (www.result == UnityWebRequest.Result.Success)
+            {
                 var json = www.downloadHandler.text;
 
                 ParseJson response = JsonUtility.FromJson<ParseJson>(json);
 
                 prediction = response.prediction;
 
-                if (prediction == null || prediction.Length == 0) {
+                if (prediction == null || prediction.Length == 0)
+                {
                     prediction = " ";
                 }
-            } else {
-                Debug.Log("Failed to send audio: " + www.error);
-                
-                prediction = "Hmm, my head feels fuzzy. Maybe I should wait a moment...";
             }
-            
+            else
+            {
+                Debug.Log("Failed to send audio: " + www.error);
+
+                prediction = "Ugh... my head feels fuzzy...";
+            }
+            // -----------------------------------------------------------------------------
+
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
 
-            // Check if we are near a puzzle. if we are, check the prediction agains the
-            // keys array
-            if (CheckIfNearPuzzle()) {
-                Debug.Log("Near puzzle");
-                yield return StartCoroutine(CheckExpected(prediction));
+            try {
+                // Check if we are near a puzzle. if we are, check the prediction agains the
+                // keys array
+                if (CheckIfNearPuzzle()) {
+                    Debug.Log("Near puzzle");
+                    yield return StartCoroutine(CheckExpected(prediction));
 
-                if (index == -1) {
-                    Debug.Log("You said something the game wasnt expecting");
-                } else if (index < keys.Length) {
-                    Debug.Log("The closest expected string is: " + keys[index]);
-                    OnCommandRecognized?.Invoke(keys[index]);
-                } else {
-                    Debug.Log("Index fell outside the bounds of the keys array");
+                    if (index == -1) {
+                        Debug.Log("You said something the game wasnt expecting");
+                        textField.text = "hmm, that was weird... I should try that again.";
+
+                        sfxManager.PlaySFX(wrongClip, transform, 1f);
+                    }
+                    else if (index < keys.Length) {
+                        Debug.Log("The closest expected string is: " + keys[index]);
+                        textField.text = keys[index];
+
+                        sfxManager.PlaySFX(correctClip, transform, 1f);
+
+                        OnCommandRecognized?.Invoke(keys[index]);
+                    }
+                    else {
+                        throw new Exception("Index fell outside the bounds of the key array");
+                    }
                 }
-            } else {
-                Debug.Log("Not near a puzzle");
             }
-
-            isProcessing = false;
+            catch (Exception e) {
+                Debug.LogError(e.Message);
+            }
+            finally {
+                StartCoroutine(ResetSpeechBubble(3));
+                isProcessing = false;
+            }
         }
 
         /// <summary>

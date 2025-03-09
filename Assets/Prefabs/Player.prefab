@@ -671,6 +671,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   URL: http://127.0.0.1:8888/ASR
   shutDownURL: http://127.0.0.1:8888/close
+  correctClip: {fileID: 8300000, guid: ae21e378e6b9f364aa9246290fdef9b8, type: 3}
+  wrongClip: {fileID: 0}
   enemies: []
   DetectVoiceThreshold: 0.01
   keys:

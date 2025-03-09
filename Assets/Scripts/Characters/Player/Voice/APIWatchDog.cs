@@ -39,24 +39,27 @@ namespace Characters.Player.Voice {
         void StartAPI() {
             string path;
             
-            // Check if we are in the ed
+            // Get the path of the executable, both for the editor and build
             if (Application.isEditor) {
+                // Poits inside the assets folder
                 path = Application.dataPath + "/Scripts/SpeechRecognition/Src/dist/";
             }
             else {
-                path = System.Reflection.Assembly.GetEntryAssembly().Location;
+                // Points inside the data folder (Whispers-of-the-Veil_Data)
+                path = Application.dataPath + "/";
             }
 
-            // Check if the process is already running; if it is do nothing
-            // if it isnt then 
+            // Check if the process is already running; if it is, do nothing
+            // if it isn't then 
             if (!IsProcessRunning("ASR_API")) {
                 Debug.Log("Starting API");
                 
                 API = Process.Start(path + "ASR_API");
     
                 if (API == null) {
-                    Debug.Log("Failed to start API");
+                    Debug.LogError("Failed to start API");
                 }
+                
             } else {
                 Debug.Log("API is already running");
             }
