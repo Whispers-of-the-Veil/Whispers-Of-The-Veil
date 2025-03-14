@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 namespace Characters.Player
 {
-    public class PlayerStats : CharacterStats
+    public class PlayerStats : MonoBehaviour
     {
+        [SerializeField] private float health = 3f;
+        [SerializeField] private int maxHealth = 3;
+        [SerializeField] private bool isDead;
         [SerializeField] private Image[] hearts;
         [SerializeField] private Sprite fullHeart;
         [SerializeField] private Sprite halfHeart;
@@ -14,7 +17,7 @@ namespace Characters.Player
 
         private void Start()
         {
-            InitVariables();
+            health = maxHealth;
             UpdateHealth();
         }
 
@@ -22,7 +25,7 @@ namespace Characters.Player
         {
             if (Input.GetKeyDown(KeyCode.H))
             {
-                TakeDamage(0.5f);  // Apply half-heart damage for testing
+                TakeDamage(0.5f);
                 UpdateHealth();
             }
         }
@@ -31,15 +34,15 @@ namespace Characters.Player
         {
             for (int i = 0; i < hearts.Length; i++)
             {
-                if (health >= i + 1) // Full heart
+                if (health >= i + 1)
                 {
                     hearts[i].sprite = fullHeart;
                 }
-                else if (health >= i + 0.5f) // Half heart
+                else if (health >= i + 0.5f)
                 {
                     hearts[i].sprite = halfHeart;
                 }
-                else // Empty heart
+                else
                 {
                     hearts[i].sprite = emptyHeart;
                 }
@@ -49,15 +52,21 @@ namespace Characters.Player
         public void TakeDamage(float damage)
         {
             health -= damage;
-            health = Mathf.Clamp(health, 0f, hearts.Length); // Ensure health stays within bounds
+            health = Mathf.Clamp(health, 0f, maxHealth);
             Debug.Log($"Player took {damage} damage. Remaining health: {health}");
+
+            if (health <= 0)
+            {
+                Die();
+            }
         }
 
-        public override void Die()
+        public void Die()
         {
             isDead = true;
             CheckpointManager.Instance.RespawnPlayer(gameObject);
-            health = hearts.Length; // Reset to full health
+            health = maxHealth;
+            UpdateHealth();
             Debug.Log("Player died, respawning");
         }
     }

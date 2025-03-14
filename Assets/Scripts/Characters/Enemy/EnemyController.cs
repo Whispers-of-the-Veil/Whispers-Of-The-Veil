@@ -12,7 +12,6 @@ namespace Characters.Enemy {
     {
         [Header("Combat")]
         [SerializeField] private float stoppingDistance = 2.0f;
-        [SerializeField] public int health = 30;
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         private EnemyStats stats = null;
@@ -248,26 +247,16 @@ namespace Characters.Enemy {
             isInvestigating = false;
             isPatroling = false;
         }
-
-        void Die()
+        
+        private void AttackPlayer()
         {
-            Debug.Log("Enemy defeated");
-            Destroy(gameObject);
+            PlayerStats playerStats = target.GetComponent<PlayerStats>();
+            if (playerStats != null)
+            {
+                stats.DealDamage(playerStats);
+            }
         }
         
-        private void AttackPlayer() {
-            CharacterStats playerStats = target.GetComponent<CharacterStats>();
-            if (playerStats != null) {
-                stats.DealDamage(playerStats);
-                Debug.Log("Enemy attacked the player!");
-            }
-
-            // After attacking, allow the enemy to either patrol or investigate
-             // Reset the flag after the attack
-        }
-
-
-
         private void GetReferences()
         {
             //get enemy stats
@@ -275,15 +264,10 @@ namespace Characters.Enemy {
         }
         
         //player to enemy combat
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damageAmount)
         {
-            //take damage amount from enemy health, if <= 0 then enemy dies
-            health -= damage;
-            Debug.Log($"Enemy hit! Remaining health: {health}");
-            if (health <= 0)
-            {
-                Die();
-            }
+            stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
+
         }
     }
 }

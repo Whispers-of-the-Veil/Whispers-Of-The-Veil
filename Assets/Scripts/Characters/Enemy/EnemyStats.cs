@@ -1,5 +1,3 @@
-//Owen Ingram
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,40 +5,45 @@ using Characters.Player;
 
 namespace Characters.Enemy
 {
-    public class EnemyStats : CharacterStats
+    public class EnemyStats : MonoBehaviour
     {
-        [SerializeField] private float damage;
-        [SerializeField] private bool canAttack;
-        
-        [SerializeField] private PlayerStats _playerStats;
-        public float attackSpeed;
-        
+        [SerializeField] private float health;
+        [SerializeField] private float damage = 1f;
+        [SerializeField] private bool canAttack = true;
+        public float attackSpeed = 1.5f;
+        private bool isDead;
+
         private void Start()
         {
-            InitVariables();
-        }
-
-        public void DealDamage(CharacterStats statsToDamage)
-        {
-            statsToDamage.TakeDamage(damage);
-            _playerStats.UpdateHealth();
-        }
-        
-        public override void Die()
-        {
-            base.Die();
-            Destroy(gameObject);
-        }
-        
-        public override void InitVariables()
-        {
-            maxHealth = 20;
-            SetHealthTo(maxHealth);
             isDead = false;
+        }
 
-            float dmg = damage;
-            attackSpeed = 1.5f;
-            canAttack = true;
+        public void DealDamage(PlayerStats playerStats)
+        {
+            if (playerStats != null)
+            {
+                playerStats.TakeDamage(damage);
+                playerStats.UpdateHealth();
+                Debug.Log("Enemy attacked the player!");
+            }
+        }
+
+        public void TakeDamage(float damageAmount)
+        {
+            health -= damageAmount;
+            Debug.Log($"Enemy took {damageAmount} damage. Remaining health: {health}");
+
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+
+        public void Die()
+        {
+            isDead = true;
+            Debug.Log("Enemy defeated");
+            Destroy(gameObject);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Environment.Hazards {
 
         [Header("Player")] 
         [SerializeField] GameObject player;
-        private CharacterStats stats;
+        private PlayerStats stats;
         private bool isInFog = false;
     
         void Start() {
@@ -22,7 +22,7 @@ namespace Environment.Hazards {
             {
                 player = GameObject.Find("Player");
             }
-            this.stats = player.gameObject.GetComponent<CharacterStats>();
+            this.stats = player.gameObject.GetComponent<PlayerStats>();
         }
     
         void Update() {
