@@ -47,7 +47,7 @@ namespace Combat
                     }
 
                     // Decrease durability and destroy the weapon if it's out of durability
-                    durability--;
+                    //durability--;
                     if (durability <= 0)
                     {
                         Destroy(gameObject);

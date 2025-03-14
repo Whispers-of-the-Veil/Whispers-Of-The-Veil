@@ -1,3 +1,5 @@
+//Test script
+
 using UnityEngine;
 
 namespace Characters.Enemy
