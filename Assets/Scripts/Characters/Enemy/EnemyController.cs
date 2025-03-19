@@ -5,7 +5,6 @@ using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
 using Characters.Player;
-using UnityEditor.PackageManager;
 
 namespace Characters.Enemy {
     public class EnemyController : MonoBehaviour
