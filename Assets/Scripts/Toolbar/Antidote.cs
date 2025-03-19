@@ -10,6 +10,7 @@ public class Antidote : InventoryItemBase
     public override string Name
     {
         get { return "Antidote"; }
+    }
 
     public override void OnUse()
     {

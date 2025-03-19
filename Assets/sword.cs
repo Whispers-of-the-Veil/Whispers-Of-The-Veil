@@ -10,7 +10,7 @@ public class sword : InventoryItemBase
     {
         get { return "sword"; }
     }
-    
+
     public override void OnUse()
     {
         base.OnUse();
