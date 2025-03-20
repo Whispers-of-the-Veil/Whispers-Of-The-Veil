@@ -9,6 +9,7 @@ using TMPro;
 using Characters.Enemy;
 using Audio.SFX;
 using Unity.VisualScripting;
+using Config;
 
 namespace Characters.Player.Voice {
     [System.Serializable]
@@ -19,9 +20,9 @@ namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
         public static event Action<string> OnCommandRecognized;
         
-        [Header("API Settings")]
-        [SerializeField] string URL = "http://127.0.0.1:8888/ASR";
-        [SerializeField] string shutDownURL = "http://127.0.0.1:8888/close";
+        // [Header("API Settings")]
+        // [SerializeField] string URL = "http://127.0.0.1:8888/ASR";
+        // [SerializeField] string shutDownURL = "http://127.0.0.1:8888/close";
         
         [Header("Audio")]
         [SerializeField] AudioClip correctClip;
@@ -54,14 +55,20 @@ namespace Characters.Player.Voice {
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
 
+        private Ini ini;
+        private string url;
+
         void Start () {
+            ini = new Ini("config.ini");
+            url = GetURL();
+            
             speechBubble = GameObject.Find("SpeechBubble");
             textField = GameObject.Find("SpeechBubble/Text").GetComponent<TextMeshProUGUI>();
 
             speechBubble.SetActive(false);
 
             if (Microphone.devices.Length > 0) {
-                microphoneDevice = Microphone.devices[0];
+                microphoneDevice = Microphone.devices[1];
             } else {
                 Debug.LogError("No microphone detected!");
             }
@@ -211,6 +218,13 @@ namespace Characters.Player.Voice {
             return false;
         }
 
+        private string GetURL() {
+            string ip = ini.GetValue(Ini.Sections.API, Ini.Keys.address);
+            string port = ini.GetValue(Ini.Sections.API, Ini.Keys.port);
+            
+            return "http://" + ip + ":" + port + "/";
+        }
+
         /// <summary>
         /// Get the prediction from the model API
         /// </summary>
@@ -223,28 +237,25 @@ namespace Characters.Player.Voice {
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
 
-            UnityWebRequest www = UnityWebRequest.PostWwwForm(URL, "");
+            UnityWebRequest www = UnityWebRequest.PostWwwForm(url + "ASR", "");
             www.uploadHandler = new UploadHandlerRaw(audioBytes);
             www.downloadHandler = new DownloadHandlerBuffer();
             www.SetRequestHeader("Content-Type", "application/octet-stream");
 
             yield return www.SendWebRequest();
 
-            if (www.result == UnityWebRequest.Result.Success)
-            {
+            if (www.result == UnityWebRequest.Result.Success) {
                 var json = www.downloadHandler.text;
 
                 ParseJson response = JsonUtility.FromJson<ParseJson>(json);
 
                 prediction = response.prediction;
 
-                if (prediction == null || prediction.Length == 0)
-                {
+                if (prediction == null || prediction.Length == 0) {
                     prediction = " ";
                 }
             }
-            else
-            {
+            else {
                 Debug.Log("Failed to send audio: " + www.error);
 
                 prediction = "Ugh... my head feels fuzzy...";
@@ -306,7 +317,7 @@ namespace Characters.Player.Voice {
         /// </summary>
         void OnApplicationQuit() {
             Debug.Log("Shutting Down API...");
-            UnityWebRequest www = UnityWebRequest.Get(shutDownURL);
+            UnityWebRequest www = UnityWebRequest.Get(url + "close");
             
             var request = www.SendWebRequest();
 
