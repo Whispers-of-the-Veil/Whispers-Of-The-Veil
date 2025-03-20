@@ -618,7 +618,7 @@ MonoBehaviour:
   rainingSpeed: 2.5
   moveLimiter: 0.7
   sprintSpeedMultiplier: 1.5
-  weather: {fileID: 0}
+  weather: {fileID: 7170891254809870389, guid: 9519e64351d1041d38f957780892e7f8, type: 3}
   holdPoint: {fileID: 3525987265052427598}
   pickupRange: 0.5
   dropDistance: 0.25

@@ -61,7 +61,7 @@ namespace Characters.Player.Voice {
             speechBubble.SetActive(false);
 
             if (Microphone.devices.Length > 0) {
-                microphoneDevice = Microphone.devices[1];
+                microphoneDevice = Microphone.devices[0];
             } else {
                 Debug.LogError("No microphone detected!");
             }
