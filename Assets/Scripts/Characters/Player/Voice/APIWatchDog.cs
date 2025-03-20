@@ -45,7 +45,8 @@ namespace Characters.Player.Voice {
                 path = Application.dataPath + "/Scripts/SpeechRecognition/Src/dist/";
             }
             else {
-                // Points inside the data folder (Whispers-of-the-Veil_Data)
+                // For Windows and Linux machines, this points to the Data folder
+                // For MacOS, this points to the contents folder within the app package
                 path = Application.dataPath + "/";
             }
 
