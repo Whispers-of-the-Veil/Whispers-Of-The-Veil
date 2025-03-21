@@ -34,4 +34,10 @@ public class SceneTransition : MonoBehaviour
     {
         sceneToLoad = sceneName;
     }
+
+    public void ExitGame()
+    {
+    Application.Quit();
+    Debug.Log("Game is closing...");
+    }
 }
