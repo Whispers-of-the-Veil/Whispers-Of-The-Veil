@@ -222,20 +222,22 @@ namespace Characters.Player.Voice {
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
 
-            yield return api.SendWebRequest(
-                "ASR",
-                audioBytes,
-                (response) => {
-                    if (!String.IsNullOrEmpty(response)) {
-                        prediction = response;
+            if (APIWatchDog.Running && !APIWatchDog.Timeout) {
+                yield return api.SendWebRequest(
+                    "ASR",
+                    audioBytes,
+                    (response) => {
+                        if (!String.IsNullOrEmpty(response)) {
+                            prediction = response;
+                        }
+                    },
+                    (error) => {
+                        Debug.Log("Failed to send audio: " + error);
+    
+                        prediction = "Ugh... my head feels fuzzy...";
                     }
-                },
-                (error) => {
-                    Debug.Log("Failed to send audio: " + error);
-
-                    prediction = "Ugh... my head feels fuzzy...";
-                }
-            );
+                );
+            }
 
             Debug.Log("You said: " + prediction);
             textField.text = prediction;

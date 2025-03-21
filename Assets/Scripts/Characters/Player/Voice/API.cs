@@ -20,8 +20,6 @@ namespace Characters.Player.Voice {
             if (instance == null) {
                 _ini = new Ini("config.ini");
                 this._url = GetURL();
-            
-                Debug.Log("The url is" + this._url);
                 
                 instance = this;
                 DontDestroyOnLoad(this);
@@ -41,20 +39,20 @@ namespace Characters.Player.Voice {
             return "http://" + ip + ":" + port + "/";
         }
 
-        /// <summary>
+        /// <summary>s
         /// Check if we are able to connect to the API
         /// </summary>
-        /// <param name="onComplete">A lambda function: Defines the behavior once we get a response (either positive or negative)</param>
+        /// <param name="onComplete">A lambda function: Defines the behavior we want after checking</param>
         public IEnumerator TestConnection(Action<bool> onComplete) {
-            using (UnityWebRequest www = UnityWebRequest.Get(_url)) {
-                yield return www.SendWebRequest();
+            UnityWebRequest www = UnityWebRequest.Get(_url);
 
-                if (www.result == UnityWebRequest.Result.Success) {
-                    onComplete?.Invoke(true);
-                }
-                else {
-                    onComplete?.Invoke(false);
-                }
+            yield return www.SendWebRequest();
+            
+            if (www.result == UnityWebRequest.Result.Success) {
+                onComplete?.Invoke(true);
+            }
+            else {
+                onComplete?.Invoke(false);
             }
         }
         
