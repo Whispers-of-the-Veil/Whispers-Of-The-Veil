@@ -5,7 +5,10 @@ using Debug = UnityEngine.Debug;
 
 namespace Characters.Player.Voice {
     public class APIWatchDog : MonoBehaviour {
-        private Process API;
+        private Process apiProcess;
+        public API api {
+            get => API.instance;
+        }
         
         void Start() {
             StartAPI();
@@ -55,9 +58,9 @@ namespace Characters.Player.Voice {
             if (!IsProcessRunning("ASR_API")) {
                 Debug.Log("Starting API");
                 
-                API = Process.Start(path + "ASR_API");
+                apiProcess = Process.Start(path + "ASR_API");
     
-                if (API == null) {
+                if (apiProcess == null) {
                     Debug.LogError("Failed to start API");
                 }
                 

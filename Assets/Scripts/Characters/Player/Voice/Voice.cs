@@ -12,11 +12,6 @@ using Unity.VisualScripting;
 using Config;
 
 namespace Characters.Player.Voice {
-    [System.Serializable]
-    public class ParseJson {
-        public string prediction;
-    }
-    
     public class Voice : MonoBehaviour {
         public static event Action<string> OnCommandRecognized;
         
@@ -55,13 +50,11 @@ namespace Characters.Player.Voice {
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
 
-        private Ini ini;
-        private string url;
+        private API api {
+            get => API.instance;
+        }
 
         void Start () {
-            ini = new Ini("config.ini");
-            url = GetURL();
-            
             speechBubble = GameObject.Find("SpeechBubble");
             textField = GameObject.Find("SpeechBubble/Text").GetComponent<TextMeshProUGUI>();
 
@@ -218,13 +211,6 @@ namespace Characters.Player.Voice {
             return false;
         }
 
-        private string GetURL() {
-            string ip = ini.GetValue(Ini.Sections.API, Ini.Keys.address);
-            string port = ini.GetValue(Ini.Sections.API, Ini.Keys.port);
-            
-            return "http://" + ip + ":" + port + "/";
-        }
-
         /// <summary>
         /// Get the prediction from the model API
         /// </summary>
@@ -232,69 +218,58 @@ namespace Characters.Player.Voice {
         private IEnumerator GetPrediction(float[] audioData) {
             speechBubble.SetActive(true);
 
-            // -----------------------------------------------------------------------------
-            string prediction;
+            string prediction = " ";
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
 
-            UnityWebRequest www = UnityWebRequest.PostWwwForm(url + "ASR", "");
-            www.uploadHandler = new UploadHandlerRaw(audioBytes);
-            www.downloadHandler = new DownloadHandlerBuffer();
-            www.SetRequestHeader("Content-Type", "application/octet-stream");
+            yield return api.SendWebRequest(
+                "ASR",
+                audioBytes,
+                (response) => {
+                    if (!String.IsNullOrEmpty(response)) {
+                        prediction = response;
+                    }
+                },
+                (error) => {
+                    Debug.Log("Failed to send audio: " + error);
 
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success) {
-                var json = www.downloadHandler.text;
-
-                ParseJson response = JsonUtility.FromJson<ParseJson>(json);
-
-                prediction = response.prediction;
-
-                if (prediction == null || prediction.Length == 0) {
-                    prediction = " ";
+                    prediction = "Ugh... my head feels fuzzy...";
                 }
-            }
-            else {
-                Debug.Log("Failed to send audio: " + www.error);
-
-                prediction = "Ugh... my head feels fuzzy...";
-            }
-            // -----------------------------------------------------------------------------
+            );
 
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
 
             
-                // Check if we are near a puzzle. if we are, check the prediction agains the
-                // keys array
-                if (CheckIfNearPuzzle()) {
-                    Debug.Log("Near puzzle");
-                    yield return StartCoroutine(CheckExpected(prediction));
+            // Check if we are near a puzzle. if we are, check the prediction agains the
+            // keys array
+            if (CheckIfNearPuzzle()) {
+                Debug.Log("Near puzzle");
+                yield return StartCoroutine(CheckExpected(prediction));
 
-                    try {
-                        if (index == -1) {
-                            Debug.Log("You said something the game wasnt expecting");
-                            textField.text = "hmm, that was weird... I should try that again.";
+                try {
+                    if (index == -1) {
+                        Debug.Log("You said something the game wasnt expecting");
+                        textField.text = "hmm, that was weird... I should try that again.";
 
-                            sfxManager.PlaySFX(wrongClip, transform, 1f);
-                        }
-                        else if (index < keys.Length) {
-                            Debug.Log("The closest expected string is: " + keys[index]);
-                            textField.text = keys[index];
-
-                            sfxManager.PlaySFX(correctClip, transform, 1f);
-
-                            OnCommandRecognized?.Invoke(keys[index]);
-                        }
-                        else {
-                            throw new Exception("Index fell outside the bounds of the key array");
-                        }
+                        sfxManager.PlaySFX(wrongClip, transform, 1f);
                     }
-                    catch (Exception e) {
-                        Debug.Log(e.Message);
+                    else if (index < keys.Length) {
+                        Debug.Log("The closest expected string is: " + keys[index]);
+                        textField.text = keys[index];
+
+                        sfxManager.PlaySFX(correctClip, transform, 1f);
+
+                        OnCommandRecognized?.Invoke(keys[index]);
+                    }
+                    else {
+                        throw new Exception("Index fell outside the bounds of the key array");
                     }
                 }
+                catch (Exception e) {
+                    Debug.Log(e.Message);
+                }
+            }
 
             StartCoroutine(ResetSpeechBubble(3));
             isProcessing = false;
@@ -316,12 +291,7 @@ namespace Characters.Player.Voice {
         /// When the game is closed, send a web request for the API to shut down
         /// </summary>
         void OnApplicationQuit() {
-            Debug.Log("Shutting Down API...");
-            UnityWebRequest www = UnityWebRequest.Get(url + "close");
-            
-            var request = www.SendWebRequest();
-
-            while (!request.isDone) { }
+            api.ShutDown();
         }
     }
 }

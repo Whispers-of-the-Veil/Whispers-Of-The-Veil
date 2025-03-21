@@ -11,7 +11,7 @@ namespace Config {
         public enum Sections {
             API,
         }
-
+        
         public enum Keys {
             port,
             address,
