@@ -11,7 +11,6 @@ namespace Characters.Enemy {
     {
         [Header("Combat")]
         [SerializeField] private float stoppingDistance = 2.0f;
-        [SerializeField] public int health = 30;
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         private EnemyStats stats = null;
@@ -27,6 +26,7 @@ namespace Characters.Enemy {
         [SerializeField] float patrolRadius = 5f;
         [SerializeField] float minIvenstigateDistance; 
         [SerializeField] float maxIvenstigateDistance;
+        [SerializeField] Transform boundedArea;
         private NavMeshAgent agent;
         
         [Header("Senses")]
@@ -151,10 +151,21 @@ namespace Characters.Enemy {
         /// Get a random position around the entity and move it to that point
         /// </summary>
         private void Patrol() {
-            Vector2 randomPatrolPoint = (Vector2)transform.position + Random.insideUnitCircle * patrolRadius;
+            Vector2 position;
+            
+            // If the boundedArea wasn't defined, randomly pick a position relative to the enemies position.
+            // Otherwise, do so relative to the bounded area
+            if (boundedArea == null) {
+                position = (Vector2)transform.position + Random.insideUnitCircle * patrolRadius;
+            }
+            else {
+                position = (Vector2)boundedArea.position + Random.insideUnitCircle * patrolRadius;
+            }
+
+            
             NavMeshHit hit;
         
-            if (NavMesh.SamplePosition(randomPatrolPoint, out hit, patrolRadius, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(position, out hit, patrolRadius, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);
                 agent.speed = speed;
             }
@@ -235,26 +246,16 @@ namespace Characters.Enemy {
             isInvestigating = false;
             isPatroling = false;
         }
-
-        void Die()
+        
+        private void AttackPlayer()
         {
-            Debug.Log("Enemy defeated");
-            Destroy(gameObject);
+            PlayerStats playerStats = target.GetComponent<PlayerStats>();
+            if (playerStats != null)
+            {
+                stats.DealDamage(playerStats);
+            }
         }
         
-        private void AttackPlayer() {
-            CharacterStats playerStats = target.GetComponent<CharacterStats>();
-            if (playerStats != null) {
-                stats.DealDamage(playerStats);
-                Debug.Log("Enemy attacked the player!");
-            }
-
-            // After attacking, allow the enemy to either patrol or investigate
-            hasStopped = false; // Reset the flag after the attack
-        }
-
-
-
         private void GetReferences()
         {
             //get enemy stats
@@ -262,15 +263,10 @@ namespace Characters.Enemy {
         }
         
         //player to enemy combat
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damageAmount)
         {
-            //take damage amount from enemy health, if <= 0 then enemy dies
-            health -= damage;
-            Debug.Log($"Enemy hit! Remaining health: {health}");
-            if (health <= 0)
-            {
-                Die();
-            }
+            stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
+
         }
     }
 }

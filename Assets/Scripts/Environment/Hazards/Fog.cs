@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.AI;
 using Characters.Player;
 
 namespace Environment.Hazards {
@@ -9,21 +8,25 @@ namespace Environment.Hazards {
         public bool isDamging = true;
         
         [Header("Damage")]
-        [SerializeField] int damage = 1; // The amount of damage the player takes
+        [SerializeField] float damage = 0.5f; // The amount of damage the player takes
         [SerializeField] int interval = 2; // Damage interval in seconds
         private Coroutine damageCoroutine;
 
         [Header("Player")] 
         [SerializeField] GameObject player;
-        private CharacterStats stats;
+        private PlayerStats stats;
         private bool isInFog = false;
     
         void Start() {
-            this.stats = player.gameObject.GetComponent<CharacterStats>();
+            if (player == null)
+            {
+                player = GameObject.Find("Player");
+            }
+            this.stats = player.gameObject.GetComponent<PlayerStats>();
         }
     
         void Update() {
-            
+            // You can add additional logic here if needed.
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
@@ -41,18 +44,24 @@ namespace Environment.Hazards {
 
                 if (damageCoroutine != null) {
                     StopCoroutine(damageCoroutine);
-
                     damageCoroutine = null;
                 }
             }
         }
 
         IEnumerator EnvDamage() {
-            while(isInFog) {
-                this.stats.TakeDamage(damage);
+            while (isInFog) {
+                Debug.Log("Applying damage to player in fog");
+                this.stats.TakeDamage(damage);  // Apply damage to player
 
-                yield return new WaitForSeconds(interval);
+                // Update the health bar UI after damage
+                if (this.stats is PlayerStats playerStats) {
+                    playerStats.UpdateHealth();  // Call UpdateHealth() to refresh the health bar
+                }
+
+                yield return new WaitForSeconds(interval);  // Wait before applying damage again
             }
         }
+
     }
 }

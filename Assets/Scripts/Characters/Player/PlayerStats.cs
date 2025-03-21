@@ -2,44 +2,82 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Characters.Player
 {
-    public class PlayerStats : CharacterStats
+    public class PlayerStats : MonoBehaviour
     {
-        [SerializeField] private Image[] hearts;
+        [SerializeField] private float health = 3f;
+        [SerializeField] private int maxHealth = 3;
+        [SerializeField] private bool isDead;
+        private Image[] hearts;
         [SerializeField] private Sprite fullHeart;
         [SerializeField] private Sprite halfHeart;
         [SerializeField] private Sprite emptyHeart;
+        private Vector3 defaultHeartScale = Vector3.one;
+        private float damageEffectScale = 1.2f;
+        private float scaleDuration = 0.1f;
 
         private void Start()
         {
-            InitVariables();
+            health = maxHealth;
+            FindHearts();
             UpdateHealth();
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            FindHearts();
+            UpdateHealth();
+        }
+
+        private void FindHearts()
+        {
+            GameObject hud = GameObject.FindWithTag("HUD");
+            if (hud != null)
+            {
+                Transform healthCanvas = hud.transform.Find("HealthCanvas");
+                if (healthCanvas != null)
+                {
+                    hearts = healthCanvas.GetComponentsInChildren<Image>();
+                }
+            }
         }
 
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.H))
             {
-                TakeDamage(0.5f);  // Apply half-heart damage for testing
-                UpdateHealth();
+                TakeDamage(0.5f);
             }
         }
 
         public void UpdateHealth()
         {
+            if (hearts == null) return;
+
             for (int i = 0; i < hearts.Length; i++)
             {
-                if (health >= i + 1) // Full heart
+                if (health >= i + 1)
                 {
                     hearts[i].sprite = fullHeart;
                 }
-                else if (health >= i + 0.5f) // Half heart
+                else if (health >= i + 0.5f)
                 {
                     hearts[i].sprite = halfHeart;
                 }
-                else // Empty heart
+                else
                 {
                     hearts[i].sprite = emptyHeart;
                 }
@@ -49,15 +87,60 @@ namespace Characters.Player
         public void TakeDamage(float damage)
         {
             health -= damage;
-            health = Mathf.Clamp(health, 0f, hearts.Length); // Ensure health stays within bounds
+            health = Mathf.Clamp(health, 0f, maxHealth);
             Debug.Log($"Player took {damage} damage. Remaining health: {health}");
+
+            UpdateHealth();
+            StartCoroutine(ScaleHeartEffect());
+
+            if (health <= 0)
+            {
+                Die();
+            }
         }
 
-        public override void Die()
+        private IEnumerator ScaleHeartEffect()
+        {
+            if (hearts == null || health < 0) yield break;
+
+            int damagedHeartIndex = Mathf.FloorToInt(health);
+
+            if (damagedHeartIndex < hearts.Length) 
+            {
+                StartCoroutine(AnimateHeart(hearts[damagedHeartIndex].transform));
+            }
+        }
+        
+        private IEnumerator AnimateHeart(Transform heart)
+        {
+            Vector3 targetScale = defaultHeartScale * damageEffectScale;
+            Vector3 originalScale = heart.localScale;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < scaleDuration)
+            {
+                heart.localScale = Vector3.Lerp(originalScale, targetScale, elapsedTime / scaleDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            heart.localScale = targetScale;
+            yield return new WaitForSeconds(0.1f);
+            elapsedTime = 0f;
+            while (elapsedTime < scaleDuration)
+            {
+                heart.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / scaleDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            heart.localScale = originalScale;
+        }
+
+        public void Die()
         {
             isDead = true;
             CheckpointManager.Instance.RespawnPlayer(gameObject);
-            health = hearts.Length; // Reset to full health
+            health = maxHealth;
+            UpdateHealth();
             Debug.Log("Player died, respawning");
         }
     }

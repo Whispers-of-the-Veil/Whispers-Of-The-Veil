@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.029236369, b: 0.029236369, a: 1}
+  m_Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -581,7 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &2202276516199451355
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,7 +727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &2209484371533875103
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,7 +873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &2943445630046616579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,7 +1095,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &4387401029009151462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1245,7 +1241,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &4859200735573317812
 GameObject:
   m_ObjectHideFlags: 0
@@ -1392,7 +1387,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c275700e3da18f14c9c035d6d901a6fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holdPoint: {fileID: 0}
 --- !u!1 &5048409499599230198
 GameObject:
   m_ObjectHideFlags: 0
@@ -1539,7 +1533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.029236369, b: 0.029236369, a: 1}
+  m_Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1614,7 +1608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6886792, g: 0.029236369, b: 0.029236369, a: 1}
+  m_Color: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2050,7 +2044,7 @@ GameObject:
   - component: {fileID: 1191648748781066217}
   m_Layer: 5
   m_Name: HUD
-  m_TagString: Untagged
+  m_TagString: HUD
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

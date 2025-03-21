@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial 1
   m_EditorClassIdentifier: 
   dialogue:
-  - Oh look, there is a stick... maybe I should pick it up (Press 'E' to pickup an
-    object, press 'Q' to store it, and double click the action bar to take an item
-    out of the Inventory
+  - Welcome to Whispers of The Veil! Walk this path to follow the tutorial. Press
+    space to continue the dialogue.
+  - Theres an item!(Press 'E' to pickup an object, press 'Q' to store it.
   responses: []
   npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}
