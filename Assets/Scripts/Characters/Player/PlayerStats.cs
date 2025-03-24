@@ -11,7 +11,7 @@ namespace Characters.Player
         [SerializeField] private float health = 3f;
         [SerializeField] private int maxHealth = 3;
         [SerializeField] private bool isDead;
-        private Image[] hearts;
+        [SerializeField] Image[] hearts;
         [SerializeField] private Sprite fullHeart;
         [SerializeField] private Sprite halfHeart;
         [SerializeField] private Sprite emptyHeart;
@@ -99,22 +99,29 @@ namespace Characters.Player
             }
         }
 
+        private Dictionary<int, Coroutine> heartAnimations = new Dictionary<int, Coroutine>();
+
         private IEnumerator ScaleHeartEffect()
         {
             if (hearts == null || health < 0) yield break;
-
             int damagedHeartIndex = Mathf.FloorToInt(health);
-
-            if (damagedHeartIndex < hearts.Length) 
+            if (damagedHeartIndex < hearts.Length)
             {
-                StartCoroutine(AnimateHeart(hearts[damagedHeartIndex].transform));
+                Transform heartTransform = hearts[damagedHeartIndex].transform;
+                
+                if (heartAnimations.ContainsKey(damagedHeartIndex) && heartAnimations[damagedHeartIndex] != null)
+                {
+                    StopCoroutine(heartAnimations[damagedHeartIndex]);
+                }
+                Coroutine newAnimation = StartCoroutine(AnimateHeart(heartTransform, damagedHeartIndex));
+                heartAnimations[damagedHeartIndex] = newAnimation;
             }
         }
         
-        private IEnumerator AnimateHeart(Transform heart)
+        private IEnumerator AnimateHeart(Transform heart, int index)
         {
             Vector3 targetScale = defaultHeartScale * damageEffectScale;
-            Vector3 originalScale = heart.localScale;
+            Vector3 originalScale = defaultHeartScale;
             float elapsedTime = 0f;
 
             while (elapsedTime < scaleDuration)
@@ -126,6 +133,7 @@ namespace Characters.Player
             heart.localScale = targetScale;
             yield return new WaitForSeconds(0.1f);
             elapsedTime = 0f;
+            
             while (elapsedTime < scaleDuration)
             {
                 heart.localScale = Vector3.Lerp(targetScale, originalScale, elapsedTime / scaleDuration);
@@ -133,8 +141,14 @@ namespace Characters.Player
                 yield return null;
             }
             heart.localScale = originalScale;
+            heart.localScale = defaultHeartScale;
+            
+            if (heartAnimations.ContainsKey(index))
+            {
+                heartAnimations[index] = null;
+            }
         }
-
+        
         public void Die()
         {
             isDead = true;

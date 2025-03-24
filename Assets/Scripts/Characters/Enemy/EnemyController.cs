@@ -103,8 +103,9 @@ namespace Characters.Enemy {
                 agent.speed = speed * 2;
             }
 
+            float HurtDistance = 0.25f;
             float distanceToPlayer = Vector2.Distance(transform.position, target.position);
-            if (distanceToPlayer <= stoppingDistance) {
+            if (distanceToPlayer <= HurtDistance) {
                 if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
                     timeOfLastAttack = Time.time;
                     AttackPlayer();
