@@ -23,6 +23,9 @@ These libraries can be installed using the requirements.txt - found in the Src d
 
     pip install -r requirements.txt
 
+Please note: in order to utilize the language_tool_python library, you will need to install at least Java 8 to your system
+if it isn't already.
+
 ## Model Architecture
 This model utilizes The Deepspeech 2 actitecture
     https://nvidia.github.io/OpenSeq2Seq/html/speech-recognition/deepspeech2.html

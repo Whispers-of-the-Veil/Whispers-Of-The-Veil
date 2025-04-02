@@ -216,8 +216,6 @@ namespace Characters.Player.Voice {
         /// </summary>
         /// <param name="audioData">The audio data collected from the microphone</param>
         private IEnumerator GetPrediction(float[] audioData) {
-            speechBubble.SetActive(true);
-
             string prediction = " ";
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
@@ -241,11 +239,12 @@ namespace Characters.Player.Voice {
 
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
-
             
             // Check if we are near a puzzle. if we are, check the prediction agains the
             // keys array
             if (CheckIfNearPuzzle()) {
+                speechBubble.SetActive(true);
+                
                 Debug.Log("Near puzzle");
                 yield return StartCoroutine(CheckExpected(prediction));
 
@@ -271,9 +270,11 @@ namespace Characters.Player.Voice {
                 catch (Exception e) {
                     Debug.Log(e.Message);
                 }
+                finally {
+                    StartCoroutine(ResetSpeechBubble(3));
+                }
             }
 
-            StartCoroutine(ResetSpeechBubble(3));
             isProcessing = false;
         }
 
