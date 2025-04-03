@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5730623982374b44aaa3400e58fb1728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 5
   attackCooldown: 0.5
-  knockbackForce: 2
+  knockbackForce: 5
   knockbackDuration: 0.2
   durability: 3
 --- !u!61 &5366059510527987329
