@@ -8,16 +8,16 @@ namespace Combat
     {
         public int damage = 10;
         public float attackCooldown = 0.5f;
-        public float knockbackForce = 3f; // Strength of knockback
+        public float knockbackForce = 3f;
         public float knockbackDuration = 0.2f; // Time the knockback lasts
         public int durability = 5; // Starting durability of the weapon
 
-        private bool canAttack = true;
+        private bool isAttacking = false; // Combined flag for attack state and cooldown
 
         private void Update()
         {
             // Check if the weapon is being held (has a parent) and the player clicks to attack
-            if (transform.parent != null && Input.GetMouseButtonDown(0) && canAttack)
+            if (transform.parent != null && Input.GetMouseButtonDown(0) && !isAttacking)
             {
                 Attack();
             }
@@ -25,6 +25,9 @@ namespace Combat
 
         public void Attack()
         {
+            // Prevent attack if already in the attacking state (either in cooldown or just attacked)
+            isAttacking = true;
+
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 0.5f);
             foreach (Collider2D enemy in hitEnemies)
             {
@@ -36,58 +39,60 @@ namespace Combat
                     if (enemyController != null && enemyRigidbody != null)
                     {
                         enemyController.TakeDamage(damage);
-                        
-                        // Calculate knockback direction and apply force
-                        Vector2 knockbackDirection = enemy.transform.position - transform.position;
-                        knockbackDirection.Normalize(); // Make sure the direction is consistent
-                        enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
-                        
-                        StartCoroutine(ApplyKnockbackDuration(enemyRigidbody, enemy)); // Apply knockback for a limited time
-                        StartCoroutine(AttackCooldown());
-                    }
 
-                    // Decrease durability and destroy the weapon if it's out of durability
-                    durability--;
-                    if (durability <= 0)
-                    {
-                        Destroy(gameObject);
+                        // Apply knockback force immediately
+                        Vector2 knockbackDirection = (enemy.transform.position - transform.position).normalized;
+                        enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+
+                        // Start knockback coroutine
+                        StartCoroutine(ApplyKnockbackAndDestroy(enemyRigidbody, enemy));
                     }
                 }
             }
+
+            // Start cooldown coroutine after attack
+            StartCoroutine(AttackCooldown());
         }
 
-        private IEnumerator ApplyKnockbackDuration(Rigidbody2D enemyRigidbody, Collider2D enemy)
+        private IEnumerator ApplyKnockbackAndDestroy(Rigidbody2D enemyRigidbody, Collider2D enemy)
         {
-            // Apply knockback for a limited duration, after which the force will stop
-            float timer = 0f;
-            while (timer < knockbackDuration)
-            {
-                if (enemy == null || enemyRigidbody == null)
-                {
-                    yield break; // Exit the coroutine if the enemy or Rigidbody is destroyed
-                }
+            yield return new WaitForSeconds(knockbackDuration); // Wait for knockback duration
 
-                timer += Time.deltaTime;
-                yield return null;
-            }
-
-            // Once duration is over, stop the knockback by applying no further force
+            // Ensure enemy stops moving after knockback
             if (enemyRigidbody != null)
             {
                 enemyRigidbody.velocity = Vector2.zero;
+            }
+
+            // Re-enable enemy movement if it was stopped
+            EnemyController enemyController = enemy.GetComponent<EnemyController>();
+            if (enemyController != null)
+            {
+                enemyController.agent.isStopped = false;
+                enemyController.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
+            }
+
+            // Decrease durability only once, ensure it happens only if not already destroyed
+            if (durability > 0)
+            {
+                durability--; // Decrease durability by 1
+            }
+
+            // Destroy the weapon if durability reaches 0
+            if (durability <= 0)
+            {
+                Destroy(gameObject);
             }
         }
 
         private IEnumerator AttackCooldown()
         {
-            canAttack = false;
             yield return new WaitForSeconds(attackCooldown);
-            canAttack = true;
+            isAttacking = false; // Reset the attack state after cooldown
         }
 
         private void OnDrawGizmosSelected()
         {
-            // Visualize attack range in the editor
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, 0.5f);
         }
