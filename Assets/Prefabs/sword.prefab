@@ -52,7 +52,7 @@ MonoBehaviour:
   attackCooldown: 0.5
   knockbackForce: 5
   knockbackDuration: 0.2
-  durability: 3
+  durability: 10
 --- !u!61 &5366059510527987329
 BoxCollider2D:
   m_ObjectHideFlags: 0
