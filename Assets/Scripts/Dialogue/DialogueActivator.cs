@@ -8,6 +8,9 @@ namespace Dialogue
     public class DialogueActivator : MonoBehaviour, IInteractable
     {
         [SerializeField] private DialogueObject dialogueObject;
+        private bool hasInteracted = false;
+        private PlayerController currentPlayer;
+
 
         public void UpdateDialogueObject(DialogueObject dialogueObject)
         {
@@ -16,12 +19,15 @@ namespace Dialogue
 
         private void OnTriggerEnter2D(Collider2D other)
         {
+            if (hasInteracted) return;
+
             if (other.CompareTag("Player") && other.TryGetComponent(out PlayerController player))
             {
                 player.Interactable = this;
-                Interact(player); // Automatically trigger dialogue when the player enters the collider
+                Interact(player);
             }
         }
+
 
         private void OnTriggerExit2D(Collider2D other)
         {
@@ -44,7 +50,29 @@ namespace Dialogue
                     break;
                 }
             }
+
+            player.DialogueUI.OnDialogueFinished += HandleDialogueFinished;
             player.DialogueUI.ShowDialogue(dialogueObject);
         }
+        
+        private void HandleDialogueFinished()
+        {
+            if (currentPlayer != null)
+            {
+                currentPlayer.DialogueUI.OnDialogueFinished -= HandleDialogueFinished;
+                currentPlayer = null;
+            }
+
+            hasInteracted = true;
+            this.enabled = false;
+        }
+        
+        private void DisableAfterDialogue()
+        {
+            hasInteracted = true;
+            currentPlayer.DialogueUI.OnDialogueFinished -= DisableAfterDialogue;
+            gameObject.SetActive(false);
+        }
     }
+
 }

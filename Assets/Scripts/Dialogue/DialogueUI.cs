@@ -12,6 +12,8 @@ namespace Dialogue
         [SerializeField] private TMP_Text textLabel;
         [SerializeField] private Image npcImage;
         public static DialogueUI instance;
+        public event Action OnDialogueFinished;
+
         public bool IsOpen { get; private set; }
         
         private ResponseHandler responseHandler;
@@ -114,6 +116,7 @@ namespace Dialogue
             {
                 npcImage.gameObject.SetActive(false);
             }
+            OnDialogueFinished?.Invoke();
         }
     }
 }
