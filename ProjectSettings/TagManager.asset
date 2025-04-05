@@ -13,6 +13,7 @@ TagManager:
   - Fog
   - DialogTrigger
   - Spawnpoint
+  - HUD
   layers:
   - Default
   - TransparentFX
@@ -55,6 +56,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1659201753
+    locked: 0
+  - name: Pickup
+    uniqueID: 4260945725
     locked: 0
   - name: Environment
     uniqueID: 222793271
