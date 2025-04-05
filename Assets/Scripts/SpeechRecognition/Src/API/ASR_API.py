@@ -11,6 +11,10 @@ from Grab_Ini import ini
 app = Flask(__name__)
 close = False
 
+@app.route('/')
+def index():
+    return 'Hello, Welcome to the Automatic Speech Recognition API!'
+
 @app.route('/ASR', methods = ['POST'])
 def api_service():    
     try:
@@ -26,7 +30,7 @@ def api_service():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-@app.route('/close', methods = ['GET'])
+@app.route('/close')
 def close_api():
     os._exit(0)
     
