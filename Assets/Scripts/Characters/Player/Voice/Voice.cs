@@ -10,14 +10,14 @@ using Characters.Enemy;
 using Audio.SFX;
 using Unity.VisualScripting;
 using Config;
+using UnityEngine.Events;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
-        public static event Action<string> OnCommandRecognized;
-        
-        // [Header("API Settings")]
-        // [SerializeField] string URL = "http://127.0.0.1:8888/ASR";
-        // [SerializeField] string shutDownURL = "http://127.0.0.1:8888/close";
+        // API settings
+        private API api {
+            get => API.instance;
+        }
         
         [Header("Audio")]
         [SerializeField] AudioClip correctClip;
@@ -34,6 +34,7 @@ namespace Characters.Player.Voice {
         [SerializeField] string[] keys;
         [SerializeField] int threshold;
         [SerializeField] int PuzzleInRange = 3;
+        public static event Action<string> OnCommandRecognized;
         private int index;
 
         [Header("Recording Options")]
@@ -45,30 +46,30 @@ namespace Characters.Player.Voice {
         private bool isRecording = false;
         private bool isProcessing = false;
         private string microphoneDevice;
+        private bool canRecord = true;
 
         [Header("Speech Bubble")]
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
-
-        private API api {
-            get => API.instance;
-        }
-
+        
         void Start () {
             speechBubble = GameObject.Find("SpeechBubble");
             textField = GameObject.Find("SpeechBubble/Text").GetComponent<TextMeshProUGUI>();
 
             speechBubble.SetActive(false);
 
-            if (Microphone.devices.Length > 0) {
+            try {
                 microphoneDevice = Microphone.devices[1];
-            } else {
+            } catch (IndexOutOfRangeException) {
                 Debug.LogError("No microphone detected!");
+
+                canRecord = false;
             }
+
         }
 
         void Update () {
-            if (!isRecording) {
+            if (!isRecording && canRecord) {
                 StartCoroutine(HandleRecording());
             }
 

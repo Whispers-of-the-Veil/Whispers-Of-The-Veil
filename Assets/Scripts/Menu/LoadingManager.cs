@@ -5,22 +5,21 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Characters.Player.Voice;
 using TMPro;
+using UnityEngine.Events;
 
 public class LoadingManager : MonoBehaviour {
     [Header("Settings")]
     [SerializeField] private Image progressBar;
     [SerializeField] private TextMeshProUGUI statusText;
-    [SerializeField] private string nextScene;
-    [SerializeField] private float timeout = 60f;
-    private float timer = 0f;
+    [SerializeField] float timeout = 60f;
+    [SerializeField] UnityEvent FinishedLoading;
     
+    private float timer = 0f;
     private float processProgress = 0f;
     private float apiProgress = 0f;
     private float sceneProgress = 0f;
-
     private bool isProcessRunning;
     private bool isConnected;
-        
     private int dotCounter = 0;
     private int frames = 30;
     
@@ -37,7 +36,7 @@ public class LoadingManager : MonoBehaviour {
         while (!isProcessRunning) {
             if (!isProcessRunning) {
                 isProcessRunning = APIWatchDog.IsProcessRunning("ASR_API");
-                processProgress = isProcessRunning ? 0.25f : processProgress;
+                processProgress = isProcessRunning ? 0.50f : processProgress;
             }
 
             progressBar.fillAmount = processProgress + apiProgress + sceneProgress;
@@ -64,7 +63,7 @@ public class LoadingManager : MonoBehaviour {
                 yield return StartCoroutine(api.TestConnection((success) => {
                     isConnected = success;
                     APIWatchDog.Running = true;
-                    apiProgress = success ? 0.25f : apiProgress;
+                    apiProgress = success ? 0.50f : apiProgress;
                 }));
             }
             
@@ -78,16 +77,7 @@ public class LoadingManager : MonoBehaviour {
             yield return new WaitForSeconds(1);
         }
         
-        AsyncOperation gameLevel = SceneManager.LoadSceneAsync(nextScene);
-        
-        while (!gameLevel.isDone) {
-            statusText.text = "Loading scene" + new string('.', (dotCounter / frames) % 4);
-            dotCounter++;
-            
-            sceneProgress = Mathf.Lerp(sceneProgress, 0.5f, 0.25f);
-            progressBar.fillAmount = processProgress + apiProgress + sceneProgress;
-            yield return new WaitForEndOfFrame();
-        }
+        FinishedLoading.Invoke();
 
         progressBar.fillAmount = 1f;
     }
