@@ -11,6 +11,7 @@ namespace Characters.Enemy {
     {
         [Header("Combat")]
         [SerializeField] private float stoppingDistance = 2.0f;
+        public float hurtDistance = 0.25f;
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         private EnemyStats stats = null;
@@ -27,7 +28,7 @@ namespace Characters.Enemy {
         [SerializeField] float minIvenstigateDistance; 
         [SerializeField] float maxIvenstigateDistance;
         [SerializeField] Transform boundedArea;
-        private NavMeshAgent agent;
+        public NavMeshAgent agent;
         
         [Header("Senses")]
         [SerializeField] public float sightRange;       // How far can this enemy see
@@ -103,7 +104,7 @@ namespace Characters.Enemy {
             }
 
             float distanceToPlayer = Vector2.Distance(transform.position, target.position);
-            if (distanceToPlayer <= stoppingDistance) {
+            if (distanceToPlayer <= hurtDistance) {
                 if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
                     timeOfLastAttack = Time.time;
                     AttackPlayer();

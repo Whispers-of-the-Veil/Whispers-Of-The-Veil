@@ -48,9 +48,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5730623982374b44aaa3400e58fb1728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 5
   attackCooldown: 0.5
-  knockbackForce: 2
+  knockbackForce: 5
   knockbackDuration: 0.2
   durability: 3
 --- !u!61 &5366059510527987329
@@ -193,8 +193,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -163006269
-  m_SortingLayer: 6
+  m_SortingLayerID: 1848071757
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 131449278, guid: 6eb16e372762d6b4cb708c44ebfab931, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
