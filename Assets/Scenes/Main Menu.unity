@@ -389,63 +389,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301194720}
   m_CullTransparentMesh: 1
---- !u!1001 &384732338
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3435760526345078955, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_Name
-      value: WatchDog
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1.9162136
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 5.5217814
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.12542194
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202603516066378168, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
 --- !u!1 &415108490
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +481,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Grassy Plans
+          m_StringArgument: Loading
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &415108493
@@ -2116,4 +2059,3 @@ SceneRoots:
   - {fileID: 1348332828}
   - {fileID: 5471844327686990746}
   - {fileID: 1683037990}
-  - {fileID: 384732338}
