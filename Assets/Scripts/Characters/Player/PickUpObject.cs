@@ -8,24 +8,37 @@ using UnityEngine;
 
 public class PickUpObject : MonoBehaviour
 {
+    private SpriteRenderer sr;
+    private string originalSortingLayer;
+
+    private const string pickedUpSortingLayer = "Pickup";
+
+    private void Awake()
+    {
+        sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            originalSortingLayer = sr.sortingLayerName;
+        }
+    }
+
     public void PickUp(Transform holdPoint)
     {
         // Move the object to the hold point and attach it to the parent
         transform.position = holdPoint.position;
         transform.rotation = holdPoint.rotation;
         transform.parent = holdPoint;
-        
+
+        if (sr != null)
+        {
+            sr.sortingLayerName = pickedUpSortingLayer;
+        }
+
         // Disable the BoxCollider2D so it doesn't interfere while held
         BoxCollider2D box = GetComponent<BoxCollider2D>();
         if (box != null)
         {
             box.isTrigger = true; // Set collider to trigger while held
-        }
-        
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        if (sr != null)
-        {
-            sr.sortingOrder = 5;
         }
 
         MeleeWeapon weapon = GetComponent<MeleeWeapon>();
@@ -41,22 +54,21 @@ public class PickUpObject : MonoBehaviour
             rb.isKinematic = true; // Disable physics while held
         }
     }
-    
+
     public void Drop()
     {
         // Detach the object from the hold point
         transform.parent = null;
-        
+
+        if (sr != null)
+        {
+            sr.sortingLayerName = originalSortingLayer;
+        }
+
         BoxCollider2D box = GetComponent<BoxCollider2D>();
         if (box != null)
         {
             box.isTrigger = true; // Keep collider as a trigger when dropped
-        }
-
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        if (sr != null)
-        {
-            sr.sortingOrder = 0;
         }
 
         MeleeWeapon weapon = GetComponent<MeleeWeapon>();
