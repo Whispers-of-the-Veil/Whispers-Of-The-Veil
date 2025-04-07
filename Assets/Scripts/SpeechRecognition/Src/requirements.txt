@@ -5,4 +5,4 @@ matplotlib==3.9.2
 jiwer==3.0.5
 pyinstaller==6.11.1
 Flask==3.1.0
-language_tool_python==2.9.0
+language_tool_python==2.8.2

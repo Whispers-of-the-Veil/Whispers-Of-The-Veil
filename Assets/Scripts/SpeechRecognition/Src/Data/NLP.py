@@ -1,8 +1,9 @@
-import language_tool_python
+# import language_tool_python
 
 class NLP():
     def __init__(self):
-        self.tool = language_tool_python.LanguageTool('en-US')
+        pass
+#         self.tool = language_tool_python.LanguageTool('en-US')
 
     def SpellingCorrection(self, _prediction):
         """
@@ -15,6 +16,6 @@ class NLP():
         Returns:
             The prediction with known words spelling corrected.
         """
-        corrected = self.tool.correct(_prediction)
+#         corrected = self.tool.correct(_prediction)
 
-        return corrected
+        return _prediction

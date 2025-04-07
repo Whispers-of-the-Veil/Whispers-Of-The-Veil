@@ -1,7 +1,5 @@
-using System;
 using UnityEngine;
 using System.Diagnostics;
-using Unity.VisualScripting;
 using Debug = UnityEngine.Debug;
 
 namespace Characters.Player.Voice {
@@ -28,7 +26,7 @@ namespace Characters.Player.Voice {
         /// </summary>
         /// <returns>True if the process exits; false otherwise</returns>
         public static bool IsProcessRunning(string processName) {
-            return Process.GetProcessesByName(processName).Length > 0;
+            return Process.GetProcessesByName(processName).Length != 0;
         }
         
         /// <summary>
