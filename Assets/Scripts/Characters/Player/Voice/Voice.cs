@@ -59,7 +59,7 @@ namespace Characters.Player.Voice {
             speechBubble.SetActive(false);
 
             try {
-                microphoneDevice = Microphone.devices[1];
+                microphoneDevice = Microphone.devices[0];
             } catch (IndexOutOfRangeException) {
                 Debug.LogError("No microphone detected!");
 
