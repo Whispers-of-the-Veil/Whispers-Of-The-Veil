@@ -187,10 +187,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 935679676163254265, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2413266402340619363, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: dialogueUI
       value: 
@@ -239,25 +235,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7557604048196142964, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-      propertyPath: hearts.Array.data[0]
-      value: 
-      objectReference: {fileID: 1224760668}
-    - target: {fileID: 7557604048196142964, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-      propertyPath: hearts.Array.data[1]
-      value: 
-      objectReference: {fileID: 604547099}
-    - target: {fileID: 7557604048196142964, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-      propertyPath: hearts.Array.data[2]
-      value: 
-      objectReference: {fileID: 1803401699}
+    - target: {fileID: 7883379373569584447, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: orthographic size
+      value: 2.5714285
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 935679676163254265, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1535139251}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
 --- !u!1 &358648511
 GameObject:
@@ -493,7 +478,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2954,17 +2939,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &604547099 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 619140347173035437, guid: f146e97841b2f3c4db0382f1bd39594a, type: 3}
-  m_PrefabInstance: {fileID: 1768297979}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &605737789
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,7 +3027,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110347,17 +110321,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e513a51d74d2943d98029bc2e9624f2b, type: 3}
---- !u!114 &1224760668 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6026122476233919558, guid: f146e97841b2f3c4db0382f1bd39594a, type: 3}
-  m_PrefabInstance: {fileID: 1768297979}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1374584402
 GameObject:
   m_ObjectHideFlags: 0
@@ -110457,7 +110420,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -111208,35 +111171,6 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
---- !u!1 &1535139246 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 935679676163254265, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
-  m_PrefabInstance: {fileID: 336147766}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1535139251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1535139246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ComponentVersion: 1
-  m_AssetsPPU: 35
-  m_RefResolutionX: 320
-  m_RefResolutionY: 180
-  m_CropFrame: 0
-  m_GridSnapping: 0
-  m_FilterMode: 0
-  m_UpscaleRT: 0
-  m_PixelSnapping: 0
-  m_CropFrameX: 0
-  m_CropFrameY: 0
-  m_StretchFill: 0
 --- !u!1 &1562187897
 GameObject:
   m_ObjectHideFlags: 0
@@ -111665,17 +111599,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f146e97841b2f3c4db0382f1bd39594a, type: 3}
---- !u!114 &1803401699 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 336841677607503388, guid: f146e97841b2f3c4db0382f1bd39594a, type: 3}
-  m_PrefabInstance: {fileID: 1768297979}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1950345673
 GameObject:
   m_ObjectHideFlags: 0
@@ -111730,7 +111653,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

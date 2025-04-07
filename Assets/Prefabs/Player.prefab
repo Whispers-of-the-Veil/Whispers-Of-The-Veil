@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7883379373569584447}
   - component: {fileID: 8436923928201259745}
   - component: {fileID: 9206146274960654288}
+  - component: {fileID: 6705185416013593234}
   m_Layer: 3
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -137,6 +138,30 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &6705185416013593234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935679676163254265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ComponentVersion: 1
+  m_AssetsPPU: 35
+  m_RefResolutionX: 320
+  m_RefResolutionY: 180
+  m_CropFrame: 0
+  m_GridSnapping: 0
+  m_FilterMode: 0
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &2293290981672332294
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,7 +465,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -651,6 +676,7 @@ MonoBehaviour:
   health: 3
   maxHealth: 3
   isDead: 0
+  hearts: []
   fullHeart: {fileID: 21300000, guid: 496d2284a996d8647a9e8e5b328406d9, type: 3}
   halfHeart: {fileID: 21300000, guid: b422590d9618aaf4089281c343bf18f5, type: 3}
   emptyHeart: {fileID: 21300000, guid: 051172e52b6de1a4ba41491b09184cae, type: 3}
@@ -911,6 +937,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 1795277447
       objectReference: {fileID: 0}
+    - target: {fileID: 7243187746386608732, guid: ac6922d1850906f41bd6cf92cf66749c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 274acbddae6224193bde448f316f530d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
