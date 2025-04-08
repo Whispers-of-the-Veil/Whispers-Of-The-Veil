@@ -21,6 +21,7 @@ Shader "Unlit/PixelShader"
 
     Pass
     {
+      Cull Off
       CGPROGRAM
       #pragma vertex vertexShader
       #pragma fragment fragmentShader
