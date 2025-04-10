@@ -123,6 +123,8 @@ namespace Characters.Enemy {
         /// </summary>
         /// <returns>Returns true if they are; false otherwise</returns>
         private bool CheckInSight() {
+            if (target.GetComponent<PlayerStats>().isInvisible)
+                return false;
             Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, sightRange, LayerMask.GetMask("player"));
 
             foreach (Collider2D puzzleCollider in puzzleColliders) {
@@ -195,6 +197,9 @@ namespace Characters.Enemy {
         /// </summary>
         /// <returns>True if they are; false otherwise</returns>
         private bool CheckInHeardRange() {
+            if (target.GetComponent<PlayerStats>().isInvisible)
+                return false;
+            
             Collider2D[] puzzleColliders = Physics2D.OverlapCircleAll(transform.position, hearingRange, LayerMask.GetMask("player"));
 
             // Loop through all colliders and check line of sight
