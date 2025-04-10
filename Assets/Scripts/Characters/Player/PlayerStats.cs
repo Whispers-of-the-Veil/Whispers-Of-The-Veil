@@ -149,6 +149,31 @@ namespace Characters.Player
             }
         }
         
+        public bool isInvisible { get; private set; }
+
+        public void SetInvisibility(bool state, float duration)
+        {
+            if (isInvisible) return;
+            isInvisible = state;
+            StartCoroutine(ResetInvisibility(duration));
+        }
+
+        private IEnumerator ResetInvisibility(float duration)
+        {
+            yield return new WaitForSeconds(duration);
+            isInvisible = false;
+        }
+        
+        public void Heal(float amount)
+        {
+            if (isDead) return;
+
+            health += amount;
+            health = Mathf.Clamp(health, 0f, maxHealth);
+            Debug.Log($"Player healed {amount}. Current health: {health}");
+            UpdateHealth();
+        }
+        
         public void Die()
         {
             isDead = true;
