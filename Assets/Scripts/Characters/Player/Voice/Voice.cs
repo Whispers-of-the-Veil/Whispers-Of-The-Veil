@@ -124,7 +124,7 @@ namespace Characters.Player.Voice {
         /// </summary>
         private IEnumerator Detect() {
             foreach (var enemy in enemies) {
-                enemy.GetComponent<EnemyController>().VoiceDetected();
+                enemy.GetComponent<Enemy.Enemy>().VoiceDetected();
             }
 
             yield return null;

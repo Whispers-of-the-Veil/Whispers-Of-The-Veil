@@ -33,12 +33,12 @@ namespace Combat
             {
                 if (enemy.CompareTag("Enemy"))
                 {
-                    EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                    Enemy enemy = enemy.GetComponent<Enemy>();
                     Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
 
-                    if (enemyController != null && enemyRigidbody != null)
+                    if (enemy != null && enemyRigidbody != null)
                     {
-                        enemyController.TakeDamage(damage);
+                        enemy.TakeDamage(damage);
 
                         // Apply knockback force immediately
                         Vector2 knockbackDirection = (enemy.transform.position - transform.position).normalized;
@@ -65,11 +65,11 @@ namespace Combat
             }
 
             // Re-enable enemy movement if it was stopped
-            EnemyController enemyController = enemy.GetComponent<EnemyController>();
-            if (enemyController != null)
+            Enemy enemy = enemy.GetComponent<Enemy>();
+            if (enemy != null)
             {
-                enemyController.agent.isStopped = false;
-                enemyController.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
+                enemy.agent.isStopped = false;
+                enemy.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
             }
 
             // Decrease durability only once, ensure it happens only if not already destroyed

@@ -11,7 +11,7 @@ namespace Characters.Enemy
         [SerializeField] private float damage = 1f;
         [SerializeField] private bool canAttack = true;
         public float attackSpeed = 1.5f;
-        private bool isDead;
+        public bool isDead;
 
         private void Start()
         {
