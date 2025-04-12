@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Grassy Plans.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Grassy Plans.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Voice/Voice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/Voice/Voice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Src/ASR_API.spec.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SpeechRecognition/Src/ASR_API.spec.meta" afterDir="false" />
-    </list>
+    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,7 +135,7 @@
       <workItem from="1741278458421" duration="2172000" />
       <workItem from="1743818076840" duration="2148000" />
       <workItem from="1743986794361" duration="373000" />
-      <workItem from="1743990222737" duration="425000" />
+      <workItem from="1743990222737" duration="1104000" />
     </task>
     <servers />
   </component>

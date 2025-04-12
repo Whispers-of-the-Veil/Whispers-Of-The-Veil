@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial 4
   m_EditorClassIdentifier: 
   dialogue:
-  - Oh my, what up with this tick fog! Maybe I should avoid it...
+  - Oh my, what's up with this thick fog! Maybe I should avoid it...
   responses: []
   npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}
