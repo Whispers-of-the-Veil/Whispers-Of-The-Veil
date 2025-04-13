@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
+using Characters.Enemies.Behavior_Tree.Strategies.Conditional;
 
 namespace Characters.Enemies.Behavior_Tree.Strategies {
     public class Patrol : IStrategy {
@@ -22,7 +23,7 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
 
         public Nodes.Status Process() {
             if (hasTarget) {
-                if (ReachedTarget()) return Nodes.Status.Success;
+                if (Conditions.ReachedTarget(agent)) return Nodes.Status.Success;
                 
                 return Nodes.Status.Running;
             }
@@ -42,17 +43,5 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
         }
 
         public void Reset() => hasTarget = false;
-        
-        private bool ReachedTarget() {
-            if (!agent.pathPending) {
-                if (agent.remainingDistance <= agent.stoppingDistance) {
-                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
     }
 }

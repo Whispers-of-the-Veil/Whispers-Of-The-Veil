@@ -1,6 +1,8 @@
+using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
+using Characters.Enemies.Behavior_Tree.Strategies.Conditional;
 
 namespace Characters.Enemies.Behavior_Tree.Strategies {
     public class MoveToTarget : IStrategy {
@@ -8,24 +10,30 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
         readonly NavMeshAgent agent;
         readonly Transform target;
         readonly float speed;
+        readonly float stopDistance;
         private bool isMoving;
 
-        public MoveToTarget(NavMeshAgent agent, Transform target, float speed) {
+        public MoveToTarget(Transform entity, NavMeshAgent agent, Transform target, float speed, float stopDistance) {
+            this.entity = entity;
             this.agent = agent;
             this.target = target;
             this.speed = speed;
+            this.stopDistance = stopDistance;
         }
 
         public Nodes.Status Process() {
             if (isMoving) {
-                if (ReachedTarget()) return Nodes.Status.Success;
+                if (Conditions.ReachedTarget(agent)) return Nodes.Status.Success;
                 
                 return Nodes.Status.Running;
             }
             
             NavMeshHit hit;
+
+            Vector2 directionToTarget = ((Vector2)target.position - (Vector2)entity.position).normalized;
+            Vector2 stopPosition = (Vector2)target.position + (directionToTarget * stopDistance);
             
-            if (NavMesh.SamplePosition(target.position, out hit, 1f, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition(stopPosition, out hit, stopDistance, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);
                 agent.speed = speed;
                 
@@ -37,17 +45,5 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
         }
         
         public void Reset() => isMoving = false;
-        
-        private bool ReachedTarget() {
-            if (!agent.pathPending) {
-                if (agent.remainingDistance <= agent.stoppingDistance) {
-                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
     }
 }

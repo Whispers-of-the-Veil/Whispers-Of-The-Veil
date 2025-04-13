@@ -86,37 +86,40 @@ namespace Characters.Enemies.Controllers {
             PrioritySelector actions = new PrioritySelector("Logic");
             
             // Attack Logic --------------------------------------
+            
+            // Target isnt updating its position
             RandomSelector randomAttack = new RandomSelector("Ramdom");
             Sequence attack = new Sequence("Normal Attack Pattern");
-            attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(agent, target, attackSpeed)));
+            attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed, stoppingDistance)));
             attack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(attack);
 
             Sequence dashAttack = new Sequence("Dash Attack Pattern");
-            dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(agent, target, attackSpeed * 2)));
+            dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed * 2, stoppingDistance)));
             dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(dashAttack);
                 
             Sequence attackPlayer = new Sequence("Attack", 150);
             attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));
-            attackPlayer.AddChild(new Leaf("Delay Attack", new WaitSeconds(attackInterval)));
+            attackPlayer.AddChild(new Leaf("Strafe while waiting to attack", new StrafeDelay(agent, target, 1f, speed, attackInterval)));
             attackPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(angryEmote)))));
             attackPlayer.AddChild(randomAttack);
             actions.AddChild(attackPlayer);
 
             // Senses --------------------------------------
-            Sequence seenPlayer = new Sequence("Seen Player", 100);
-            seenPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
-            seenPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, sightRange))));
-            actions.AddChild(seenPlayer);
+            // Sequence seenPlayer = new Sequence("Seen Player", 100);
+            // seenPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
+            // seenPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, sightRange))));
+            // seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(agent, target, speed)));
+            // actions.AddChild(seenPlayer);
             
-            Sequence heardNoise = new Sequence("Investigate Noise", 50);
-            heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(Conditions.HeardSound)));
-            heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
-            heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
-            heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(agent, )));
-            heardNoise.AddChild(new Leaf("Investigate", new Investigate()));
-            actions.AddChild(heardNoise);
+            // Sequence heardNoise = new Sequence("Investigate Noise", 50);
+            // heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(Conditions.HeardSound)));
+            // heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
+            // heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
+            // heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(agent, )));
+            // heardNoise.AddChild(new Leaf("Investigate", new Investigate()));
+            // actions.AddChild(heardNoise);
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
@@ -132,7 +135,7 @@ namespace Characters.Enemies.Controllers {
         /// </summary>
         IEnumerator ShowEmote(GameObject emote) {
             emote.SetActive(true);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             emote.SetActive(false);
         }
         
@@ -149,12 +152,6 @@ namespace Characters.Enemies.Controllers {
         {
             //get enemy stats
             stats = GetComponent<EnemyStats>();
-        }
-        
-        // Migrated owens code
-        public void TakeDamage(float damageAmount)
-        {
-            stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
         }
     }
 }

@@ -11,14 +11,23 @@ using Characters.Player;
 // it has conditions and actions that every enemy will have access to.
 namespace Characters.Enemies {
     public class Enemy : MonoBehaviour {
-
-        [SerializeField] public int heardLimit;
-        private int heardCount;
+        
+        private EnemyStats stats = null;
         
         private void Start() {
-
+            GetReferences();
         }
         
+        private void GetReferences()
+        {
+            //get enemy stats
+            stats = GetComponent<EnemyStats>();
+        }
+        
+        public void TakeDamage(float damageAmount)
+        {
+            stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
+        }
 
         
         // /// <summary>

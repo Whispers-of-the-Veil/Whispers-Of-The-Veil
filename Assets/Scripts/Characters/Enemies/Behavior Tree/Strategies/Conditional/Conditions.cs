@@ -1,5 +1,6 @@
 using Characters.Player;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Characters.Enemies.Behavior_Tree.Strategies.Conditional {
     public class Conditions {
@@ -24,6 +25,21 @@ namespace Characters.Enemies.Behavior_Tree.Strategies.Conditional {
         /// Check if noise was made; running sounds, player is talking, etc.
         /// </summary>
         public static bool HeardSound() {
+            return false;
+        }
+        
+        /// <summary>
+        /// Determines if the NavMeshAgent has reached its target destination
+        /// </summary>
+        public static bool ReachedTarget(NavMeshAgent agent) {
+            if (!agent.pathPending) {
+                if (agent.remainingDistance <= agent.stoppingDistance) {
+                    if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f) {
+                        return true;
+                    }
+                }
+            }
+
             return false;
         }
     }
