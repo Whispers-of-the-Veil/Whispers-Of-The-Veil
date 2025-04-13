@@ -70,6 +70,13 @@ namespace Characters.Player {
             
             goItem.transform.parent = holdPoint.transform;
             goItem.transform.position = holdPoint.position;
+            
+            Book book = goItem.GetComponent<Book>();
+            if (book != null)
+            {
+                isHoldingBook = true;
+                heldBook = goItem;
+            }
         }
     
         // Update is called once per frame
