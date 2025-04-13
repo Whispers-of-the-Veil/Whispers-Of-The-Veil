@@ -8,10 +8,10 @@ namespace Characters.Enemies.Behavior_Tree.Strategies.Conditional {
         /// Check if a given entities position is within a defined range of a target
         /// </summary>
         public static bool InRange(Transform entity, float range) {
-            Collider2D[] collider = Physics2D.OverlapCircleAll(entity.position, range, LayerMask.GetMask("player"));
+            Collider2D[] entites = Physics2D.OverlapCircleAll(entity.position, range, LayerMask.GetMask("player"));
 
-            foreach (Collider2D puzzleCollider in collider) {
-                Vector2 directionToPlayer = (puzzleCollider.transform.position - entity.position).normalized;
+            foreach (Collider2D player in entites) {
+                Vector2 directionToPlayer = (player.transform.position - entity.position).normalized;
 
                 if (Physics2D.Raycast(entity.position, directionToPlayer, range, LayerMask.GetMask("player"))) {
                     return true;

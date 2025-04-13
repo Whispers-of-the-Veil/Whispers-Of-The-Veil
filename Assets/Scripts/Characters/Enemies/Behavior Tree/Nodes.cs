@@ -84,7 +84,7 @@ namespace Characters.Enemies.Behavior_Tree {
             Reset();
             return Status.Failure;
         }
-    }
+    } 
     
     // So long as one of the children pass, we will return a success: logical OR
     // This is used to determine if any number of sequences returns a Success
@@ -132,6 +132,33 @@ namespace Characters.Enemies.Behavior_Tree {
             return Status.Success;
         }
     }
+
+    public class RandomPicker : Nodes {
+        private static Random rng = new Random();
+        private int? selectedChild = null;
+        
+        public RandomPicker(string name, int priority = 0) : base(name, priority) { }
+
+        public override Status Process() {
+            if (selectedChild == null) {
+                selectedChild = rng.Next(children.Count);
+                currentChild = selectedChild.Value;
+            }
+            
+            
+            var status = children[currentChild].Process();
+
+            if (status != Status.Running) {
+                Reset();
+            }
+            
+            return status;
+        }
+
+        public override void Reset() {
+            selectedChild = null;
+        }
+    }
     
     public class Leaf : Nodes {
         readonly IStrategy strategy;
@@ -176,10 +203,20 @@ namespace Characters.Enemies.Behavior_Tree {
         public override Status Process() {
             while (currentChild < children.Count) {
                 var status = children[currentChild].Process();
-                if (status != Status.Success) {
-                    return status;
-                }
-                currentChild++;
+
+                switch (status) {
+                    // If a node failed Reset everything
+                    case Status.Failure:
+                        Reset();
+                        return status;
+                    // If a node is processing return the status
+                    case Status.Running:
+                        return status;
+                    // Otherwise, we were successful, move to the next node.
+                    default:
+                        currentChild++;
+                        break;
+                };
             }
             
             Reset();

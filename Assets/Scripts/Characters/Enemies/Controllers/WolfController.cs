@@ -20,7 +20,6 @@ namespace Characters.Enemies.Controllers {
         }
         
         [Header("Combat")]
-        [SerializeField] Transform target;
         [SerializeField] private float stoppingDistance = 2.0f;
         [SerializeField] float attackRange;
         [SerializeField] float attackSpeed;
@@ -29,6 +28,7 @@ namespace Characters.Enemies.Controllers {
         private float timeOfLastAttack = 0;
         private bool hasStopped = false;
         private EnemyStats stats = null;
+        private Transform target;
         
         [Header("Emotes")]
         private GameObject alertEmote;
@@ -85,33 +85,15 @@ namespace Characters.Enemies.Controllers {
 
             PrioritySelector actions = new PrioritySelector("Logic");
             
-            // Attack Logic --------------------------------------
-            
-            // Target isnt updating its position
-            RandomSelector randomAttack = new RandomSelector("Ramdom");
-            Sequence attack = new Sequence("Normal Attack Pattern");
-            attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed, stoppingDistance)));
-            attack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
-            randomAttack.AddChild(attack);
-
-            Sequence dashAttack = new Sequence("Dash Attack Pattern");
-            dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed * 2, stoppingDistance)));
-            dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
-            randomAttack.AddChild(dashAttack);
-                
-            Sequence attackPlayer = new Sequence("Attack", 150);
-            attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));
-            attackPlayer.AddChild(new Leaf("Strafe while waiting to attack", new StrafeDelay(agent, target, 1f, speed, attackInterval)));
-            attackPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(angryEmote)))));
-            attackPlayer.AddChild(randomAttack);
-            actions.AddChild(attackPlayer);
+            actions.AddChild(CombatLogic());
 
             // Senses --------------------------------------
-            // Sequence seenPlayer = new Sequence("Seen Player", 100);
-            // seenPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
-            // seenPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, sightRange))));
-            // seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(agent, target, speed)));
-            // actions.AddChild(seenPlayer);
+            Sequence seenPlayer = new Sequence("Seen Player", 100);
+            seenPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
+            seenPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, sightRange))));
+            seenPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(frustratedEmote)))));
+            seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(transform, agent, target, speed, 2f)));
+            actions.AddChild(seenPlayer);
             
             // Sequence heardNoise = new Sequence("Investigate Noise", 50);
             // heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(Conditions.HeardSound)));
@@ -128,6 +110,30 @@ namespace Characters.Enemies.Controllers {
             actions.AddChild(patrol);
             
             tree.AddChild(actions);
+        }
+
+        Sequence CombatLogic() {
+            RandomPicker randomAttack = new RandomPicker("Ramdom");
+            
+            Sequence attack = new Sequence("Normal Attack Pattern");
+            attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed, stoppingDistance)));
+            attack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
+            attack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
+            randomAttack.AddChild(attack);
+
+            Sequence dashAttack = new Sequence("Dash Attack Pattern");
+            dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed * 2, stoppingDistance)));
+            dashAttack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
+            dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
+            randomAttack.AddChild(dashAttack);
+                
+            Sequence attackPlayer = new Sequence("Attack", 150);
+            attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));
+            attackPlayer.AddChild(new Leaf("Strafe while waiting to attack", new StrafeDelay(agent, target, 2f, speed, attackInterval)));
+            attackPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(angryEmote)))));
+            attackPlayer.AddChild(randomAttack);
+
+            return attackPlayer;
         }
         
         /// <summary>
