@@ -1315,7 +1315,7 @@ GameObject:
   - component: {fileID: 900113475}
   - component: {fileID: 900113474}
   m_Layer: 5
-  m_Name: wolf
+  m_Name: dog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1360,7 +1360,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1488d122bc6ea48b2b3238cc1e9cf747, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c44eb40059214461b94c41dd1610cf56, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3788,7 +3788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &2447749374984037189
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3836,7 +3836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Wolf Training Manual
+  m_text: 'Dog Training Manual
 
 
     This manual contains essential instructions
@@ -3987,7 +3987,7 @@ SpriteRenderer:
   m_SortingLayerID: -163006269
   m_SortingLayer: 7
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7575367259032cc449a75fb98eb4cc80, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 42d9d2da29c2f2342b9293f5a6eb7354, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4151,7 +4151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768ac314ff672c849885564246548017, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Image: {fileID: 21300000, guid: 7575367259032cc449a75fb98eb4cc80, type: 3}
+  _Image: {fileID: 21300000, guid: 42d9d2da29c2f2342b9293f5a6eb7354, type: 3}
   bookCanvas: {fileID: 2134132273220058105}
 --- !u!1 &6163768149764063956
 GameObject:
