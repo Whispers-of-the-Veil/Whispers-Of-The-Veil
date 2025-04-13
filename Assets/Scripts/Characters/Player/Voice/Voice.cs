@@ -6,7 +6,6 @@ using System;
 using System.Text;
 using System.Globalization;
 using TMPro;
-using Characters.Enemy;
 using Audio.SFX;
 using Unity.VisualScripting;
 using Config;
@@ -110,24 +109,10 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
-
-                StartCoroutine(Detect());
             }
 
             Debug.Log("Stoped Recording");
             isRecording = false;
-        }
-
-        /// <summary>
-        /// Called the VoiceDetected method on each enitity. That method determines if the player was within range
-        /// of that entity and trigger an aggrivated coroutine if they were.
-        /// </summary>
-        private IEnumerator Detect() {
-            foreach (var enemy in enemies) {
-                enemy.GetComponent<Enemy.Enemy>().VoiceDetected();
-            }
-
-            yield return null;
         }
         
         /// <summary>
