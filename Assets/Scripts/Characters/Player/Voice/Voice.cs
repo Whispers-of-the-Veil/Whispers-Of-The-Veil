@@ -47,7 +47,8 @@ namespace Characters.Player.Voice {
         private string microphoneDevice;
         private bool canRecord = true;
 
-        [Header("Speech Bubble")]
+        [Header("Speech Bubble")] 
+        [HideInInspector] public bool spoke;
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
         
@@ -109,10 +110,20 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
+                SoundEvent.ReportNoise(transform);
+                StartCoroutine(ResetFlag());
             }
 
             Debug.Log("Stoped Recording");
             isRecording = false;
+        }
+
+        /// <summary>
+        /// Resets the spoke flag
+        /// </summary>
+        IEnumerator ResetFlag() {
+            yield return new WaitForSeconds(2);
+            SoundEvent.ClearReport();
         }
         
         /// <summary>

@@ -1,4 +1,5 @@
 using Characters.Player;
+using Characters.Player.Voice;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -18,13 +19,6 @@ namespace Characters.Enemies.Behavior_Tree.Strategies.Conditional {
                 }
             }
             
-            return false;
-        }
-
-        /// <summary>
-        /// Check if noise was made; running sounds, player is talking, etc.
-        /// </summary>
-        public static bool HeardSound() {
             return false;
         }
         

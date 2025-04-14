@@ -6,6 +6,7 @@ using Characters.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Audio.SFX;
+using Characters.Player.Voice;
 
 namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
@@ -46,6 +47,8 @@ namespace Characters.Enemies.Controllers {
         [Header("Senses")]
         [SerializeField] public float sightRange;       // How far can this enemy see
         [SerializeField] public float hearingRange;     // How far can this enemy hear
+        [SerializeField] public float searchRadius;
+        private Voice voice;
         
         BehaviorTree tree;
         
@@ -57,6 +60,10 @@ namespace Characters.Enemies.Controllers {
             
             if (target == null) {
                 target = GameObject.Find("Player").GetComponent<Transform>();
+            }
+
+            if (voice == null) {
+                voice = GameObject.Find("Player").GetComponent<Voice>();
             }
             
             alertEmote = GameObject.Find("Emotes/Alert");
@@ -95,13 +102,13 @@ namespace Characters.Enemies.Controllers {
             seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(transform, agent, target, speed, 2f)));
             actions.AddChild(seenPlayer);
             
-            // Sequence heardNoise = new Sequence("Investigate Noise", 50);
-            // heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(Conditions.HeardSound)));
-            // heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
-            // heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
-            // heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(agent, )));
-            // heardNoise.AddChild(new Leaf("Investigate", new Investigate()));
-            // actions.AddChild(heardNoise);
+            Sequence heardNoise = new Sequence("Investigate Noise", 50);
+            heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(() => SoundEvent.noiseMade)));
+            heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
+            heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
+            heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, SoundEvent.noisePosition, speed, 0.25f)));
+            heardNoise.AddChild(new Leaf("Investigate", new Investigate(agent, SoundEvent.noisePosition, searchRadius, speed, 2)));
+            actions.AddChild(heardNoise);
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");

@@ -28,33 +28,7 @@ namespace Characters.Enemies {
         {
             stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
         }
-
         
-        // /// <summary>
-        // /// If the enemy has seen the player. It will move and engage in combat with them
-        // /// </summary>
-        // private void HasSeen() {
-        //     Vector2 directionToPlayer = ((Vector2)target.position - (Vector2)transform.position).normalized;
-        //     Vector2 stopPosition = (Vector2)target.position - (directionToPlayer * stoppingDistance);
-        //
-        //     NavMeshHit hit;
-        //     if (NavMesh.SamplePosition(stopPosition, out hit, stoppingDistance, NavMesh.AllAreas)) {
-        //         agent.SetDestination(hit.position);
-        //         agent.speed = speed * 2;
-        //     }
-        //
-        //     float distanceToPlayer = Vector2.Distance(transform.position, target.position);
-        //     if (distanceToPlayer <= hurtDistance) {
-        //         if (Time.time >= timeOfLastAttack + stats.attackSpeed) {
-        //             timeOfLastAttack = Time.time;
-        //             AttackPlayer();
-        //             hasStopped = false; // Reset here so the enemy can move again after attacking
-        //         }
-        //     } else {
-        //         hasStopped = false;
-        //     }
-        // }
-        //
         // /// <summary>
         // /// Get a random position just short of the player, and move the entity to it
         // /// </summary>
