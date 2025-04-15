@@ -28,6 +28,7 @@ public class LoadingManager : MonoBehaviour {
     }
     
     void Start() {
+        APIWatchDog.Timeout = false;
         StartCoroutine(LoadAsyncScene());
     }
 
