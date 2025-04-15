@@ -231,6 +231,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4164559071668398503, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: DetectVoiceThreshold
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6705185416013593234, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: m_Enabled
       value: 0
