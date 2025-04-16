@@ -31,7 +31,7 @@ public class CabinDoor : MonoBehaviour
 
     void Update()
     {
-        if (enterAllowed && Input.GetKeyDown(KeyCode.G))
+        if (enterAllowed && Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("G Key Pressed! Entering Cabin...");
             SceneManager.LoadScene("CabinMain");
