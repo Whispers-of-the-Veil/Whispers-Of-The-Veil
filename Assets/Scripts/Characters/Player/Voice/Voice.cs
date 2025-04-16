@@ -220,7 +220,8 @@ namespace Characters.Player.Voice {
             string prediction = " ";
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
-
+            
+            // Timeout / running doesn't set if we start the scene outside of the main menu screen.
             if (APIWatchDog.Running && !APIWatchDog.Timeout) {
                 yield return api.SendWebRequest(
                     "ASR",

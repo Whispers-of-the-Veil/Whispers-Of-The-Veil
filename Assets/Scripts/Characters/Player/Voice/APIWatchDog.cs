@@ -34,8 +34,12 @@ namespace Characters.Player.Voice {
         /// </summary>
         private void WatchAPI() {
             if (!IsProcessRunning("ASR_API")) {
+                Running = false;
                 Debug.Log("API stopped running; attempting to restart.");
                 StartAPI();
+            }
+            else {
+                Running = true;
             }
         }
 
