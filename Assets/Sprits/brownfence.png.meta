@@ -93,6 +93,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -133,29 +146,29 @@ TextureImporter:
       name: brownfence_1
       rect:
         serializedVersion: 2
-        x: 575
-        y: 976
-        width: 174
-        height: 171
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 566
+        y: 980
+        width: 213
+        height: 167
+      alignment: 9
+      pivot: {x: 0.5667507, y: 0.37871137}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
       - - {x: 62, y: 81.5}
         - {x: -48, y: 25.5}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
+        - {x: -2.5, y: -83.5}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
-        - {x: -47, y: -66.5}
-        - {x: -58, y: -63.5}
-        - {x: -47, y: -66.5}
-        - {x: 64, y: -1.5}
+        - {x: -47.5, y: 25.5}
+        - {x: -45, y: -66.5}
+        - {x: -4.5, y: -83.5}
+        - {x: 36.5, y: -51.5}
+        - {x: 91.5, y: -8.5}
         - {x: 62, y: 81.5}
         - {x: 47, y: 83.5}
         - {x: -59, y: 27.5}
-        - {x: -58, y: -63.5}
+        - {x: -58.5, y: -65.5}
         - {x: -59, y: 27.5}
         - {x: 47, y: 83.5}
       tessellationDetail: 0
@@ -213,15 +226,15 @@ TextureImporter:
       outline: []
       physicsShape:
       - - {x: 62, y: 81.5}
-        - {x: -48, y: 25.5}
+        - {x: -40.5, y: 25}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
+        - {x: -40.5, y: 25}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
-        - {x: -47, y: -66.5}
+        - {x: -40.5, y: 25}
+        - {x: -38.5, y: -64}
         - {x: -58, y: -63.5}
-        - {x: -47, y: -66.5}
-        - {x: 64, y: -1.5}
+        - {x: 22.5, y: -26}
+        - {x: 63.5, y: -2}
         - {x: 62, y: 81.5}
         - {x: 47, y: 83.5}
         - {x: -59, y: 27.5}
@@ -295,30 +308,37 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 575
-        y: 564
-        width: 174
-        height: 175
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 541
+        width: 212
+        height: 198
+      alignment: 9
+      pivot: {x: 0.48544398, y: 0.4272686}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape:
-      - - {x: 62, y: 81.5}
-        - {x: -48, y: 25.5}
-        - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
-        - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
-        - {x: -47, y: -66.5}
-        - {x: -58, y: -63.5}
-        - {x: -47, y: -66.5}
-        - {x: 64, y: -1.5}
-        - {x: 62, y: 81.5}
-        - {x: 47, y: 83.5}
-        - {x: -59, y: 27.5}
-        - {x: -58, y: -63.5}
-        - {x: -59, y: 27.5}
-        - {x: 47, y: 83.5}
+      - - {x: 106, y: 72}
+        - {x: -8, y: 7}
+        - {x: -8, y: 6}
+        - {x: -7, y: 4}
+        - {x: -106, y: 49}
+        - {x: -8, y: 6}
+        - {x: -7, y: -85.5}
+        - {x: -44, y: -68.5}
+        - {x: -106, y: -42}
+        - {x: -7, y: -85.5}
+        - {x: 106, y: -16}
+        - {x: 106, y: -17}
+        - {x: 106, y: -16}
+        - {x: 106, y: -17}
+        - {x: 106, y: -16}
+        - {x: 106, y: 74}
+        - {x: 106, y: 73}
+        - {x: 29, y: 99}
+        - {x: -106, y: 49}
+        - {x: -106, y: -44}
+        - {x: -105, y: -44}
+        - {x: -106, y: 50}
+        - {x: 27, y: 99}
       tessellationDetail: 0
       bones: []
       spriteID: 6aa0b15373c2f4b349b799140c363364
@@ -374,19 +394,21 @@ TextureImporter:
       outline: []
       physicsShape:
       - - {x: 62, y: 81.5}
-        - {x: -48, y: 25.5}
+        - {x: -44.5, y: 25}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
+        - {x: -44.5, y: 25}
         - {x: -59, y: 27.5}
-        - {x: -48, y: 25.5}
-        - {x: -47, y: -66.5}
-        - {x: -58, y: -63.5}
-        - {x: -47, y: -66.5}
-        - {x: 64, y: -1.5}
+        - {x: -44.5, y: 25}
+        - {x: -42.5, y: -66}
+        - {x: -57.5, y: -64}
+        - {x: -42.5, y: -67}
+        - {x: 67.5, y: -4}
+        - {x: 67.5, y: -4}
+        - {x: 67.5, y: -4}
         - {x: 62, y: 81.5}
         - {x: 47, y: 83.5}
         - {x: -59, y: 27.5}
-        - {x: -58, y: -63.5}
+        - {x: -57.5, y: -64}
         - {x: -59, y: 27.5}
         - {x: 47, y: 83.5}
       tessellationDetail: 0

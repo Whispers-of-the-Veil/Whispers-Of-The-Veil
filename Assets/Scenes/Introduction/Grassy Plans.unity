@@ -191,6 +191,22 @@ PrefabInstance:
       propertyPath: dialogueUI
       value: 
       objectReference: {fileID: 1765296357}
+    - target: {fileID: 2804596461298556866, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[1].y
+      value: -0.3250737
+      objectReference: {fileID: 0}
+    - target: {fileID: 2804596461298556866, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[2].y
+      value: -0.325103
+      objectReference: {fileID: 0}
+    - target: {fileID: 2804596461298556866, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[0].Y
+      value: -3250737
+      objectReference: {fileID: 0}
+    - target: {fileID: 2804596461298556866, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[1].Y
+      value: -3250737
+      objectReference: {fileID: 0}
     - target: {fileID: 2950482006460069878, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -230,6 +246,18 @@ PrefabInstance:
     - target: {fileID: 2950482006460069878, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3788162387065121947, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.17492628
+      objectReference: {fileID: 0}
+    - target: {fileID: 3788162387065121947, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.41253686
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214539156876964217, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_SpriteSortPoint
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6705185416013593234, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: m_Enabled
@@ -110442,15 +110470,15 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 222793271
-  m_SortingLayer: 4
+  m_SortingLayerID: 1659201753
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0.103589535, y: 0.067004085, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
-  m_Mode: 0
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1405499385
@@ -111675,15 +111703,15 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 222793271
-  m_SortingLayer: 4
+  m_SortingLayerID: 1659201753
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 1.9687502, y: 4.5625, z: 0}
+  m_ChunkCullingBounds: {x: 1.9627934, y: 4.51861, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
-  m_SortOrder: 3
-  m_Mode: 0
+  m_SortOrder: 2
+  m_Mode: 1
   m_DetectChunkCullingBounds: 0
   m_MaskInteraction: 0
 --- !u!1839735485 &1950345676
