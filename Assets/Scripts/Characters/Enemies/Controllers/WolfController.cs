@@ -6,6 +6,7 @@ using Characters.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Audio.SFX;
+using Characters.Player.Sound;
 using Characters.Player.Voice;
 
 namespace Characters.Enemies.Controllers {
@@ -86,7 +87,7 @@ namespace Characters.Enemies.Controllers {
         void Update() {
             tree.Process();
         }
-
+        
         void DefineBehavior() {
             tree = new BehaviorTree("Wolf");
 
@@ -102,13 +103,13 @@ namespace Characters.Enemies.Controllers {
             seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(transform, agent, target, speed, 2f)));
             actions.AddChild(seenPlayer);
             
-            Sequence heardNoise = new Sequence("Investigate Noise", 50);
-            heardNoise.AddChild(new Leaf("Heard Sound?", new Condition(() => SoundEvent.noiseMade)));
-            heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
-            heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
-            heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, SoundEvent.noisePosition, speed, 0.25f)));
-            heardNoise.AddChild(new Leaf("Investigate", new Investigate(agent, SoundEvent.noisePosition, searchRadius, speed, 2)));
-            actions.AddChild(heardNoise);
+            // Sequence heardNoise = new Sequence("Investigate Noise", 50);
+            // heardNoise.AddChild(new Leaf("is there an Active sound report?", new Condition(() => SoundManager.Report.IsActive)));
+            // heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
+            // heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
+            // // heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, SoundManager.Report.GetPosition(), speed, 0.25f)));
+            // // heardNoise.AddChild(new Leaf("Investigate Area", new Investigate(agent, SoundManager.Report.GetPosition(), searchRadius, speed, 2)));
+            // actions.AddChild(heardNoise);
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
@@ -120,6 +121,9 @@ namespace Characters.Enemies.Controllers {
         }
 
         Sequence CombatLogic() {
+            // This is a sequence of attacks that the enemy can preform
+            RandomSequence sequenceAttack = new RandomSequence("Random Sequence of attacks");
+            // This will randomly pick a type of attack; attack, dash, sequence (in this instance)
             RandomPicker randomAttack = new RandomPicker("Ramdom");
             
             Sequence attack = new Sequence("Normal Attack Pattern");
@@ -133,6 +137,10 @@ namespace Characters.Enemies.Controllers {
             dashAttack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
             dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(dashAttack);
+            
+            sequenceAttack.AddChild(attack);
+            sequenceAttack.AddChild(dashAttack);
+            randomAttack.AddChild(sequenceAttack);
                 
             Sequence attackPlayer = new Sequence("Attack", 150);
             attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));

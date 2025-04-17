@@ -33,12 +33,12 @@ namespace Characters.Enemies.Behavior_Tree {
         }
     }
     
-    public class RandomSelector : PrioritySelector {
+    public class RandomSequence : PrioritySelector {
         private static Random rng;
         
         protected override List<Nodes> SortChildren() => Shuffle(children).ToList();
         
-        public RandomSelector(string name) : base(name) { }
+        public RandomSequence(string name) : base(name) { }
 
         private static IList<T> Shuffle<T>(IList<T> list) {
             if (rng == null) rng = new Random();

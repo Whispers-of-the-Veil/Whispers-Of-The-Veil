@@ -9,6 +9,7 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
         private readonly Transform entity;
         readonly NavMeshAgent agent;
         readonly Transform target;
+        private Vector2 targetPosition;
         readonly float speed;
         readonly float stopDistance;
         private bool isMoving;
@@ -21,6 +22,14 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
             this.stopDistance = stopDistance;
         }
 
+        public MoveToTarget(Transform entity, NavMeshAgent agent, Vector2 target, float speed, float stopDistance) {
+            this.entity = entity;
+            this.agent = agent;
+            this.targetPosition = target;
+            this.speed = speed;
+            this.stopDistance = stopDistance;
+        }
+        
         public Nodes.Status Process() {
             if (isMoving) {
                 if (Conditions.ReachedTarget(agent)) return Nodes.Status.Success;
@@ -30,8 +39,12 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
             
             NavMeshHit hit;
 
-            Vector2 directionToTarget = ((Vector2)target.position - (Vector2)entity.position).normalized;
-            Vector2 stopPosition = (Vector2)target.position + (directionToTarget * stopDistance);
+            if (target != null) {
+                targetPosition = target.position;
+            }
+            
+            Vector2 directionToTarget = (targetPosition - (Vector2)entity.position).normalized;
+            Vector2 stopPosition = targetPosition + (directionToTarget * stopDistance);
             
             if (NavMesh.SamplePosition(stopPosition, out hit, stopDistance, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 namespace Characters.Enemies.Behavior_Tree.Strategies {
     public class Investigate : IStrategy {
         readonly NavMeshAgent agent;
-        readonly Transform area;
+        readonly Vector2 area;
         readonly float radius;
         readonly float speed;
         readonly float interval;
@@ -15,7 +15,7 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
         private int counter;
         private float timer;
 
-        public Investigate(NavMeshAgent agent, Transform area, float radius, float speed, float interval) {
+        public Investigate(NavMeshAgent agent, Vector2 area, float radius, float speed, float interval) {
             this.agent = agent;
             this.area = area;
             this.radius = radius;
@@ -56,14 +56,14 @@ namespace Characters.Enemies.Behavior_Tree.Strategies {
 
         public void Reset() {
             counter = 0;
-            // if (positions.Count != 0) positions.Clear();
+            if (positions.Count != 0) positions.Clear();
             isMoving = false;
         }
 
         private void GeneratePositions() {
             NavMeshHit hit;
             for (int i = 0; i < 3; i++) {
-                Vector2 target = (Vector2)area.position + Random.insideUnitCircle * radius;
+                Vector2 target = area + Random.insideUnitCircle * radius;
 
                 if (NavMesh.SamplePosition(target, out hit, radius, NavMesh.AllAreas)) {
                     positions[i] = hit.position;

@@ -7,6 +7,7 @@ using System.Text;
 using System.Globalization;
 using TMPro;
 using Audio.SFX;
+using Characters.Player.Sound;
 using Unity.VisualScripting;
 using Config;
 using UnityEngine.Events;
@@ -110,20 +111,11 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
-                SoundEvent.ReportNoise(transform);
-                StartCoroutine(ResetFlag());
+                SoundManager.ReportSound(transform.position);
             }
 
             Debug.Log("Stoped Recording");
             isRecording = false;
-        }
-
-        /// <summary>
-        /// Resets the spoke flag
-        /// </summary>
-        IEnumerator ResetFlag() {
-            yield return new WaitForSeconds(2);
-            SoundEvent.ClearReport();
         }
         
         /// <summary>

@@ -1,3 +1,5 @@
+using System.Collections;
+using Characters.Player.Sound;
 using Dialogue;
 using UnityEngine;
 using Environment;
@@ -254,12 +256,12 @@ namespace Characters.Player {
                 MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
                 if (weapon != null)
                 {
+                    SoundManager.ReportSound(transform.position);
                     weapon.Attack();
                 }
             }
         }
-
-
+        
         private void checkFrozen()
         {
             if (DialogueUI.IsOpen) {
