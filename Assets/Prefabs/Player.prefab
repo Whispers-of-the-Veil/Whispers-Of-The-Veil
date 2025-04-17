@@ -70,7 +70,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 2.5714285
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -529,7 +529,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 1
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.40088534}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -540,7 +540,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.45, y: 1}
+  m_Size: {x: 0.45, y: 0.19822931}
   m_EdgeRadius: 0
 --- !u!66 &2804596461298556866
 CompositeCollider2D:
@@ -582,9 +582,9 @@ CompositeCollider2D:
   - m_Collider: {fileID: 3788162387065121947}
     m_ColliderPaths:
     - - X: 2250000
-        Y: 5000000
+        Y: -3017706
       - X: -2250000
-        Y: 5000000
+        Y: -3017706
       - X: -2250000
         Y: -5000000
       - X: 2250000
@@ -592,8 +592,8 @@ CompositeCollider2D:
   m_CompositePaths:
     m_Paths:
     - - {x: 0.2249707, y: -0.5}
-      - {x: 0.2249707, y: 0.5}
-      - {x: -0.22500001, y: 0.4999707}
+      - {x: 0.2249707, y: -0.3017706}
+      - {x: -0.22500001, y: -0.3017999}
       - {x: -0.2249707, y: -0.5}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
