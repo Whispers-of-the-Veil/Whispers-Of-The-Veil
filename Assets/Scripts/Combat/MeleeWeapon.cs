@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using Characters.Enemy;
+using Characters.Enemies;
 
 namespace Combat
 {
@@ -33,12 +33,12 @@ namespace Combat
             {
                 if (enemy.CompareTag("Enemy"))
                 {
-                    EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                    Enemy entity = enemy.GetComponent<Enemy>();
                     Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
 
-                    if (enemyController != null && enemyRigidbody != null)
+                    if (entity != null && enemyRigidbody != null)
                     {
-                        enemyController.TakeDamage(damage);
+                        entity.TakeDamage(damage);
 
                         // Apply knockback force immediately
                         Vector2 knockbackDirection = (enemy.transform.position - transform.position).normalized;
@@ -64,13 +64,13 @@ namespace Combat
                 enemyRigidbody.velocity = Vector2.zero;
             }
 
-            // Re-enable enemy movement if it was stopped
-            EnemyController enemyController = enemy.GetComponent<EnemyController>();
-            if (enemyController != null)
-            {
-                enemyController.agent.isStopped = false;
-                enemyController.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
-            }
+            // // Re-enable enemy movement if it was stopped
+            // Enemy entity = enemy.GetComponent<Enemy>();
+            // if (entity != null)
+            // {
+            //     entity.agent.isStopped = false;
+            //     entity.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
+            // }
 
             // Decrease durability only once, ensure it happens only if not already destroyed
             if (durability > 0)

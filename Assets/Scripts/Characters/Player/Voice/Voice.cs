@@ -6,8 +6,8 @@ using System;
 using System.Text;
 using System.Globalization;
 using TMPro;
-using Characters.Enemy;
 using Audio.SFX;
+using Characters.Player.Sound;
 using Unity.VisualScripting;
 using Config;
 using UnityEngine.Events;
@@ -48,7 +48,8 @@ namespace Characters.Player.Voice {
         private string microphoneDevice;
         private bool canRecord = true;
 
-        [Header("Speech Bubble")]
+        [Header("Speech Bubble")] 
+        [HideInInspector] public bool spoke;
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
         
@@ -110,24 +111,11 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
-
-                StartCoroutine(Detect());
+                SoundManager.ReportSound(transform.position);
             }
 
             Debug.Log("Stoped Recording");
             isRecording = false;
-        }
-
-        /// <summary>
-        /// Called the VoiceDetected method on each enitity. That method determines if the player was within range
-        /// of that entity and trigger an aggrivated coroutine if they were.
-        /// </summary>
-        private IEnumerator Detect() {
-            foreach (var enemy in enemies) {
-                enemy.GetComponent<EnemyController>().VoiceDetected();
-            }
-
-            yield return null;
         }
         
         /// <summary>
