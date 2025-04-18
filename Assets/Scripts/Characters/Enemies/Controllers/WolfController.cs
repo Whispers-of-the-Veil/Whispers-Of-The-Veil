@@ -13,7 +13,7 @@ using Characters.Player.Voice;
 namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
         [Header("Animation")]
-        [SerializeField] private Animator animator;
+        private Animator animator;
         
         [Header("Audio")]
         [SerializeField] AudioClip idleSfx;
