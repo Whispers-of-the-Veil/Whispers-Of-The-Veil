@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.Remoting.Messaging;
 using Characters.Enemies.Behavior_Tree;
 using Characters.Enemies.Behavior_Tree.Strategies;
 using Characters.Enemies.Behavior_Tree.Strategies.Conditional;
@@ -11,6 +12,9 @@ using Characters.Player.Voice;
 
 namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
+        [Header("Animation")]
+        [SerializeField] private Animator animator;
+        
         [Header("Audio")]
         [SerializeField] AudioClip idleSfx;
         [SerializeField] AudioClip walkSfx;
@@ -81,10 +85,11 @@ namespace Characters.Enemies.Controllers {
         }
 
         void Start() {
-
+            animator = GetComponentInChildren<Animator>();
         }
 
         void Update() {
+            UpdateAnimation();
             tree.Process();
         }
         
@@ -149,6 +154,22 @@ namespace Characters.Enemies.Controllers {
             attackPlayer.AddChild(randomAttack);
 
             return attackPlayer;
+        }
+
+        void UpdateAnimation() {
+            Vector2 velocity = agent.velocity;
+            float magnitude = velocity.magnitude;
+            
+            Vector2 dir = magnitude > 0.1f ? velocity.normalized : Vector2.zero;
+            
+            animator.SetFloat("MoveX", dir.x);
+            animator.SetFloat("MoveY", dir.y);
+            animator.SetFloat("MoveMagnitude", magnitude);
+
+            if (magnitude < 0.1f && dir == Vector2.zero) {
+                animator.SetFloat("LastMoveX", dir.x);
+                animator.SetFloat("LastMoveY", dir.y);
+            }
         }
         
         /// <summary>
