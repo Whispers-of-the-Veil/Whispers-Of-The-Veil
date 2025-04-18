@@ -698,10 +698,14 @@ MonoBehaviour:
   DetectVoiceThreshold: 0.01
   keys:
   - open chest
+  - sit
+  - move
+  - follow
   threshold: 5
   PuzzleInRange: 3
   SampleRate: 16000
   RecordingLength: 5
+  spoke: 0
 --- !u!1 &7642191227845499857
 GameObject:
   m_ObjectHideFlags: 0
