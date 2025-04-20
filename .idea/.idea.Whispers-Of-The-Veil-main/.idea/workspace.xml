@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Controllers/DogController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Enemies/Controllers/DogController.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprits/Animals/MV/animals1.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprits/Animals/MV/animals1.png.meta" afterDir="false" />
-    </list>
+    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -91,15 +83,13 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="4628">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="4628" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
-        <list>
-          <MonoRuntime />
-        </list>
+        <list />
       </option>
       <option name="selectedOptions">
         <list />
@@ -152,7 +142,8 @@
       <workItem from="1744493406606" duration="6155000" />
       <workItem from="1744951080729" duration="8000" />
       <workItem from="1744951101481" duration="3000" />
-      <workItem from="1744951114287" duration="4895000" />
+      <workItem from="1744951114287" duration="5107000" />
+      <workItem from="1745108971604" duration="2000" />
     </task>
     <servers />
   </component>
