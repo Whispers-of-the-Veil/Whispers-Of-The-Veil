@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
   - Uh-oh, it's a wolf! Maybe I can defend myself with this stick? Pick up the sword
-    (press E) and attack(Left click)
+    (press 'E') and attack(Left click).
   responses: []
   npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}

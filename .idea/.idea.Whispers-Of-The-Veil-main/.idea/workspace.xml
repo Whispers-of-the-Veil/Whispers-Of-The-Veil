@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="" />
+    <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 1.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 2.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DialogueData/Tutorial/Tutorial 3.asset" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -144,6 +148,7 @@
       <workItem from="1744951101481" duration="3000" />
       <workItem from="1744951114287" duration="5107000" />
       <workItem from="1745108971604" duration="2000" />
+      <workItem from="1745110454070" duration="698000" />
     </task>
     <servers />
   </component>
