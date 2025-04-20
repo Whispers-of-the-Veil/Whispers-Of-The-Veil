@@ -1,16 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
-using System.Text;
-using System.Globalization;
 using TMPro;
 using Audio.SFX;
-using Characters.Player.Sound;
-using Unity.VisualScripting;
-using Config;
-using UnityEngine.Events;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
@@ -111,7 +104,6 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
-                SoundManager.ReportSound(transform.position);
             }
 
             Debug.Log("Stoped Recording");
