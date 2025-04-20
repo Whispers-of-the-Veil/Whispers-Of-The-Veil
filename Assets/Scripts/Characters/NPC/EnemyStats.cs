@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Characters.Player;
 
-namespace Characters.Enemies
+namespace Characters.NPC
 {
     public class EnemyStats : MonoBehaviour
     {

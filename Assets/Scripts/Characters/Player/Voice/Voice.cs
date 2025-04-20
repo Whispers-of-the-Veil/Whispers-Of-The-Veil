@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using TMPro;
 using Audio.SFX;
+using Characters.NPC;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
@@ -45,6 +46,10 @@ namespace Characters.Player.Voice {
         [HideInInspector] public bool spoke;
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
+        
+        public SoundExpert soundExpert {
+            get => SoundExpert.instance;
+        }
         
         void Start () {
             speechBubble = GameObject.Find("SpeechBubble");
@@ -104,6 +109,7 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
+                soundExpert.ReportSound(transform.position);
             }
 
             Debug.Log("Stoped Recording");

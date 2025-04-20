@@ -22,8 +22,10 @@ namespace Characters.NPC.BlackboardSystem.Control {
         
         public Blackboard GetBlackboard() => blackboard;
         
+        public void Debug() => blackboard.Debug();
+        
         public void RegisterExpert(IExpert expert) => arbiter.RegisterExpert(expert);
-        // TODO Add DeregisterExpert method
+        public void DeregisterExpert(IExpert expert) => arbiter.DeregisterExpert(expert);
 
         void Update() {
             // Execute all agreed actions form the current iteration

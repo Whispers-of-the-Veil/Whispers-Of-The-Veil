@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Runtime.Remoting.Messaging;
-using Characters.NPC.Behavior_Tree;
-using Characters.NPC.Behavior_Tree.Strategies;
-using Characters.NPC.Behavior_Tree.Strategies.Conditional;
 using Characters.Player;
 using UnityEngine;
 using UnityEngine.AI;
 using Audio.SFX;
-using Characters.Enemies;
+using Characters.NPC;
+using Characters.NPC.Behavior_Tree;
+using Characters.NPC.Behavior_Tree.Strategies;
+using Characters.NPC.Behavior_Tree.Strategies.Conditional;
+using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
 using Characters.Player.Voice;
 
-namespace Characters.NPC.Controllers {
+namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
         [Header("Animation")]
-        private Animator animator;
+        [SerializeField] private Animator animator;
         
         [Header("Audio")]
         [SerializeField] AudioClip idleSfx;
@@ -57,6 +58,11 @@ namespace Characters.NPC.Controllers {
         private Voice voice;
         
         BehaviorTree tree;
+        public BlackboardController controller {
+            get => BlackboardController.instance;
+        }
+        Blackboard blackboard;
+        BlackboardKey soundKey, positionKey;
         
         void Awake() {
             // Navmesh agent
@@ -79,6 +85,10 @@ namespace Characters.NPC.Controllers {
             alertEmote.SetActive(false);
             angryEmote.SetActive(false);
             frustratedEmote.SetActive(false);
+            
+            blackboard = controller.GetBlackboard();
+            soundKey = blackboard.GetOrRegisterKey("SoundMade");
+            positionKey = blackboard.GetOrRegisterKey("SoundsPosition");
             
             GetReferences();
 
@@ -109,13 +119,14 @@ namespace Characters.NPC.Controllers {
             seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(transform, agent, target, speed, 2f)));
             actions.AddChild(seenPlayer);
             
-            // Sequence heardNoise = new Sequence("Investigate Noise", 50);
-            // heardNoise.AddChild(new Leaf("is there an Active sound report?", new Condition(() => SoundManager.Report.IsActive)));
-            // heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
-            // heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
-            // // heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, SoundManager.Report.GetPosition(), speed, 0.25f)));
-            // // heardNoise.AddChild(new Leaf("Investigate Area", new Investigate(agent, SoundManager.Report.GetPosition(), searchRadius, speed, 2)));
-            // actions.AddChild(heardNoise);
+            Sequence heardNoise = new Sequence("Investigate Noise", 50);
+            heardNoise.AddChild(new Leaf("is there an Active sound report?", new Condition( () => blackboard.TryGetValue(soundKey, out bool value) && value )));
+            heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
+            heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
+            heardNoise.AddChild(new Leaf("Delay before investigate", new WaitSeconds(1f)));
+            heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, () => blackboard.TryGetValue(positionKey, out Vector2 value) ? value : Vector2.zero, speed, 0.25f)));
+            heardNoise.AddChild(new Leaf("Investigate Area", new Investigate(agent, () => blackboard.TryGetValue(positionKey, out Vector2 value) ? value : Vector2.zero, searchRadius, speed, 2)));
+            actions.AddChild(heardNoise);
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
@@ -198,3 +209,4 @@ namespace Characters.NPC.Controllers {
         }
     }
 }
+

@@ -5,9 +5,9 @@ using Characters.NPC.Commands;
 using UnityEngine;
 using Characters.Player.Voice;
 
-namespace Characters.Enemies {
+namespace Characters.NPC {
     public class VoiceExpert : MonoBehaviour, IExpert {
-        BlackboardKey followKey, moveKey, sitKey;
+        public static VoiceExpert instance;
         
         public BlackboardController controller {
             get => BlackboardController.instance;
@@ -15,6 +15,18 @@ namespace Characters.Enemies {
         private ICommand pendingCommand;
         Blackboard blackboard;
         private Dictionary<string, ICommand> commands;
+        
+        BlackboardKey followKey, moveKey, sitKey;
+
+        void Awake() {
+            if (instance == null) {
+                instance = this;
+                DontDestroyOnLoad(this);
+            }
+            else {
+                Destroy(gameObject);
+            }
+        }
 
         void Start() {
             blackboard = controller.GetBlackboard();
@@ -50,7 +62,7 @@ namespace Characters.Enemies {
         }
 
         public int GetInsistence(Blackboard blackboard) {
-            return pendingCommand != null ? 100 : 0;
+            return pendingCommand != null ? 80 : 0;
         }
 
         public void Execute(Blackboard blackboard) {

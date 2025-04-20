@@ -9,6 +9,7 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
         private readonly Transform entity;
         readonly NavMeshAgent agent;
         readonly Transform target;
+        readonly Func<Vector2> getPosition;
         private Vector2 targetPosition;
         readonly float speed;
         readonly float stopDistance;
@@ -29,6 +30,14 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
             this.speed = speed;
             this.stopDistance = stopDistance;
         }
+
+        public MoveToTarget(Transform entity, NavMeshAgent agent, Func<Vector2> GetPosition, float speed, float stopDistance) {
+            this.entity = entity;
+            this.agent = agent;
+            this.getPosition = GetPosition;
+            this.speed = speed;
+            this.stopDistance = stopDistance;
+        }
         
         public Nodes.Status Process() {
             if (isMoving) {
@@ -39,9 +48,8 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
             
             NavMeshHit hit;
 
-            if (target != null) {
-                targetPosition = target.position;
-            }
+            if (target != null) targetPosition = target.position;
+            if (targetPosition == default) targetPosition = getPosition();
             
             Vector2 directionToTarget = (targetPosition - (Vector2)entity.position).normalized;
             Vector2 stopPosition = targetPosition + (directionToTarget * stopDistance);

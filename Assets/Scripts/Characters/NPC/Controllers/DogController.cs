@@ -48,9 +48,9 @@ namespace Characters.NPC.Controllers
 
             blackboard = controller.GetBlackboard();
             
-            followKey = blackboard.GetOrRegisterKey("followCommand");
-            moveKey = blackboard.GetOrRegisterKey("moveCommand");
-            sitKey = blackboard.GetOrRegisterKey("sitCommand");
+            followKey = blackboard.GetOrRegisterKey("FollowCommand");
+            moveKey = blackboard.GetOrRegisterKey("MoveCommand");
+            sitKey = blackboard.GetOrRegisterKey("SitCommand");
         }
         
         void Update() {
@@ -64,13 +64,13 @@ namespace Characters.NPC.Controllers
             tree = new BehaviorTree("dog");
             PrioritySelector actions = new PrioritySelector("logic");
             Sequence followPlayer = new Sequence("followPlayer", 100);
-            followPlayer.AddChild(new Leaf("commandFollow?", new Condition(() => blackboard.TryGetValue(followKey, out bool value))));
+            followPlayer.AddChild(new Leaf("commandFollow?", new Condition( () => blackboard.TryGetValue(followKey, out bool value) && value )));
             followPlayer.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance )));
             actions.AddChild(followPlayer);
             
             //move sequence
             Sequence moveAway = new Sequence("moveAway", 50);
-            moveAway.AddChild(new Leaf("commandMoveAway?", new Condition(() => blackboard.TryGetValue(moveKey, out bool value))));
+            moveAway.AddChild(new Leaf("commandMoveAway?", new Condition( () => blackboard.TryGetValue(moveKey, out bool value) && value)));
             RandomPicker random = new RandomPicker("random");
             random.AddChild(new Leaf("moveRight", new MoveToTarget(transform, agent, new Vector2(2,0) + (Vector2)transform.position, speed, stoppingDistance)));
             random.AddChild(new Leaf("moveLeft", new MoveToTarget(transform, agent, new Vector2(-2,0) + (Vector2)transform.position, speed, stoppingDistance)));
@@ -79,7 +79,7 @@ namespace Characters.NPC.Controllers
             
             //sit sequence
             Sequence sit = new Sequence("sit", 10);
-            sit.AddChild(new Leaf("commandSit?", new Condition(() => blackboard.TryGetValue(sitKey, out bool value))));
+            sit.AddChild(new Leaf("commandSit?", new Condition( () => blackboard.TryGetValue(sitKey, out bool value) && value)));
             sit.AddChild(new Leaf("wait", new WaitSeconds(120)));
             sit.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance)));
             actions.AddChild(sit);

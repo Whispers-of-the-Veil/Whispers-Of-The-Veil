@@ -9,7 +9,7 @@ using Characters.Player;
 
 // This is a general class that is attached to every enemy. It doesnt provided any behavior logic, but
 // it has conditions and actions that every enemy will have access to.
-namespace Characters.Enemies {
+namespace Characters.NPC {
     public class Enemy : MonoBehaviour {
         
         private EnemyStats stats = null;

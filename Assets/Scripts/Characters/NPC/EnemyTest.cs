@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Characters.Enemies
+namespace Characters.NPC
 {
     public class EnemyTest : MonoBehaviour
     {

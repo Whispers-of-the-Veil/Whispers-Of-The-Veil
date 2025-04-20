@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
 using Characters.NPC.Behavior_Tree.Strategies.Conditional;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 namespace Characters.NPC.Behavior_Tree.Strategies {
     public class Investigate : IStrategy {
         readonly NavMeshAgent agent;
-        readonly Vector2 area;
+        Vector2 area;
+        readonly Func<Vector2> getPosition;
         readonly float radius;
         readonly float speed;
         readonly float interval;
@@ -18,6 +21,14 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
         public Investigate(NavMeshAgent agent, Vector2 area, float radius, float speed, float interval) {
             this.agent = agent;
             this.area = area;
+            this.radius = radius;
+            this.speed = speed;
+            this.interval = interval;
+        }
+
+        public Investigate(NavMeshAgent agent, Func<Vector2> getPosition, float radius, float speed, float interval) {
+            this.agent = agent;
+            this.getPosition = getPosition;
             this.radius = radius;
             this.speed = speed;
             this.interval = interval;
@@ -63,6 +74,8 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
         private void GeneratePositions() {
             NavMeshHit hit;
             for (int i = 0; i < 3; i++) {
+                if (area == default) area = getPosition();
+                
                 Vector2 target = area + Random.insideUnitCircle * radius;
 
                 if (NavMesh.SamplePosition(target, out hit, radius, NavMesh.AllAreas)) {
