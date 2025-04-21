@@ -1,4 +1,6 @@
 //Lucas Davis & Sasha Koroleva
+
+using Audio.SFX;
 using UnityEngine;
 using Characters.NPC.Behavior_Tree;
 using Characters.NPC.Behavior_Tree.Strategies;
@@ -13,6 +15,14 @@ namespace Characters.NPC.Controllers
     public class DogController : MonoBehaviour {
         [Header("Animation")]
         private Animator animator;
+
+        [Header("Auido")] 
+        [SerializeField] AudioClip barkSfx;
+        [SerializeField] AudioClip happySfx;
+        [SerializeField] AudioClip whineSfx;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
         
         [Header("Movement")]
         [SerializeField] float speed = 2f;
@@ -65,13 +75,15 @@ namespace Characters.NPC.Controllers
             PrioritySelector actions = new PrioritySelector("logic");
             Sequence followPlayer = new Sequence("followPlayer", 100);
             followPlayer.AddChild(new Leaf("commandFollow?", new Condition( () => blackboard.TryGetValue(followKey, out bool value) && value )));
-            followPlayer.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance )));
+            followPlayer.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(happySfx, transform, 1f ))));
+            followPlayer.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance)));
             followPlayer.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(followPlayer);
             
             //move sequence
             Sequence moveAway = new Sequence("moveAway", 50);
             moveAway.AddChild(new Leaf("commandMoveAway?", new Condition( () => blackboard.TryGetValue(moveKey, out bool value) && value)));
+            moveAway.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(whineSfx, transform, 1f ))));
             moveAway.AddChild(new Leaf("Heel; move to the player", new SingleFire(new MoveToTarget(transform, agent, target, speed, stoppingDistance), blackboard.GetOrRegisterKey("HasMoved"))));
             moveAway.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(moveAway);
@@ -79,7 +91,8 @@ namespace Characters.NPC.Controllers
             //sit sequence
             Sequence sit = new Sequence("Stay", 10);
             sit.AddChild(new Leaf("commandStay?", new Condition( () => blackboard.TryGetValue(stayKey, out bool value) && value)));
-            sit.AddChild(new Leaf("Make the dog stay", new ActionStrategy(() => { agent.ResetPath(); agent.velocity = Vector3.zero; })));
+            sit.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(barkSfx, transform, 1f ))));
+            sit.AddChild(new Leaf("Make the dog stay", new ActionStrategy( () => { agent.ResetPath(); agent.velocity = Vector3.zero; })));
             sit.AddChild(new Leaf("Wait", new WaitSeconds(0.5f)));
             actions.AddChild(sit);
             

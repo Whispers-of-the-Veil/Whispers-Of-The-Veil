@@ -21,7 +21,6 @@ namespace Characters.Player.Voice {
         }
 
         [Header("Entities")]
-        [SerializeField] public GameObject[] enemies; // An array of enemy gameobjects that can hear the player voice
         [SerializeField] float DetectVoiceThreshold = 0.02f;
 
         [Header("Expected Keys")]

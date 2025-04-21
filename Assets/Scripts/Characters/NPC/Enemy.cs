@@ -4,6 +4,7 @@
 using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
+using Audio.SFX;
 using Characters.Player;
 
 
@@ -11,6 +12,11 @@ using Characters.Player;
 // it has conditions and actions that every enemy will have access to.
 namespace Characters.NPC {
     public class Enemy : MonoBehaviour {
+        [Header("Audio")]
+        [SerializeField] AudioClip hurtSfx;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
         
         private EnemyStats stats = null;
         
@@ -26,30 +32,8 @@ namespace Characters.NPC {
         
         public void TakeDamage(float damageAmount)
         {
+            sfxManager.PlaySFX(hurtSfx, transform, 1f);
             stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
         }
-        
-        // /// <summary>
-        // /// Get a random position just short of the player, and move the entity to it
-        // /// </summary>
-        // void InvestigateSound() {
-        //     Vector2 directionToSound = ((Vector2)target.position - (Vector2)transform.position).normalized;
-        //     float randomDistance = Random.Range(minIvenstigateDistance, maxIvenstigateDistance);
-        //     Vector2 randomOffset = Random.insideUnitCircle * 1.5f;
-        //     
-        //     Vector2 targetPosition = (Vector2)transform.position + directionToSound * randomDistance + randomOffset;
-        //     
-        //     NavMeshHit hit;
-        //     if (NavMesh.SamplePosition(targetPosition, out hit, maxIvenstigateDistance, NavMesh.AllAreas)) {
-        //         agent.SetDestination(hit.position);
-        //         agent.speed = speed;
-        //     }
-        //
-        //     StartCoroutine(InvestigationTimeout());
-        // }
-        
-
-        
-
     }
 }
