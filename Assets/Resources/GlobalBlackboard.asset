@@ -33,7 +33,7 @@ MonoBehaviour:
       stringValue: 
       vector2Value: {x: 0, y: 0}
       vector3Value: {x: 0, y: 0, z: 0}
-  - keyName: HeelCommand
+  - keyName: MoveCommand
     valueType: 2
     value:
       type: 2
