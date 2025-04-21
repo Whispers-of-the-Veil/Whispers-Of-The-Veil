@@ -1,5 +1,4 @@
-using System.Collections;
-using Characters.Player.Sound;
+using Characters.NPC;
 using Dialogue;
 using UnityEngine;
 using Environment;
@@ -22,11 +21,13 @@ namespace Characters.Player {
         private float vertical;
         private bool _isSprinting;
         private GameObject _heldObject;
-        
-        
 
         [Header("Components")]
         private Rigidbody2D body;
+        
+        public SoundExpert soundExpert {
+            get => SoundExpert.instance;
+        }
 
         public Inventory inventory
         {
@@ -263,8 +264,8 @@ namespace Characters.Player {
                 MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
                 if (weapon != null)
                 {
-                    SoundManager.ReportSound(transform.position);
                     weapon.Attack();
+                    soundExpert.ReportSound(transform.position);
                 }
             }
         }

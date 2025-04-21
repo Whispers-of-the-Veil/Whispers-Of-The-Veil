@@ -1,16 +1,10 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
 using System.Collections.Generic;
 using System;
-using System.Text;
-using System.Globalization;
 using TMPro;
 using Audio.SFX;
-using Characters.Player.Sound;
-using Unity.VisualScripting;
-using Config;
-using UnityEngine.Events;
+using Characters.NPC;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
@@ -52,6 +46,10 @@ namespace Characters.Player.Voice {
         [HideInInspector] public bool spoke;
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
+        
+        public SoundExpert soundExpert {
+            get => SoundExpert.instance;
+        }
         
         void Start () {
             speechBubble = GameObject.Find("SpeechBubble");
@@ -111,7 +109,7 @@ namespace Characters.Player.Voice {
 
             if (rmsValue > DetectVoiceThreshold) {
                 recordings.Enqueue(audio);
-                SoundManager.ReportSound(transform.position);
+                soundExpert.ReportSound(transform.position);
             }
 
             Debug.Log("Stoped Recording");
