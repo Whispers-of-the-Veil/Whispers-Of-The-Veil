@@ -538,7 +538,7 @@ MonoBehaviour:
   - open chest
   - follow
   - stay
-  - move
+  - heel
   threshold: 5
   PuzzleInRange: 3
   SampleRate: 16000

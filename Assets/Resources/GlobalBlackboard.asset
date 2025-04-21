@@ -33,7 +33,7 @@ MonoBehaviour:
       stringValue: 
       vector2Value: {x: 0, y: 0}
       vector3Value: {x: 0, y: 0, z: 0}
-  - keyName: MoveCommand
+  - keyName: HeelCommand
     valueType: 2
     value:
       type: 2
@@ -44,6 +44,16 @@ MonoBehaviour:
       vector2Value: {x: 0, y: 0}
       vector3Value: {x: 0, y: 0, z: 0}
   - keyName: SoundMade
+    valueType: 2
+    value:
+      type: 2
+      intValue: 0
+      floatValue: 0
+      boolValue: 0
+      stringValue: 
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+  - keyName: HasMoved
     valueType: 2
     value:
       type: 2
