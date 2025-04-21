@@ -16,7 +16,7 @@ namespace Characters.NPC {
         Blackboard blackboard;
         private Dictionary<string, ICommand> commands;
         
-        BlackboardKey followKey, moveKey, sitKey;
+        BlackboardKey followKey, moveKey, stayKey;
 
         void Awake() {
             if (instance == null) {
@@ -33,14 +33,14 @@ namespace Characters.NPC {
             controller.RegisterExpert(this);
 
             followKey = blackboard.GetOrRegisterKey("FollowCommand");
-            moveKey = blackboard.GetOrRegisterKey("SitCommand");
-            sitKey = blackboard.GetOrRegisterKey("MoveCommand");
+            moveKey = blackboard.GetOrRegisterKey("MoveCommand");
+            stayKey = blackboard.GetOrRegisterKey("StayCommand");
 
             commands = new Dictionary<string, ICommand>() {
                 { "follow", new FollowCommand(followKey) },
                 { "move", new MoveCommand(moveKey) },
-                { "sit", new SitCommand(sitKey) },
-                { "reset", new ResetCommand(new List<BlackboardKey>() { followKey, moveKey, sitKey }) },
+                { "stay", new StayCommand(stayKey) },
+                { "reset", new ResetCommand(new List<BlackboardKey>() { followKey, moveKey, stayKey }) },
             };
         }
         

@@ -536,6 +536,9 @@ MonoBehaviour:
   DetectVoiceThreshold: 0.01
   keys:
   - open chest
+  - follow
+  - stay
+  - move
   threshold: 5
   PuzzleInRange: 3
   SampleRate: 16000

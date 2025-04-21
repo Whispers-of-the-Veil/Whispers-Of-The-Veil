@@ -17,7 +17,6 @@ namespace Characters.NPC.BlackboardSystem.Control {
             }
             
             blackboardData.SetValuesOnBlackboard(blackboard);
-            blackboard.Debug();
         }
         
         public Blackboard GetBlackboard() => blackboard;

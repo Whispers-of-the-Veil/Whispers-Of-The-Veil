@@ -74,8 +74,6 @@ namespace Characters.NPC {
                     
                     break;
             }
-            
-            blackboard.Debug();
         }
     }
 }

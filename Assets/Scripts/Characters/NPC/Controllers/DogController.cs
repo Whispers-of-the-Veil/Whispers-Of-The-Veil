@@ -27,7 +27,7 @@ namespace Characters.NPC.Controllers
             get => BlackboardController.instance;
         }
         Blackboard blackboard;
-        BlackboardKey followKey, moveKey, sitKey;
+        BlackboardKey followKey, moveKey, stayKey;
         
         void Awake() {
             // Navmesh agent
@@ -38,6 +38,12 @@ namespace Characters.NPC.Controllers
             if (target == null) {
                 target = GameObject.Find("Player").GetComponent<Transform>();
             }
+            
+            blackboard = controller.GetBlackboard();
+            
+            followKey = blackboard.GetOrRegisterKey("FollowCommand");
+            moveKey = blackboard.GetOrRegisterKey("MoveCommand");
+            stayKey = blackboard.GetOrRegisterKey("StayCommand");
 
             DefineBehavior();
         }
@@ -45,12 +51,6 @@ namespace Characters.NPC.Controllers
         
         void Start() {
             animator = GetComponentInChildren<Animator>();
-
-            blackboard = controller.GetBlackboard();
-            
-            followKey = blackboard.GetOrRegisterKey("FollowCommand");
-            moveKey = blackboard.GetOrRegisterKey("MoveCommand");
-            sitKey = blackboard.GetOrRegisterKey("SitCommand");
         }
         
         void Update() {
@@ -66,6 +66,7 @@ namespace Characters.NPC.Controllers
             Sequence followPlayer = new Sequence("followPlayer", 100);
             followPlayer.AddChild(new Leaf("commandFollow?", new Condition( () => blackboard.TryGetValue(followKey, out bool value) && value )));
             followPlayer.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance )));
+            followPlayer.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(followPlayer);
             
             //move sequence
@@ -78,10 +79,10 @@ namespace Characters.NPC.Controllers
             actions.AddChild(moveAway);
             
             //sit sequence
-            Sequence sit = new Sequence("sit", 10);
-            sit.AddChild(new Leaf("commandSit?", new Condition( () => blackboard.TryGetValue(sitKey, out bool value) && value)));
-            sit.AddChild(new Leaf("wait", new WaitSeconds(120)));
-            sit.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance)));
+            Sequence sit = new Sequence("Stay", 10);
+            sit.AddChild(new Leaf("commandStay?", new Condition( () => blackboard.TryGetValue(stayKey, out bool value) && value)));
+            sit.AddChild(new Leaf("Make the dog stay", new ActionStrategy(() => { agent.ResetPath(); agent.velocity = Vector3.zero; })));
+            sit.AddChild(new Leaf("Wait", new WaitSeconds(0.5f)));
             actions.AddChild(sit);
             
             //idle sequence

@@ -1,10 +1,10 @@
 using Characters.NPC.BlackboardSystem;
 
 namespace Characters.NPC.Commands {
-    public class SitCommand : ICommand {
+    public class StayCommand : ICommand {
         readonly BlackboardKey key;
 
-        public SitCommand(BlackboardKey key) {
+        public StayCommand(BlackboardKey key) {
             this.key = key;
         }
 
