@@ -47,9 +47,7 @@ namespace Characters.NPC {
             time = Time.time + 2f;
         }
 
-        public int GetInsistence(Blackboard blackboard) {
-            return state != States.Idle ? 100 : 0;
-        }
+        public int GetInsistence(Blackboard blackboard) => state != States.Idle ? 100 : 0;
 
         public void Execute(Blackboard blackboard) {
             switch (state) {

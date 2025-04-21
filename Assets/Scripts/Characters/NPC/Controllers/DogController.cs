@@ -72,10 +72,8 @@ namespace Characters.NPC.Controllers
             //move sequence
             Sequence moveAway = new Sequence("moveAway", 50);
             moveAway.AddChild(new Leaf("commandMoveAway?", new Condition( () => blackboard.TryGetValue(moveKey, out bool value) && value)));
-            RandomPicker random = new RandomPicker("random");
-            random.AddChild(new Leaf("moveRight", new MoveToTarget(transform, agent, new Vector2(2,0) + (Vector2)transform.position, speed, stoppingDistance)));
-            random.AddChild(new Leaf("moveLeft", new MoveToTarget(transform, agent, new Vector2(-2,0) + (Vector2)transform.position, speed, stoppingDistance)));
-            moveAway.AddChild(random);
+            moveAway.AddChild(new Leaf("Heel; move to the player", new SingleFire(new MoveToTarget(transform, agent, target, speed, stoppingDistance), blackboard.GetOrRegisterKey("HasMoved"))));
+            moveAway.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(moveAway);
             
             //sit sequence

@@ -16,7 +16,7 @@ namespace Characters.NPC {
         Blackboard blackboard;
         private Dictionary<string, ICommand> commands;
         
-        BlackboardKey followKey, moveKey, stayKey;
+        BlackboardKey followKey, moveKey, stayKey, movedKey;
 
         void Awake() {
             if (instance == null) {
@@ -35,10 +35,12 @@ namespace Characters.NPC {
             followKey = blackboard.GetOrRegisterKey("FollowCommand");
             moveKey = blackboard.GetOrRegisterKey("MoveCommand");
             stayKey = blackboard.GetOrRegisterKey("StayCommand");
+            
+            movedKey = blackboard.GetOrRegisterKey("HasMoved");
 
             commands = new Dictionary<string, ICommand>() {
                 { "follow", new FollowCommand(followKey) },
-                { "move", new MoveCommand(moveKey) },
+                { "move", new MoveCommand(moveKey, movedKey) },
                 { "stay", new StayCommand(stayKey) },
                 { "reset", new ResetCommand(new List<BlackboardKey>() { followKey, moveKey, stayKey }) },
             };
@@ -61,9 +63,7 @@ namespace Characters.NPC {
             }
         }
 
-        public int GetInsistence(Blackboard blackboard) {
-            return pendingCommand != null ? 80 : 0;
-        }
+        public int GetInsistence(Blackboard blackboard) => pendingCommand != null ? 80 : 0;
 
         public void Execute(Blackboard blackboard) {
             commands["reset"].Execute(blackboard);  // Reset all of the flags
