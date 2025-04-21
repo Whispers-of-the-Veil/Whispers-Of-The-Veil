@@ -79,7 +79,7 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
                 Vector2 target = area + Random.insideUnitCircle * radius;
 
                 if (NavMesh.SamplePosition(target, out hit, radius, NavMesh.AllAreas)) {
-                    positions[i] = hit.position;
+                    positions.Add(hit.position);
                 }
             }
         }

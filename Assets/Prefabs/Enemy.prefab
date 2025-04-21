@@ -455,6 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5ba54805f54d89bc4bc481a4278aef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   idleSfx: {fileID: 0}
   walkSfx: {fileID: 0}
   alertSfx: {fileID: 0}
@@ -473,7 +474,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   sightRange: 3
   hearingRange: 7
-  searchRadius: 0
+  searchRadius: 4
 --- !u!50 &325491419113996834
 Rigidbody2D:
   serializedVersion: 4
