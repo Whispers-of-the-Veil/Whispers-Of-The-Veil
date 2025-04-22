@@ -14,6 +14,7 @@ TagManager:
   - DialogTrigger
   - Spawnpoint
   - HUD
+  - LittleBrother
   layers:
   - Default
   - TransparentFX
