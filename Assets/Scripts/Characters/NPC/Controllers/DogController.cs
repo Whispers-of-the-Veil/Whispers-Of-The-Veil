@@ -4,11 +4,9 @@ using Audio.SFX;
 using UnityEngine;
 using Characters.NPC.Behavior_Tree;
 using Characters.NPC.Behavior_Tree.Strategies;
-using Characters.NPC.Behavior_Tree.Strategies.Conditional;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
 using UnityEngine.AI;
-using Characters.Player.Voice;
 
 namespace Characters.NPC.Controllers
 {

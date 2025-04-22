@@ -4859,30 +4859,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dog
       objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6583427555257894565, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7649764622603788384, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.56
@@ -4924,8 +4900,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5340242016397897852, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28490986475b5ac4b8b2b2943636007d, type: 3}

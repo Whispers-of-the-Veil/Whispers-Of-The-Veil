@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Runtime.Remoting.Messaging;
 using Characters.Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +9,6 @@ using Characters.NPC.Behavior_Tree.Strategies;
 using Characters.NPC.Behavior_Tree.Strategies.Conditional;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
-using Characters.Player.Voice;
 
 namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
@@ -55,7 +53,6 @@ namespace Characters.Enemies.Controllers {
         [SerializeField] public float sightRange;       // How far can this enemy see
         [SerializeField] public float hearingRange;     // How far can this enemy hear
         [SerializeField] public float searchRadius;
-        private Voice voice;
         
         BehaviorTree tree;
         public BlackboardController controller {
@@ -72,10 +69,6 @@ namespace Characters.Enemies.Controllers {
             
             if (target == null) {
                 target = GameObject.Find("Player").GetComponent<Transform>();
-            }
-
-            if (voice == null) {
-                voice = GameObject.Find("Player").GetComponent<Voice>();
             }
             
             alertEmote = GameObject.Find("Emotes/Alert");

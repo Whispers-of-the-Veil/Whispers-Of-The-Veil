@@ -477,6 +477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasKey: 0
+  weaponSwingSfx: {fileID: 8300000, guid: f7f56f6b76894465b946f81b5ae45d57, type: 3}
   speed: 3
   rainingSpeed: 2.5
   moveLimiter: 0.7
@@ -532,14 +533,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   correctClip: {fileID: 8300000, guid: ae21e378e6b9f364aa9246290fdef9b8, type: 3}
   wrongClip: {fileID: 0}
-  enemies: []
   DetectVoiceThreshold: 0.01
   keys:
   - open chest
   - follow
+  - move
   - stay
-  - heel
-  threshold: 5
+  threshold: 3
   PuzzleInRange: 3
   SampleRate: 16000
   RecordingLength: 5
