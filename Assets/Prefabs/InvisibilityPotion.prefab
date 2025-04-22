@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 5250290998405392813}
   - component: {fileID: 3118332705743425973}
   m_Layer: 0
-  m_Name: HealthPotion_Sprite
+  m_Name: InvisibilityPotion_Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
