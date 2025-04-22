@@ -1,3 +1,4 @@
+using Audio.SFX;
 using Characters.NPC;
 using Dialogue;
 using UnityEngine;
@@ -11,6 +12,16 @@ namespace Characters.Player {
         private GameObject heldKey;
         private bool isHoldingBook = false;
         private GameObject heldBook;
+        
+        [Header("Audio")] 
+        [SerializeField] AudioClip weaponSwingSfx;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
+        public SoundExpert soundExpert {
+            get => SoundExpert.instance;
+        }
+        
         [Header("Movement")]
         [SerializeField] public float speed = 3f;
         [SerializeField] public float rainingSpeed = 2.5f;
@@ -24,10 +35,6 @@ namespace Characters.Player {
 
         [Header("Components")]
         private Rigidbody2D body;
-        
-        public SoundExpert soundExpert {
-            get => SoundExpert.instance;
-        }
 
         public Inventory inventory
         {
@@ -264,6 +271,7 @@ namespace Characters.Player {
                 MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
                 if (weapon != null)
                 {
+                    sfxManager.PlaySFX(weaponSwingSfx, transform, 1f);
                     weapon.Attack();
                     soundExpert.ReportSound(transform.position);
                 }

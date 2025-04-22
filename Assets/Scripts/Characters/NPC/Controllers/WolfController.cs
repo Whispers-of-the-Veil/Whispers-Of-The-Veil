@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Runtime.Remoting.Messaging;
 using Characters.Player;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,7 +9,6 @@ using Characters.NPC.Behavior_Tree.Strategies;
 using Characters.NPC.Behavior_Tree.Strategies.Conditional;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
-using Characters.Player.Voice;
 
 namespace Characters.Enemies.Controllers {
     public class WolfController : MonoBehaviour {
@@ -18,11 +16,11 @@ namespace Characters.Enemies.Controllers {
         [SerializeField] private Animator animator;
         
         [Header("Audio")]
-        [SerializeField] AudioClip idleSfx;
+        [SerializeField] AudioClip howlingSfx;
         [SerializeField] AudioClip walkSfx;
         [SerializeField] AudioClip alertSfx;
         [SerializeField] AudioClip angrySfx;
-        [SerializeField] AudioClip deathSfx;
+        [SerializeField] AudioClip attackSfx;
         private SFXManager sfxManager {
             get => SFXManager.instance;
         }
@@ -55,7 +53,6 @@ namespace Characters.Enemies.Controllers {
         [SerializeField] public float sightRange;       // How far can this enemy see
         [SerializeField] public float hearingRange;     // How far can this enemy hear
         [SerializeField] public float searchRadius;
-        private Voice voice;
         
         BehaviorTree tree;
         public BlackboardController controller {
@@ -72,10 +69,6 @@ namespace Characters.Enemies.Controllers {
             
             if (target == null) {
                 target = GameObject.Find("Player").GetComponent<Transform>();
-            }
-
-            if (voice == null) {
-                voice = GameObject.Find("Player").GetComponent<Voice>();
             }
             
             alertEmote = GameObject.Find("Emotes/Alert");
@@ -115,6 +108,7 @@ namespace Characters.Enemies.Controllers {
             Sequence seenPlayer = new Sequence("Seen Player", 100);
             seenPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
             seenPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, sightRange))));
+            seenPlayer.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(angrySfx, transform, 1f))));
             seenPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(frustratedEmote)))));
             seenPlayer.AddChild(new Leaf("Move to Player", new MoveToTarget(transform, agent, target, speed, 2f)));
             actions.AddChild(seenPlayer);
@@ -122,6 +116,7 @@ namespace Characters.Enemies.Controllers {
             Sequence heardNoise = new Sequence("Investigate Noise", 50);
             heardNoise.AddChild(new Leaf("is there an Active sound report?", new Condition( () => blackboard.TryGetValue(soundKey, out bool value) && value )));
             heardNoise.AddChild(new Leaf("is Sound in Range?", new Condition(() => Conditions.InRange(transform, hearingRange))));
+            heardNoise.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(alertSfx, transform, 1f))));
             heardNoise.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(alertEmote)))));
             heardNoise.AddChild(new Leaf("Delay before investigate", new WaitSeconds(1f)));
             heardNoise.AddChild(new Leaf("Move to sound", new MoveToTarget(transform, agent, () => blackboard.TryGetValue(positionKey, out Vector2 value) ? value : Vector2.zero, speed, 0.25f)));
@@ -130,6 +125,10 @@ namespace Characters.Enemies.Controllers {
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
+            RandomPicker howl = new RandomPicker("Should I howl?");
+            howl.AddChild(new Leaf("Howl", new ActionStrategy(() => sfxManager.PlaySFX(howlingSfx, transform, 1f))));
+            howl.AddChild(new Leaf("Don't Howl", new WaitSeconds(0f)));
+            patrol.AddChild(howl);
             patrol.AddChild(new Leaf("Patrol", new Patrol(agent, patrolArea, patrolRadius, speed)));
             patrol.AddChild(new Leaf("Delay", new WaitSeconds(5f)));
             actions.AddChild(patrol);
@@ -146,12 +145,14 @@ namespace Characters.Enemies.Controllers {
             Sequence attack = new Sequence("Normal Attack Pattern");
             attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed, stoppingDistance)));
             attack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
+            attack.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(attackSfx, transform, 1f))));
             attack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(attack);
 
             Sequence dashAttack = new Sequence("Dash Attack Pattern");
             dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed * 2, stoppingDistance)));
             dashAttack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
+            dashAttack.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(attackSfx, transform, 1f))));
             dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(dashAttack);
             
