@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Audio.SFX;
 using UnityEngine;
 using Characters.Player;
 
@@ -7,6 +8,12 @@ namespace Characters.NPC
 {
     public class EnemyStats : MonoBehaviour
     {
+        [Header("Audio")]
+        [SerializeField] AudioClip deathSfx;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
+        
         [SerializeField] private float health;
         [SerializeField] private float damage = 1f;
         [SerializeField] private bool canAttack = true;
@@ -41,6 +48,8 @@ namespace Characters.NPC
 
         public void Die()
         {
+            sfxManager.PlaySFX(deathSfx, transform, 1);
+            
             isDead = true;
             Debug.Log("Enemy defeated");
             Destroy(gameObject);

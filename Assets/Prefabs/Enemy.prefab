@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c019de7d6e345fb90d36b71d86b9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hurtSfx: {fileID: 0}
+  hurtSfx: {fileID: 8300000, guid: 2df0d81d5902541559b8963441481adf, type: 3}
 --- !u!114 &5402877136380890986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff572e3491d6cc64e97d85bc804301e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathSfx: {fileID: 8300000, guid: 5c0625e37994adf9e8a1b0b2c26ab750, type: 3}
   health: 50
   damage: 0.5
   canAttack: 1
@@ -459,8 +460,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   howlingSfx: {fileID: 8300000, guid: ac7e47ea73468408fb2af43195d2390e, type: 3}
   walkSfx: {fileID: 0}
-  alertSfx: {fileID: 8300000, guid: d61b78853a695429e8fd5c001e26c7c6, type: 3}
-  angrySfx: {fileID: 8300000, guid: 8d86cd3ed1651467d8c839c3103ca880, type: 3}
+  alertSfx: {fileID: 8300000, guid: 8d86cd3ed1651467d8c839c3103ca880, type: 3}
+  angrySfx: {fileID: 8300000, guid: d61b78853a695429e8fd5c001e26c7c6, type: 3}
   attackSfx: {fileID: 8300000, guid: 9d773354b59364aea872ffdbb4df5738, type: 3}
   stoppingDistance: 0.25
   attackRange: 2

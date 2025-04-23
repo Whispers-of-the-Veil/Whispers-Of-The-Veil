@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   barkSfx: {fileID: 8300000, guid: 154083b9b350e41f7bd85b472810c947, type: 3}
   happySfx: {fileID: 8300000, guid: aa4aacbbbddc444e78a56a8239d1809e, type: 3}
-  whineSfx: {fileID: 8300000, guid: 58450db9807a3499c9baaef9a8057b75, type: 3}
+  whineSfx: {fileID: 8300000, guid: 7906b2ec376d2fe4793eeef9ced810a1, type: 3}
   speed: 2
   stoppingDistance: 2
   agent: {fileID: 0}

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace Audio.SFX {
     public class SFXManager : MonoBehaviour {
@@ -33,6 +35,11 @@ namespace Audio.SFX {
             source.Play();
             
             Destroy(source.gameObject, length);
+        }
+        
+        public IEnumerator delaySFX(AudioClip clip, Transform spawnPoint, float delay, float volume = 1f) {
+            yield return new WaitForSeconds(delay);
+            PlaySFX(clip, spawnPoint, volume);
         }
     }
 }

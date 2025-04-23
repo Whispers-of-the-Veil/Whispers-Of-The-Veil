@@ -125,11 +125,11 @@ namespace Characters.Enemies.Controllers {
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
+            patrol.AddChild(new Leaf("Patrol", new Patrol(agent, patrolArea, patrolRadius, speed)));
             RandomPicker howl = new RandomPicker("Should I howl?");
             howl.AddChild(new Leaf("Howl", new ActionStrategy(() => sfxManager.PlaySFX(howlingSfx, transform, 1f))));
             howl.AddChild(new Leaf("Don't Howl", new WaitSeconds(0f)));
             patrol.AddChild(howl);
-            patrol.AddChild(new Leaf("Patrol", new Patrol(agent, patrolArea, patrolRadius, speed)));
             patrol.AddChild(new Leaf("Delay", new WaitSeconds(5f)));
             actions.AddChild(patrol);
             
@@ -144,15 +144,15 @@ namespace Characters.Enemies.Controllers {
             
             Sequence attack = new Sequence("Normal Attack Pattern");
             attack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed, stoppingDistance)));
-            attack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
             attack.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(attackSfx, transform, 1f))));
+            attack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
             attack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(attack);
 
             Sequence dashAttack = new Sequence("Dash Attack Pattern");
             dashAttack.AddChild(new Leaf("Move in for attack", new MoveToTarget(transform, agent, target, attackSpeed * 2, stoppingDistance)));
-            dashAttack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
             dashAttack.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(attackSfx, transform, 1f))));
+            dashAttack.AddChild(new Leaf("Did the player move?", new Condition(() => Conditions.InRange(transform, hurtDistance))));
             dashAttack.AddChild(new Leaf("Attack!", new ActionStrategy(AttackPlayer)));
             randomAttack.AddChild(dashAttack);
             
