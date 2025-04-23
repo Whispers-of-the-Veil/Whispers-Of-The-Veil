@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: walk_Left_Down_0
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 21
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6249abeadfd9ca848bf08881b568d0c0
+      internalID: -1525828008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_1
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 21
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6ef12cdff5fad640be7c5baed7a74a9
+      internalID: 173445759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_2
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 22
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7ea258c7ef9eacf438b0a0d090af6b22
+      internalID: -1807487469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_3
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 22
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 921d6bf200e4c3946950f5c5eec1e0ca
+      internalID: -1848866379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_4
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 21
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53beaac7a48692a4f93ad86dabf1c795
+      internalID: -1204421094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_5
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 20
+        width: 16
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca3d93a2c1bc8ec4197f683051d1d51b
+      internalID: -1611717016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_6
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 20
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73254c740e33f9046b87d707d4c08a14
+      internalID: 10447368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Left_Down_7
+      rect:
+        serializedVersion: 2
+        x: 354
+        y: 20
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a3d2c286eb760145b0e2670e1c9fadf
+      internalID: 519460524
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 7e4113119016c0746b5becec0d8dbf59
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      walk_Left_Down_0: -1525828008
+      walk_Left_Down_1: 173445759
+      walk_Left_Down_2: -1807487469
+      walk_Left_Down_3: -1848866379
+      walk_Left_Down_4: -1204421094
+      walk_Left_Down_5: -1611717016
+      walk_Left_Down_6: 10447368
+      walk_Left_Down_7: 519460524
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

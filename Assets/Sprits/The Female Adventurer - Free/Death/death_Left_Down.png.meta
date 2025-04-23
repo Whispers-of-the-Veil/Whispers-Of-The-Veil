@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: death_Left_Down_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 20
+        width: 15
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42c4fa506c177a34fb9666070efd2cac
+      internalID: -457568207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_1
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 20
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a063e4bbf87dad24683890603ee2b7c5
+      internalID: -268886400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_2
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 21
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6214d71b64badd4c9f6ce371a9c50ce
+      internalID: -1226884236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_3
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 21
+        width: 15
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf06e1b76d8939c4d94f9a989dd983c2
+      internalID: -1625264422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_4
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 21
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d798c9ae1c9bd8a49a36aca0cbb9d173
+      internalID: -2043480991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_5
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 20
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4be7d8ec287b524386656cd77d1a267
+      internalID: -246650266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_6
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 15
+        width: 20
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c71a20773b0794849b403be75a013ff7
+      internalID: 1702406631
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Left_Down_7
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 15
+        width: 20
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0599768e8bcb2e4890a13a4ac1ab91d
+      internalID: 1710285559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: fcb37c4ba18bcf54695f3508dbf0218f
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      death_Left_Down_0: -457568207
+      death_Left_Down_1: -268886400
+      death_Left_Down_2: -1226884236
+      death_Left_Down_3: -1625264422
+      death_Left_Down_4: -2043480991
+      death_Left_Down_5: -246650266
+      death_Left_Down_6: 1702406631
+      death_Left_Down_7: 1710285559
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

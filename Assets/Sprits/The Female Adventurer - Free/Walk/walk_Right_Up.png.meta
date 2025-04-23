@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: walk_Right_Up_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 20
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c16a7f78b9f0c4a4d97d76f4dc57ce42
+      internalID: 172973907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_1
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 22
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3712c9be186663347ac9ea1856a480ed
+      internalID: 937573824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_2
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 21
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b12dab7e2f1e2f43a8064654736322e
+      internalID: -1590610706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 21
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22ae733e2ab0680428ebc373927b5103
+      internalID: -290195621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_4
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 21
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9a085e68f6efa745bbab74c529da2e8
+      internalID: 1361400503
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_5
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 21
+        width: 16
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec3303990c15fc048828d34f5bfdef9b
+      internalID: 1894677131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_6
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 20
+        width: 16
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d370c2bd0411e647bb23e1e1f6b18eb
+      internalID: -882091102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Right_Up_7
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 20
+        width: 16
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a2c8c8842881a24998070b7fa8d467b
+      internalID: 667714790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: cea17f80f19d7f64b980cd1e276a0689
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      walk_Right_Up_0: 172973907
+      walk_Right_Up_1: 937573824
+      walk_Right_Up_2: -1590610706
+      walk_Right_Up_3: -290195621
+      walk_Right_Up_4: 1361400503
+      walk_Right_Up_5: 1894677131
+      walk_Right_Up_6: -882091102
+      walk_Right_Up_7: 667714790
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

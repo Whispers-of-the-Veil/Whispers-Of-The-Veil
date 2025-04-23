@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,7 +108,175 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_0
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 18
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf554d4efb7fabc41a1f13e50d96926b
+      internalID: 1144303022
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 20
+        width: 20
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87b0f6a967b6ab844979d2d3b69c0f3c
+      internalID: 1508807537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 20
+        width: 20
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 878a0f8d2782d7b4b8822a320d867751
+      internalID: 1587337093
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 20
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 975df37bd9c267e4f9eb5aa074468545
+      internalID: 1738830428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_4
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 18
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90920a8cf1a0d604d91fe78d95850213
+      internalID: -1025363030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_5
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 20
+        width: 31
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5384620569f543b428d30f5a6150ca06
+      internalID: -401210189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_6
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 20
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 530564553367c5b48923edfd39fea719
+      internalID: 56825097
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Attack_Spear_Right_Up_7
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 20
+        width: 20
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f28fc3a16b8b4d45b9bc480b808baaf
+      internalID: 1596132827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -119,7 +287,15 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Attack_Spear_Right_Up_0: 1144303022
+      Attack_Spear_Right_Up_1: 1508807537
+      Attack_Spear_Right_Up_2: 1587337093
+      Attack_Spear_Right_Up_3: 1738830428
+      Attack_Spear_Right_Up_4: -1025363030
+      Attack_Spear_Right_Up_5: -401210189
+      Attack_Spear_Right_Up_6: 56825097
+      Attack_Spear_Right_Up_7: 1596132827
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 20
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55b8d57d724e1e44fb590998909b51b5
+      internalID: -1882949564
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_1
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 20
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a1c061325dff4648b2deb96de5da123
+      internalID: 1819746781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_2
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 19
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e84d398855d9f142879667d2a05ee09
+      internalID: -1566012711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_3
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 19
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22d8defc3b4743f42abb10be404b8dcd
+      internalID: 1371897839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_4
+      rect:
+        serializedVersion: 2
+        x: 207
+        y: 20
+        width: 16
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 853f870e0138b1249ac5ff7c9c385df7
+      internalID: -1681933788
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_5
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 21
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6a813ba7287f5f48b118e5e1d7bce14
+      internalID: 1927788074
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_6
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 20
+        width: 18
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80dfad66533f9e04384e60d5297b752d
+      internalID: 1956632032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: walk_Spear_Right_Up_7
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 20
+        width: 19
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18c9918f482720149a9c72202f2dadb0
+      internalID: -1938696482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 67831b0294be41741b9930de15890996
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      walk_Spear_Right_Up_0: -1882949564
+      walk_Spear_Right_Up_1: 1819746781
+      walk_Spear_Right_Up_2: -1566012711
+      walk_Spear_Right_Up_3: 1371897839
+      walk_Spear_Right_Up_4: -1681933788
+      walk_Spear_Right_Up_5: 1927788074
+      walk_Spear_Right_Up_6: 1956632032
+      walk_Spear_Right_Up_7: -1938696482
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

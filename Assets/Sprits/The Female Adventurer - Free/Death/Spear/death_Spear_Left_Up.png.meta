@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 20
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d24bfea9f82ccb04fa0b806ea418341e
+      internalID: -1110023321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_1
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 21
+        width: 17
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8c4a8d0213d253048aa8709caa381802
+      internalID: 2023381923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_2
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 21
+        width: 25
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 134a4e6325060ea439a711b771676dbf
+      internalID: 1766554151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_3
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 21
+        width: 27
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 491367e61cc6c3f45a98a96efcba87da
+      internalID: 50834843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_4
+      rect:
+        serializedVersion: 2
+        x: 195
+        y: 21
+        width: 27
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ea2554ecc9aa434e8c1b78658a93d24
+      internalID: -549400760
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_5
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 21
+        width: 27
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff3f0c17b65a6ff4abf1d5df5ed19e40
+      internalID: 1152024959
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_6
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 21
+        width: 27
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c5053e0607b865a449725b8489c641e0
+      internalID: -405600576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: death_Spear_Left_Up_7
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 21
+        width: 27
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a49a457474aac24fa72513c6ac4ba02
+      internalID: -132047105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: b9ddf6ef1274a9749bf32921f89f4392
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      death_Spear_Left_Up_0: -1110023321
+      death_Spear_Left_Up_1: 2023381923
+      death_Spear_Left_Up_2: 1766554151
+      death_Spear_Left_Up_3: 50834843
+      death_Spear_Left_Up_4: -549400760
+      death_Spear_Left_Up_5: 1152024959
+      death_Spear_Left_Up_6: -405600576
+      death_Spear_Left_Up_7: -132047105
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

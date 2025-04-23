@@ -279,6 +279,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5214539156876964217, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_Size.x
+      value: 0.42857143
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214539156876964217, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_Size.y
+      value: 0.8214286
+      objectReference: {fileID: 0}
+    - target: {fileID: 5214539156876964217, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 360562101, guid: 94f5bdf297016c84c86e4b7f76d794c6, type: 3}
     - target: {fileID: 7188177131963908965, guid: 0bbdb693b286f455aa06e5920b09c75d, type: 3}
       propertyPath: m_Name
       value: Player
@@ -306,7 +318,7 @@ Animator:
   m_GameObject: {fileID: 336147767}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9554d4591958fdb40b69c636a2bfed04, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

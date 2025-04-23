@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -108,18 +108,194 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Idle_Spear_Up_0
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 21
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c060df14cbb399949a1066c5a5eb64e6
+      internalID: 1062802607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_1
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 21
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 823f550a0c0589a44a94b1da1dedf445
+      internalID: -593305139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_2
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 21
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97c47069885e40243a8251e9a6b3c3ea
+      internalID: 1565795336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_3
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 21
+        width: 18
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d4c91e29fcd6ce4d91228611ca6b6fd
+      internalID: -1334953367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_4
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 21
+        width: 19
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a828bfc6821ece745a615c2c59dc84e4
+      internalID: 1642132686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_5
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 21
+        width: 19
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d392ba953c0f95042b27fc320975ba47
+      internalID: 1247618608
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_6
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 21
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 29f3ab86b4594374ba92921f839a85bc
+      internalID: -1090090762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Idle_Spear_Up_7
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 21
+        width: 18
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75cd5f06205af014fa1acc999c30aaab
+      internalID: -418236549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: dbb5eaa8510275a4fa85eba87bc07fb4
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Idle_Spear_Up_0: 1062802607
+      Idle_Spear_Up_1: -593305139
+      Idle_Spear_Up_2: 1565795336
+      Idle_Spear_Up_3: -1334953367
+      Idle_Spear_Up_4: 1642132686
+      Idle_Spear_Up_5: 1247618608
+      Idle_Spear_Up_6: -1090090762
+      Idle_Spear_Up_7: -418236549
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
