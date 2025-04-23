@@ -15,8 +15,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Loading.unity
     guid: 828b200ac45df4d0e972b0839d6af676
   - enabled: 1
-    path: Assets/Scenes/Introduction/Grassy Plans.unity
-    guid: 9c68a64b145a34741b10f1c1182b1068
+    path: Assets/Scenes/Introduction/Cut Scene.unity
+    guid: 94c161942a13baa409206753b94cddc2
   - enabled: 1
     path: Assets/Scenes/Introduction/Forest - Day Scene.unity
     guid: 88214f190aa6e41b185928e8c438ab8c
