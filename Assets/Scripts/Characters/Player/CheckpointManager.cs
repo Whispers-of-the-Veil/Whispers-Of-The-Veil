@@ -1,4 +1,4 @@
-//Farzana Tanni & Owenm Ingram
+//Farzana Tanni & Owen Ingram
 
 using System.Collections;
 using System.Collections.Generic;

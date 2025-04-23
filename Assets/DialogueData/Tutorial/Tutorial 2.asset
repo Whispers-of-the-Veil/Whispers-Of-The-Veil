@@ -15,4 +15,4 @@ MonoBehaviour:
   dialogue:
   - Hold down 'shift' to sprint.
   responses: []
-  npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}
+  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial 1
   m_EditorClassIdentifier: 
   dialogue:
-  - Welcome to Whispers of The Veil! Walk this path to follow the tutorial. Press
-    space to continue.
-  - There's an item! Press 'E' to pickup an object, press 'Q' to store it.
+  - Welcome to Whispers of the Veil! I'm your helper, Echo. Press 'Space' to continue.
+  - "I\u2019ll be your guide on this journey. Press 'H' anytime, and I\u2019ll appear
+    with a helpful tip!"
   responses: []
-  npcSprite: {fileID: 561935025, guid: 5fe5f62b5e33948abb8e20f0527d1aa6, type: 3}
+  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
