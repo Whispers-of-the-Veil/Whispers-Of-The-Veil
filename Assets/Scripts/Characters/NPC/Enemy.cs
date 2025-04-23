@@ -1,6 +1,7 @@
 // Lucas Davis(10-166)
 //Owen Ingram(167-195)
 
+using System;
 using UnityEngine.AI;
 using UnityEngine;
 using System.Collections;
@@ -32,8 +33,8 @@ namespace Characters.NPC {
         
         public void TakeDamage(float damageAmount)
         {
-            sfxManager.PlaySFX(hurtSfx, transform, 1f);
             stats.TakeDamage(damageAmount); // Call TakeDamage from EnemyStats
+            StartCoroutine(sfxManager.delaySFX(hurtSfx, transform, 0.3f));
         }
     }
 }
