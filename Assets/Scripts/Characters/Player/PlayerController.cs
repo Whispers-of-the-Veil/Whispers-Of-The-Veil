@@ -12,6 +12,11 @@ namespace Characters.Player {
         private GameObject heldKey;
         private bool isHoldingBook = false;
         private GameObject heldBook;
+
+        //for animation
+        Animator anim;
+        private Vector2 lastMoveDirection;
+        private bool facingLeft = true;
         
         [Header("Audio")] 
         [SerializeField] AudioClip weaponSwingSfx;
@@ -69,6 +74,9 @@ namespace Characters.Player {
             body = GetComponent<Rigidbody2D>();
             inventory.ItemUsed += Inventory_ItemUsed; 
             //Cursor.lockState = CursorLockMode.Locked;
+
+            //animation
+            anim = GetComponent<Animator>();
         }
 
         private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
@@ -101,11 +109,31 @@ namespace Characters.Player {
             CheckForBookInteraction();
             CheckForDialogue();
             CheckForAttack();
+
+            Animate();
         }
     
-        private void OnMove() {
+        private void OnMove()
+        {
+            // Read raw float input (this keeps it compatible with the rest of your team’s code)
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
+
+            // If there's movement, store the last direction
+            if (horizontal != 0 || vertical != 0)
+            {
+                lastMoveDirection = new Vector2(horizontal, vertical).normalized;
+            }
+        }
+
+        // Animation function
+        private void Animate()
+        {
+            anim.SetFloat("MoveX", horizontal);
+            anim.SetFloat("MoveY", vertical);
+            anim.SetFloat("MoveMagnitude", new Vector2(horizontal, vertical).magnitude);
+            anim.SetFloat("LastMoveX", lastMoveDirection.x);
+            anim.SetFloat("LastMoveY", lastMoveDirection.y);
         }
 
         private void CheckForSprint() {
@@ -122,10 +150,14 @@ namespace Characters.Player {
             }
 
             float tmpSpeed;
-            if (horizontal != 0 && vertical != 0) {
-                horizontal *= moveLimiter;
-                vertical *= moveLimiter;
-            } 
+
+            Vector2 input = new Vector2(horizontal, vertical);
+
+            // If moving diagonally, apply limiter
+            if (horizontal != 0 && vertical != 0)
+            {
+                input *= moveLimiter;
+            }
 
             if (weather.isRaining) {
                 tmpSpeed = _isSprinting ? rainingSpeed * sprintSpeedMultiplier : rainingSpeed;
@@ -133,7 +165,8 @@ namespace Characters.Player {
                 tmpSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
             }
 
-            body.velocity = new Vector2(horizontal * tmpSpeed, vertical * tmpSpeed);
+            //Adjusted so that player moves diagonally in the same speed
+            body.velocity = input * tmpSpeed;
         }
 
         private void CheckForPickup() {
