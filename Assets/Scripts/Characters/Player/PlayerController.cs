@@ -159,7 +159,7 @@ namespace Characters.Player {
                 input *= moveLimiter;
             }
 
-            if (weather.isRaining) {
+            if (weather != null && weather.isRaining) {
                 tmpSpeed = _isSprinting ? rainingSpeed * sprintSpeedMultiplier : rainingSpeed;
             } else {
                 tmpSpeed = _isSprinting ? speed * sprintSpeedMultiplier : speed;
