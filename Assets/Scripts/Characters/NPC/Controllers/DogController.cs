@@ -73,7 +73,11 @@ namespace Characters.NPC.Controllers
             PrioritySelector actions = new PrioritySelector("logic");
             Sequence followPlayer = new Sequence("followPlayer", 100);
             followPlayer.AddChild(new Leaf("commandFollow?", new Condition( () => blackboard.TryGetValue(followKey, out bool value) && value )));
-            followPlayer.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(happySfx, transform, 1f ))));
+            followPlayer.AddChild(new Leaf("SFX", new SingleFire(
+                new ActionStrategy( () => sfxManager.PlaySFX(happySfx, transform, 1f )), 
+                blackboard.GetOrRegisterKey("HasHappy")
+                )
+            ));
             followPlayer.AddChild(new Leaf("moveToPlayer", new MoveToTarget(transform, agent, target, speed, stoppingDistance)));
             followPlayer.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(followPlayer);
@@ -81,15 +85,27 @@ namespace Characters.NPC.Controllers
             //move sequence
             Sequence moveAway = new Sequence("moveAway", 50);
             moveAway.AddChild(new Leaf("commandMoveAway?", new Condition( () => blackboard.TryGetValue(moveKey, out bool value) && value)));
-            moveAway.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(whineSfx, transform, 1f ))));
-            moveAway.AddChild(new Leaf("Heel; move to the player", new SingleFire(new MoveToTarget(transform, agent, target, speed, stoppingDistance), blackboard.GetOrRegisterKey("HasMoved"))));
+            moveAway.AddChild(new Leaf("SFX", new SingleFire(
+                new ActionStrategy(() => sfxManager.PlaySFX(whineSfx, transform, 1f )), 
+                blackboard.GetOrRegisterKey("HasWhined")
+                )
+            ));
+            moveAway.AddChild(new Leaf("Heel; move to the player", new SingleFire(
+                new MoveToTarget(transform, agent, target, speed, stoppingDistance), 
+                blackboard.GetOrRegisterKey("HasMoved")
+                )
+            ));
             moveAway.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(moveAway);
             
             //sit sequence
             Sequence sit = new Sequence("Stay", 10);
             sit.AddChild(new Leaf("commandStay?", new Condition( () => blackboard.TryGetValue(stayKey, out bool value) && value)));
-            sit.AddChild(new Leaf("SFX", new ActionStrategy( () => sfxManager.PlaySFX(barkSfx, transform, 1f ))));
+            sit.AddChild(new Leaf("SFX", new SingleFire(
+                new ActionStrategy( () => sfxManager.PlaySFX(barkSfx, transform, 1f )),
+                blackboard.GetOrRegisterKey("HasBarked")
+                )
+            ));
             sit.AddChild(new Leaf("Make the dog stay", new ActionStrategy( () => { agent.ResetPath(); agent.velocity = Vector3.zero; })));
             sit.AddChild(new Leaf("Wait", new WaitSeconds(0.5f)));
             actions.AddChild(sit);

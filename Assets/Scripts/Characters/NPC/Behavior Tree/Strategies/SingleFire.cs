@@ -18,10 +18,10 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
         private bool hasFired;
 
         public SingleFire(IStrategy inner, BlackboardKey key) {
-            this.inner = inner;
-            
             blackboard = controller.GetBlackboard();
             controller.RegisterExpert(this);
+            
+            this.inner = inner;
             this.key = key;
         }
 
