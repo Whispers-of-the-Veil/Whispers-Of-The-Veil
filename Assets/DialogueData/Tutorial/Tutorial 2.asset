@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial 2
   m_EditorClassIdentifier: 
   dialogue:
-  - Hold down 'shift' to sprint.
+  - Press 'E' to pick up this health potion, you may need it later on. Hold 'shift
+    to sprint.
   responses: []
   npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
