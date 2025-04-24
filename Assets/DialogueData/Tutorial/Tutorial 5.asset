@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial 5
   m_EditorClassIdentifier: 
   dialogue:
-  - Why does this hurt so much?! I should get out of this fog!
+  - "You shouldn\u2019t linger in the fog. It\u2019ll eat away at you if you do."
   responses: []
   npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
