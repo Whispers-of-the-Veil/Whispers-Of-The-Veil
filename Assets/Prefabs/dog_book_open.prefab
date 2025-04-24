@@ -619,16 +619,16 @@ MonoBehaviour:
   m_text: ' Essential Commands:
 
 
-    Sit: Command "Sit!" firmly to temporarily halt
-    the dog''s movement.
+    Sit: Command "Stay!" firmly to temporarily
+    halt the dog''s movement.
 
 
-    Move: Clearly say "Move!" to encourage the dog to
-    reposition away from its current location.
+    Move: Clearly say "Move!" to encourage the dog
+    to reposition away from its current location.
 
 
-    Follow: Command "Follow!" to
-    instruct the dog to stay close and accompany you.'
+    Follow: Command "Follow!"
+    to instruct the dog to stay close and accompany you.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
   m_sharedMaterial: {fileID: 2384030057181765765, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
