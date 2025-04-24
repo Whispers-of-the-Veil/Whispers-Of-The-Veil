@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Tutorial 3
   m_EditorClassIdentifier: 
   dialogue:
-  - Uh-oh, it's a wolf! You can either fight it or try to sneak past it.
+  - Uh-oh, it's a wolf! You can either fight it or try to sneak by.
   responses:
   - reponseText: Fight
     dialogueObject: {fileID: 11400000, guid: 3bc7eff34271a274bb8e9d0fd335a2c9, type: 2}
   - reponseText: Sneak
     dialogueObject: {fileID: 11400000, guid: 1b5ff391df30d7745978e729850ae53f, type: 2}
-  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
+  npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
