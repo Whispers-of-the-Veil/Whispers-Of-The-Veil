@@ -15,7 +15,7 @@ public class HealthPotion : InventoryItemBase
     private bool isConsuming = false;
     private Vector3 originalLocalPosition;
 
-    public override string Name => "Health Potion";
+    public override string Name => "HealthPotion";
 
     private void Update()
     {
