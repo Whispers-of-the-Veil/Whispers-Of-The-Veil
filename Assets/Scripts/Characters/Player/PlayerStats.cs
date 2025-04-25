@@ -8,8 +8,8 @@ namespace Characters.Player
 {
     public class PlayerStats : MonoBehaviour
     {
-        [SerializeField] private float health = 3f;
-        [SerializeField] private int maxHealth = 3;
+        [SerializeField] public float health = 3f;
+        [SerializeField] public int maxHealth = 3;
         [SerializeField] private bool isDead;
         [SerializeField] Image[] hearts;
         [SerializeField] private Sprite fullHeart;
@@ -173,14 +173,25 @@ namespace Characters.Player
             Debug.Log($"Player healed {amount}. Current health: {health}");
             UpdateHealth();
         }
-        
+        //CheckpointManager.Instance.RespawnPlayer(gameObject);
+        //health = maxHealth;
+        //UpdateHealth();
         public void Die()
         {
             isDead = true;
-            CheckpointManager.Instance.RespawnPlayer(gameObject);
-            health = maxHealth;
-            UpdateHealth();
-            Debug.Log("Player died, respawning");
+
+            // Ensure DeathScreenUI is ready before calling ShowDeathScreen
+            if (menu.DeathScreenUI.Instance != null)
+            {
+                Debug.Log("DeathScreenUI Instance found, calling ShowDeathScreen...");
+                menu.DeathScreenUI.Instance.ShowDeathScreen();
+            }
+            else
+            {
+                Debug.LogError("DeathScreenUI instance not found! It may not have been initialized before the player died.");
+            }
         }
+
+
     }
 }

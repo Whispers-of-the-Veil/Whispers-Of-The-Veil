@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Characters.Player;
 
 namespace Dialogue
@@ -8,12 +9,14 @@ namespace Dialogue
         public static HelperHintController Instance { get; private set; }
 
         [SerializeField] private PlayerController player;
-        [SerializeField] private GameObject helperSprite;
+        [SerializeField] private Animator helperAnimator;
 
         public DialogueObject CurrentHint { get; private set; }
 
         private void Awake()
         {
+            DontDestroyOnLoad(gameObject);
+
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -22,11 +25,39 @@ namespace Dialogue
             Instance = this;
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            if (helperSprite != null)
-                helperSprite.SetActive(false);
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (player == null)
+                player = FindObjectOfType<PlayerController>();
+
+            if (helperAnimator == null)
+            {
+                // Try to find the "Echo" child GameObject directly under the Player
+                Transform echoTransform = player.transform.Find("Echo");
+        
+                if (echoTransform != null)
+                {
+                    helperAnimator = echoTransform.GetComponent<Animator>();
+                    Debug.Log("Helper Echo found and Animator is assigned.");
+                }
+                else
+                {
+                    Debug.LogError("Echo GameObject not found under Player!");
+                }
+            }
+        }
+
+
 
         private void Update()
         {
@@ -48,19 +79,44 @@ namespace Dialogue
 
         private void ShowHint()
         {
-            if (helperSprite != null)
-                helperSprite.SetActive(true);
+            if (helperAnimator != null)
+            {
+                // ✅ Ensure the GameObject is enabled first
+                helperAnimator.gameObject.SetActive(true);
 
-            player.DialogueUI.ShowDialogue(CurrentHint);
-            player.DialogueUI.OnDialogueFinished += HideHelper;
+                // ✅ Then trigger the animation
+                helperAnimator.SetTrigger("Show");
+            }
+
+            if (player != null && CurrentHint != null)
+            {
+                player.DialogueUI.ShowDialogue(CurrentHint);
+                player.DialogueUI.OnDialogueFinished += HideHelper;
+            }
         }
+
+
+
 
         private void HideHelper()
         {
-            if (helperSprite != null)
-                helperSprite.SetActive(false);
+            if (helperAnimator != null)
+            {
+                // Trigger the hide animation (if you want an animation for hiding)
+                helperAnimator.SetTrigger("Hide");
+        
+                // Ensure the helper object is set to inactive
+                GameObject helperObject = helperAnimator.gameObject;
+                helperObject.SetActive(false);
+            }
 
-            player.DialogueUI.OnDialogueFinished -= HideHelper;
+            // Unsubscribe from the dialogue finish event to prevent multiple triggers
+            if (player != null && player.DialogueUI != null)
+            {
+                player.DialogueUI.OnDialogueFinished -= HideHelper;
+            }
         }
+
+
     }
 }

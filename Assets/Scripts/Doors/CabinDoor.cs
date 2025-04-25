@@ -1,3 +1,5 @@
+//Farzana Tanni
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +18,7 @@ public class CabinDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             enterAllowed = true;
-            Debug.Log("Near Door: Press 'G' to enter.");
+            Debug.Log("Near Door: Press 'F' to enter.");
         }
     }
 

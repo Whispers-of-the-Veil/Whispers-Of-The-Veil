@@ -15,6 +15,7 @@ TagManager:
   - Spawnpoint
   - HUD
   - LittleBrother
+  - HelperSprite
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Checkpoint : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider point)
+    private void OnTriggerEnter2D(Collider2D point)
     {
         if (point.CompareTag("Player"))
         {

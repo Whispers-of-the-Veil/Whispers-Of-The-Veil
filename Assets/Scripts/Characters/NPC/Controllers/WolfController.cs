@@ -161,6 +161,7 @@ namespace Characters.Enemies.Controllers {
             randomAttack.AddChild(sequenceAttack);
                 
             Sequence attackPlayer = new Sequence("Attack", 150);
+            attackPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
             attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));
             attackPlayer.AddChild(new Leaf("Strafe while waiting to attack", new StrafeDelay(agent, target, 2f, speed, attackInterval)));
             attackPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(angryEmote)))));

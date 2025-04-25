@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bb4d3ea72efd834aaae67ff58e7f15b, type: 3}
-  m_Name: Test1
+  m_Name: Fight2
   m_EditorClassIdentifier: 
   dialogue:
-  - Test1
+  - Press 'left click' to attack the wolf with the weapon.
   responses: []
-  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
+  npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}

@@ -63,6 +63,36 @@ MonoBehaviour:
       stringValue: 
       vector2Value: {x: 0, y: 0}
       vector3Value: {x: 0, y: 0, z: 0}
+  - keyName: HasWhined
+    valueType: 2
+    value:
+      type: 2
+      intValue: 0
+      floatValue: 0
+      boolValue: 0
+      stringValue: 
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+  - keyName: HasHappy
+    valueType: 2
+    value:
+      type: 2
+      intValue: 0
+      floatValue: 0
+      boolValue: 0
+      stringValue: 
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
+  - keyName: HasBarked
+    valueType: 2
+    value:
+      type: 2
+      intValue: 0
+      floatValue: 0
+      boolValue: 0
+      stringValue: 
+      vector2Value: {x: 0, y: 0}
+      vector3Value: {x: 0, y: 0, z: 0}
   - keyName: SoundsPosition
     valueType: 4
     value:

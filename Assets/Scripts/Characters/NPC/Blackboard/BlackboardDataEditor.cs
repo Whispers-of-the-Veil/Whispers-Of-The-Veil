@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System;
 using UnityEditor;
 using UnityEditorInternal;
@@ -70,3 +71,4 @@ namespace Characters.NPC.BlackboardSystem {
         }
     }
 }
+#endif
