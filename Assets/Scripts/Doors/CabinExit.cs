@@ -33,7 +33,7 @@ public class CabinExit : MonoBehaviour
 
     void Update()
     {
-        if (exitAllowed && Input.GetKeyDown(KeyCode.F))
+        if (exitAllowed && Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("F Pressed! Leaving Cabin to Town...");
             SceneManager.LoadScene("Town_Main");
@@ -50,7 +50,7 @@ public class CabinExit : MonoBehaviour
             if (spawnPoint != null && player != null)
             {
                 player.transform.position = spawnPoint.transform.position;
-                player.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f); // match whatever scale you use
+                //player.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f); // match whatever scale you use
                 Debug.Log("Player moved to CabinBackExit.");
             }
             else

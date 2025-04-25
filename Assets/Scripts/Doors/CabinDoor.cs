@@ -33,7 +33,7 @@ public class CabinDoor : MonoBehaviour
 
     void Update()
     {
-        if (enterAllowed && Input.GetKeyDown(KeyCode.F))
+        if (enterAllowed && Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("G Key Pressed! Entering Cabin...");
             SceneManager.LoadScene("CabinMain");
@@ -50,7 +50,7 @@ public class CabinDoor : MonoBehaviour
             if (spawnPoint != null && player != null)
             {
                 player.transform.position = spawnPoint.transform.position;
-                player.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
+                //player.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f);
                 Debug.Log("Player moved to CabinSpawn_MainDoor.");
             }
             else
