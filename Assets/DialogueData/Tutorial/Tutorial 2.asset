@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial 2
   m_EditorClassIdentifier: 
   dialogue:
-  - Press 'E' to pick up this health potion, you may need it later on. Hold 'shift
-    to sprint.
+  - Press 'E' to pick up this health potion, you can store it by pressing 'Q' or
+    drop it with 'R'
+  - Equip an item from your inventory by left clicking it. Hold 'shift' to sprint.
   responses: []
   npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
