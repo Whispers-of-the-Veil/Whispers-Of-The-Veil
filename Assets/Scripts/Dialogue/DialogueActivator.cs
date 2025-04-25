@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Characters.Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Dialogue
 {
@@ -10,6 +11,29 @@ namespace Dialogue
         [SerializeField] private DialogueObject dialogueObject;
         private bool hasInteracted = false;
         private PlayerController currentPlayer;
+        public DialogueActivator currentActivator;
+
+        
+        private void OnEnable()
+        {
+            SceneManager.sceneUnloaded += OnSceneUnloaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneUnloaded -= OnSceneUnloaded;
+
+            if (currentPlayer != null)
+            {
+                currentPlayer.DialogueUI.OnDialogueFinished -= HandleDialogueFinished;
+            }
+        }
+
+        private void OnSceneUnloaded(Scene scene)
+        {
+            currentActivator = null;
+        }
+
 
 
         public void UpdateDialogueObject(DialogueObject dialogueObject)
@@ -42,6 +66,8 @@ namespace Dialogue
 
         public void Interact(PlayerController player)
         {
+            currentPlayer = player;
+            
             foreach (DialogueResponseEvents responseEvents in GetComponents<DialogueResponseEvents>())
             {
                 if (responseEvents.DialogueObject == dialogueObject)
