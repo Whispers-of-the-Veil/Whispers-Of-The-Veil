@@ -5,7 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Book.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Book.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/SfarzanaForest 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/SfarzanaForest 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Book.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Book.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,27 +190,14 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs</url>
-          <line>69</line>
-          <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Toolbar\Chest.cs" containingFunctionPresentation="Method 'Open'">
-            <startOffsets>
-              <option value="1994" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1995" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Toolbar/Book.cs</url>
-          <line>22</line>
+          <line>24</line>
           <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Toolbar\Book.cs" containingFunctionPresentation="Method 'OpenBook'">
             <startOffsets>
-              <option value="431" />
+              <option value="474" />
             </startOffsets>
             <endOffsets>
-              <option value="432" />
+              <option value="475" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="7" />

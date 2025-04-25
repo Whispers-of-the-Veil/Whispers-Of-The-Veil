@@ -9,6 +9,8 @@ public class Book : InventoryItemBase
 {
     [SerializeField] private GameObject bookCanvas;
     private bool isBookOpen = false;
+    public bool IsBookOpen => isBookOpen;
+
     public override string Name
     {
         get { return "Book"; }

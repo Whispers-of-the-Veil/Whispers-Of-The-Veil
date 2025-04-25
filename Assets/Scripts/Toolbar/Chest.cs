@@ -84,14 +84,20 @@ public class Chest : MonoBehaviour
                     return;
                 }
             }
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                Vector3 spawnOffset = new Vector3(.1f, 0.1f, 0); 
+                Vector3 spawnPosition = player.transform.position + spawnOffset;
+
+                Instantiate(antidotePrefab, spawnPosition, Quaternion.identity);
+            }
             else
             {
                 Debug.LogError("chest_sprite child not found!");
                 return;
             }
-
-            Vector3 spawnPosition = transform.position + Vector3.up * -0.8f;
-            Instantiate(antidotePrefab, spawnPosition, Quaternion.identity);
+            
             
             // Destroy the key after using it to open the chest.
             Destroy(Key.instance);

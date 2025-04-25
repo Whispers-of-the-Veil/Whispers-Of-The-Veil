@@ -225,6 +225,13 @@ namespace Characters.Player {
 
         private void CheckForInventoryAdd() {
             if (_heldObject != null && Input.GetKeyDown(KeyCode.Q)) {
+                
+                Book heldBookScript = _heldObject.GetComponent<Book>();
+                if (heldBookScript != null && heldBookScript.IsBookOpen)
+                {
+                    heldBookScript.OpenBook(); 
+                }
+                
                 IInventoryItem item = _heldObject.GetComponent<IInventoryItem>();
                 if (item != null)
                 {
