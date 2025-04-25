@@ -30,6 +30,30 @@ namespace menu
                 return;
             }
         }
+        
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            HideDeathScreen();
+            FindPlayerReference();
+
+            var stats = player?.GetComponent<PlayerStats>();
+            if (stats != null && stats.health <= 0)
+            {
+                stats.health = stats.maxHealth;
+                stats.UpdateHealth();
+            }
+        }
+
 
         private void Start()
         {
@@ -40,10 +64,21 @@ namespace menu
             respawnButton.onClick.AddListener(RespawnAtCheckpoint);
             mainMenuButton.onClick.AddListener(ReturnToMainMenu);
             loadSaveButton.onClick.AddListener(OpenLoadMenu);
-        }
 
+            FindPlayerReference();
+        }
+        
+        private void FindPlayerReference()
+        {
+            if (player == null)
+            {
+                player = GameObject.FindGameObjectWithTag("Player");
+            }
+        }
+        
         public void ShowDeathScreen()
         {
+            FindPlayerReference();
             deathScreenPanel.SetActive(true);
             Time.timeScale = 0f;
         }
@@ -72,9 +107,7 @@ namespace menu
                 Debug.LogWarning("PlayerStats component not found on player.");
             }
         }
-
-
-
+        
         private void ReturnToMainMenu()
         {
             Time.timeScale = 1f;
