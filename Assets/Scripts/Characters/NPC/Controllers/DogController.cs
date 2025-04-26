@@ -25,7 +25,7 @@ namespace Characters.NPC.Controllers
         [Header("Movement")]
         [SerializeField] float speed = 2f;
         [SerializeField] private float stoppingDistance = 2.0f;
-        public NavMeshAgent agent;
+        private NavMeshAgent agent;
         
         BehaviorTree tree;
         
