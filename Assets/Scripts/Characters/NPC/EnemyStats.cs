@@ -8,6 +8,9 @@ namespace Characters.NPC
 {
     public class EnemyStats : MonoBehaviour
     {
+        [Header("Animation")]
+        private Animator animator;
+        
         [Header("Audio")]
         [SerializeField] AudioClip deathSfx;
         private SFXManager sfxManager {
@@ -22,6 +25,7 @@ namespace Characters.NPC
 
         private void Start()
         {
+            animator = GetComponentInChildren<Animator>();
             isDead = false;
         }
 
@@ -42,8 +46,14 @@ namespace Characters.NPC
 
             if (health <= 0)
             {
-                Die();
+                animator.SetTrigger("Dead");
+                StartCoroutine(DelayDeath(0.75f));
             }
+        }
+
+        IEnumerator DelayDeath(float time) {
+            yield return new WaitForSeconds(time);
+            Die();
         }
 
         public void Die()
