@@ -7,10 +7,13 @@ public class CabinDoor : MonoBehaviour
 {
     private bool enterAllowed = false;
     private GameObject player;
-
+    [SerializeField] private GameObject promptText;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        
+        if (promptText != null)
+            promptText.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +22,8 @@ public class CabinDoor : MonoBehaviour
         {
             enterAllowed = true;
             Debug.Log("Near Door: Press 'F' to enter.");
+            if (promptText != null)
+                promptText.SetActive(true);
         }
     }
 
@@ -28,6 +33,8 @@ public class CabinDoor : MonoBehaviour
         {
             enterAllowed = false;
             Debug.Log("Left the door area.");
+            if (promptText != null)
+                promptText.SetActive(false);
         }
     }
 
@@ -36,6 +43,8 @@ public class CabinDoor : MonoBehaviour
         if (enterAllowed && Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("G Key Pressed! Entering Cabin...");
+            if (promptText != null)
+                promptText.SetActive(false);
             SceneManager.LoadScene("CabinMain");
             SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to scene load event
         }

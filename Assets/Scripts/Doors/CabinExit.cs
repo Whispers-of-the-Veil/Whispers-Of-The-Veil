@@ -7,10 +7,12 @@ public class CabinExit : MonoBehaviour
 {
     private bool exitAllowed = false;
     private GameObject player;
-
+    [SerializeField] private GameObject promptText;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        if (promptText != null)
+            promptText.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +21,8 @@ public class CabinExit : MonoBehaviour
         {
             exitAllowed = true;
             Debug.Log("Near Exit: Press 'F' to go outside.");
+            if (promptText != null)
+                promptText.SetActive(true);
         }
     }
 
@@ -28,6 +32,8 @@ public class CabinExit : MonoBehaviour
         {
             exitAllowed = false;
             Debug.Log("Left the exit zone.");
+            if (promptText != null)
+                promptText.SetActive(false);
         }
     }
 
@@ -36,6 +42,8 @@ public class CabinExit : MonoBehaviour
         if (exitAllowed && Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("F Pressed! Leaving Cabin to Town...");
+            if (promptText != null)
+                promptText.SetActive(false);
             SceneManager.LoadScene("Town_Main");
             SceneManager.sceneLoaded += OnSceneLoaded;
         }

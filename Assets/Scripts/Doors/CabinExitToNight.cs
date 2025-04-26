@@ -7,10 +7,13 @@ public class CabinExitToNight : MonoBehaviour
 {
     private bool exitAllowed = false;
     private GameObject player;
+    [SerializeField] private GameObject promptText;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        if (promptText != null)
+            promptText.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -19,6 +22,8 @@ public class CabinExitToNight : MonoBehaviour
         {
             exitAllowed = true;
             Debug.Log("Near Exit: Press 'F' to go outside.");
+            if (promptText != null)
+                promptText.SetActive(true);
         }
     }
 
@@ -28,6 +33,8 @@ public class CabinExitToNight : MonoBehaviour
         {
             exitAllowed = false;
             Debug.Log("Left the exit zone.");
+            if (promptText != null)
+                promptText.SetActive(false);
         }
     }
 
@@ -36,6 +43,8 @@ public class CabinExitToNight : MonoBehaviour
         if (exitAllowed && Input.GetKeyDown(KeyCode.G))
         {
             Debug.Log("F Pressed! Leaving Cabin to Night Scene...");
+            if (promptText != null)
+                promptText.SetActive(false);
             SceneManager.LoadScene("SfarzanaForest 1");
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
