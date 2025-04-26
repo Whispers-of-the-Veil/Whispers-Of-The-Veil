@@ -70,6 +70,9 @@ namespace Characters.Enemies.Controllers {
             if (target == null) {
                 target = GameObject.Find("Player").GetComponent<Transform>();
             }
+            if (patrolArea == null) {
+                patrolArea = transform;
+            }
             
             alertEmote = GameObject.Find("Emotes/Alert");
             angryEmote = GameObject.Find("Emotes/Angry");
