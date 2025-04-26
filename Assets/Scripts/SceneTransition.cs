@@ -25,7 +25,7 @@ public class SceneTransition : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Scene name is missing! Set it in the Inspector.");
+            Debug.Log("Scene name is missing! Set it in the Inspector.");
         }
     }
 
