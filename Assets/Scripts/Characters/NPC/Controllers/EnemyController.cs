@@ -47,7 +47,7 @@ namespace Characters.Enemies.Controllers {
         [SerializeField] float minIvenstigateDistance; 
         [SerializeField] float maxIvenstigateDistance;
         [SerializeField] private Transform patrolArea;
-        public NavMeshAgent agent;
+        private NavMeshAgent agent;
         
         [Header("Senses")]
         [SerializeField] public float sightRange;       // How far can this enemy see

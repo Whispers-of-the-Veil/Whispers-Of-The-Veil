@@ -95,7 +95,7 @@ Animator:
   m_GameObject: {fileID: 1978172005618343168}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5d4de58de0deb4f5cb164be37f36f639, type: 2}
+  m_Controller: {fileID: 9100000, guid: b93652bf3ca574b52b652ca7b01c098d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -318,7 +318,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7301504808262957092}
   - component: {fileID: 152922316656186514}
-  - component: {fileID: 3326565373323708588}
   - component: {fileID: 9197552504769052455}
   - component: {fileID: 5024068264795317508}
   - component: {fileID: 514498198207439078}
@@ -393,51 +392,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!61 &3326565373323708588
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8956256938704080116}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.3, y: -0.8}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.5, y: 0.5}
-  m_EdgeRadius: 0
 --- !u!50 &9197552504769052455
 Rigidbody2D:
   serializedVersion: 4
@@ -499,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4c019de7d6e345fb90d36b71d86b9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hurtSfx: {fileID: 0}
+  hurtSfx: {fileID: 8300000, guid: 2df0d81d5902541559b8963441481adf, type: 3}
 --- !u!114 &2888000938781926798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,7 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff572e3491d6cc64e97d85bc804301e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathSfx: {fileID: 0}
+  deathSfx: {fileID: 8300000, guid: 653c593658c4fa14492f443a1c7e8017, type: 3}
   health: 0
   damage: 1
   canAttack: 1
@@ -530,16 +484,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c88c2f3ca3e45f282416b32280e2757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howlingSfx: {fileID: 0}
+  idleSfx: {fileID: 8300000, guid: 485c4726ad594e341ae3e9d9daed8080, type: 3}
   walkSfx: {fileID: 0}
-  alertSfx: {fileID: 0}
-  angrySfx: {fileID: 0}
-  attackSfx: {fileID: 0}
-  stoppingDistance: 2
-  attackRange: 0
-  attackSpeed: 0
-  attackInterval: 0
-  hurtDistance: 0.25
+  alertSfx: {fileID: 8300000, guid: 1fa4d4ff5c24c9849a27ce7e2fb1c404, type: 3}
+  angrySfx: {fileID: 8300000, guid: f284d8c675a24428cbf6469a0ed40238, type: 3}
+  attackSfx: {fileID: 8300000, guid: 3aafcdda4fbfb46808116ccc321fba17, type: 3}
+  stoppingDistance: 0.25
+  attackRange: 2
+  attackSpeed: 4
+  attackInterval: 2
+  hurtDistance: 1
   speed: 2
   patrolRadius: 5
   minIvenstigateDistance: 0
