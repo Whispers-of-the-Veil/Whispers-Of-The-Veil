@@ -1,5 +1,6 @@
 //Lucas Davis & Sasha Koroleva
 
+using System.Collections.Generic;
 using Audio.SFX;
 using UnityEngine;
 using Characters.NPC.Behavior_Tree;
@@ -24,7 +25,8 @@ namespace Characters.NPC.Controllers
         
         [Header("Movement")]
         [SerializeField] float speed = 2f;
-        [SerializeField] private float stoppingDistance = 2.0f;
+        [SerializeField] float stoppingDistance = 2.0f;
+        [SerializeField] List<Transform> points;
         private NavMeshAgent agent;
         
         BehaviorTree tree;
@@ -37,7 +39,12 @@ namespace Characters.NPC.Controllers
         Blackboard blackboard;
         BlackboardKey followKey, moveKey, stayKey;
         
+        GameObject exit;
+        
         void Awake() {
+            exit = GameObject.Find("Door Out");
+            exit.GetComponent<CabinExit>().enabled = false;
+            
             // Navmesh agent
             agent = GetComponent<NavMeshAgent>();
             agent.updateRotation = false;
@@ -112,7 +119,8 @@ namespace Characters.NPC.Controllers
             
             //idle sequence
             Sequence idle = new Sequence("idle");
-            idle.AddChild(new Leaf("idling",new WaitSeconds(0.5f)));
+            idle.AddChild(new Leaf("Move a set of points", new PatrolPoints(agent, points, speed)));
+            idle.AddChild(new Leaf("idling",new WaitSeconds(1f)));
             actions.AddChild(idle);
             
             tree.AddChild(actions);
