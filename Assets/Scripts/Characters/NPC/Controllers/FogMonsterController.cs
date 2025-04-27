@@ -61,6 +61,10 @@ namespace Characters.Enemies.Controllers {
         Blackboard blackboard;
         BlackboardKey soundKey, positionKey;
         
+        public CombatExpert combatExpert {
+            get => CombatExpert.instance;
+        }
+        
         void Awake() {
             // Navmesh agent
             agent = GetComponent<NavMeshAgent>();
@@ -128,6 +132,7 @@ namespace Characters.Enemies.Controllers {
             
             // Default behavior
             Sequence patrol = new Sequence("Patrol");
+            patrol.AddChild(new Leaf("Not in combat", new ActionStrategy(() => combatExpert.ReportCombat(false))));
             patrol.AddChild(new Leaf("Patrol", new Patrol(agent, patrolArea, patrolRadius, speed)));
             RandomPicker sound = new RandomPicker("Should I make a sound?");
             sound.AddChild(new Leaf("General Sound", new ActionStrategy(() => sfxManager.PlaySFX(idleSfx, transform, 1f))));
@@ -168,6 +173,7 @@ namespace Characters.Enemies.Controllers {
             Sequence attackPlayer = new Sequence("Attack", 150);
             attackPlayer.AddChild(new Leaf("is Player Invisible?", new Condition(() => !target.GetComponent<PlayerStats>().isInvisible)));
             attackPlayer.AddChild(new Leaf("is Player In Range?", new Condition(() => Conditions.InRange(transform, attackRange))));
+            attackPlayer.AddChild(new Leaf("In combat", new ActionStrategy(() => combatExpert.ReportCombat(true))));
             attackPlayer.AddChild(new Leaf("Strafe while waiting to attack", new StrafeDelay(agent, target, 2f, speed, attackInterval)));
             attackPlayer.AddChild(new Leaf("Emote", new ActionStrategy(() => StartCoroutine(ShowEmote(angryEmote)))));
             attackPlayer.AddChild(randomAttack);

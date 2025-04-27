@@ -22,6 +22,10 @@ namespace Characters.NPC
         [SerializeField] private bool canAttack = true;
         public float attackSpeed = 1.5f;
         public bool isDead;
+        
+        public CombatExpert combatExpert {
+            get => CombatExpert.instance;
+        }
 
         private void Start()
         {
@@ -52,6 +56,7 @@ namespace Characters.NPC
         }
 
         IEnumerator DelayDeath(float time) {
+            combatExpert.ReportCombat(false);
             yield return new WaitForSeconds(time);
             Die();
         }

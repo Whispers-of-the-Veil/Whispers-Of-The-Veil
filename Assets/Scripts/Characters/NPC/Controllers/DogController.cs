@@ -8,10 +8,15 @@ using Characters.NPC.Behavior_Tree.Strategies;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 namespace Characters.NPC.Controllers
 {
     public class DogController : MonoBehaviour {
+        private DogController instance;
+        private Scene scene;
+        private Vector2 stayPosition;
+        
         [Header("Animation")]
         private Animator animator;
 
@@ -65,8 +70,44 @@ namespace Characters.NPC.Controllers
 
         
         void Start() {
+            scene = SceneManager.GetActiveScene();
+            
+            if (instance == null) {
+                instance = this;
+                DontDestroyOnLoad(this);
+            }
+            else {
+                Destroy(this.gameObject);
+            }
+            
             animator = GetComponentInChildren<Animator>();
         }
+
+        void OnEnable() {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        void OnDisable() {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            // If we are following the player, set the position of the dog to that of the player
+            // when we are starting a new scene
+            if (blackboard.TryGetValue(followKey, out bool follow) && follow) {
+                transform.position = target.position;
+            }
+            else if (blackboard.TryGetValue(stayKey, out bool stay) && stay) {
+                if (scene != SceneManager.GetActiveScene()) {
+                    gameObject.SetActive(false);
+                }
+                else {
+                    gameObject.SetActive(true);
+                    transform.position = stayPosition;
+                }
+            }
+        }
+
         
         void Update() {
             UpdateAnimation();
@@ -108,6 +149,10 @@ namespace Characters.NPC.Controllers
             //sit sequence
             Sequence sit = new Sequence("Stay", 10);
             sit.AddChild(new Leaf("commandStay?", new Condition( () => blackboard.TryGetValue(stayKey, out bool value) && value)));
+            sit.AddChild(new Leaf("record scene and poition", new ActionStrategy(() => {
+                scene = SceneManager.GetActiveScene();
+                stayPosition = transform.position;
+            })));
             sit.AddChild(new Leaf("SFX", new SingleFire(
                 new ActionStrategy( () => sfxManager.PlaySFX(barkSfx, transform, 1f )),
                 blackboard.GetOrRegisterKey("HasBarked")
