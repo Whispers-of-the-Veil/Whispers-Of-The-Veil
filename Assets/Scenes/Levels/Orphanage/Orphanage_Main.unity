@@ -290,6 +290,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 593317273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &92323295
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 92323296}
+  m_Layer: 0
+  m_Name: Exit_Room1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &92323296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 92323295}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.585, y: -15.993, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &111847181
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,6 +621,7 @@ GameObject:
   - component: {fileID: 604972481}
   - component: {fileID: 604972480}
   - component: {fileID: 604972482}
+  - component: {fileID: 604972483}
   m_Layer: 0
   m_Name: MainDoor
   m_TagString: Untagged
@@ -730,6 +762,52 @@ PolygonCollider2D:
       - {x: 0.15135136, y: 0.35135135}
       - {x: 0.15135136, y: 0.43243244}
   m_UseDelaunayMesh: 0
+--- !u!114 &604972483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604972479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de51381f15e6544eb5453bd9c70f46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  promptText: {fileID: 0}
+  sceneToLoad: Town_Main
+  destinationSpawnName: OrphanageToTown
+--- !u!1 &636341355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 636341356}
+  m_Layer: 0
+  m_Name: Exit_Room2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &636341356
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636341355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -9.761145, y: -16.461, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &654176242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,7 +2133,7 @@ GameObject:
   - component: {fileID: 829309160}
   - component: {fileID: 829309162}
   m_Layer: 0
-  m_Name: Door4
+  m_Name: Door4 - fake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2197,6 +2275,37 @@ PolygonCollider2D:
       - {x: 0.30051556, y: -0.5676971}
       - {x: 0.36281776, y: -0.2809439}
   m_UseDelaunayMesh: 0
+--- !u!1 &889858296
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 889858297}
+  m_Layer: 0
+  m_Name: OrphanageSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &889858297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889858296}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -12.274, y: -15.286, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &969399160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2491,6 +2600,112 @@ Transform:
   - {fileID: 478699528}
   - {fileID: 1923492184}
   - {fileID: 1867783224}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1306391715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306391717}
+  - component: {fileID: 1306391716}
+  m_Layer: 0
+  m_Name: Lighting Manager 2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1306391716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306391715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88052986e8b01fb449345d632fcffeb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameras:
+    cameraSettings:
+    - id: 0
+      lightmaps:
+      - rendering: 0
+        sceneView: 1
+        overlay: 0
+        overlayLayerType: 0
+        overlayMaterial: 0
+        overlayPosition: 0
+        output: 0
+        sortingLayer:
+          name: Default
+          Order: 0
+        customMaterial: {fileID: 0}
+        customMaterialInstance: {fileID: 0}
+        materialsType: 0
+        materials:
+          materials:
+          - {fileID: 0}
+        renderLayerId: 0
+        id: 0
+        presetId: 0
+        customPosition: 0
+      cameraType: 0
+      customCamera: {fileID: 0}
+  version: 20221100
+  version_string: 2022.11.0
+  setProfile: {fileID: 11400000, guid: 744af7d72c977154f8a4489ba6ae519d, type: 2}
+  profile: {fileID: 11400000, guid: 744af7d72c977154f8a4489ba6ae519d, type: 2}
+  foldout_cameras: 00000000000000000000
+--- !u!4 &1306391717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306391715}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1335508188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1335508189}
+  m_Layer: 0
+  m_Name: Exit_Room3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1335508189
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335508188}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.767, y: -17.432, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1475032305
@@ -3201,8 +3416,9 @@ GameObject:
   - component: {fileID: 1712188413}
   - component: {fileID: 1712188412}
   - component: {fileID: 1712188414}
+  - component: {fileID: 1712188415}
   m_Layer: 0
-  m_Name: Door5
+  m_Name: Door5 - real
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3341,6 +3557,21 @@ PolygonCollider2D:
       - {x: 0.34594595, y: 0.8108108}
       - {x: 0.36216217, y: 0.81621623}
   m_UseDelaunayMesh: 0
+--- !u!114 &1712188415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712188411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de51381f15e6544eb5453bd9c70f46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  promptText: {fileID: 0}
+  sceneToLoad: O_Room3
+  destinationSpawnName: O_Room3_Spawn
 --- !u!1 &1738881236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3353,7 +3584,7 @@ GameObject:
   - component: {fileID: 1738881237}
   - component: {fileID: 1738881239}
   m_Layer: 0
-  m_Name: Door1
+  m_Name: Door1 - growling FAKE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3587,8 +3818,9 @@ GameObject:
   - component: {fileID: 1862161605}
   - component: {fileID: 1862161604}
   - component: {fileID: 1862161606}
+  - component: {fileID: 1862161607}
   m_Layer: 0
-  m_Name: Door2
+  m_Name: Door2 - real
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3727,6 +3959,21 @@ PolygonCollider2D:
       - {x: 0.34594595, y: 0.8108108}
       - {x: 0.36216217, y: 0.81621623}
   m_UseDelaunayMesh: 0
+--- !u!114 &1862161607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862161603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de51381f15e6544eb5453bd9c70f46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  promptText: {fileID: 0}
+  sceneToLoad: O_Room1
+  destinationSpawnName: O_Room1_Spawn
 --- !u!1 &1867783222
 GameObject:
   m_ObjectHideFlags: 0
@@ -4288,8 +4535,9 @@ GameObject:
   - component: {fileID: 2115260242}
   - component: {fileID: 2115260241}
   - component: {fileID: 2115260243}
+  - component: {fileID: 2115260244}
   m_Layer: 0
-  m_Name: Door3
+  m_Name: Door3 - mini boss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4429,6 +4677,21 @@ PolygonCollider2D:
       - {x: 0.30394334, y: -0.563223}
       - {x: 0.3450576, y: -0.29287028}
   m_UseDelaunayMesh: 0
+--- !u!114 &2115260244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115260240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de51381f15e6544eb5453bd9c70f46f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  promptText: {fileID: 0}
+  sceneToLoad: O_Room2
+  destinationSpawnName: O_Room2_Spawn
 --- !u!1 &2121965985
 GameObject:
   m_ObjectHideFlags: 0
@@ -4521,10 +4784,15 @@ SceneRoots:
   - {fileID: 604972481}
   - {fileID: 1738881238}
   - {fileID: 1862161605}
+  - {fileID: 92323296}
   - {fileID: 2115260242}
+  - {fileID: 636341356}
   - {fileID: 829309161}
   - {fileID: 1712188413}
+  - {fileID: 1335508189}
   - {fileID: 1750013633}
   - {fileID: 593317273}
   - {fileID: 1249799563}
   - {fileID: 1908522994}
+  - {fileID: 1306391717}
+  - {fileID: 889858297}
