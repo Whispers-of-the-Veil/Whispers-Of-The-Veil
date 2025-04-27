@@ -8,6 +8,7 @@ using UnityEngine;
 
 public class PickUpObject : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem highlightParticles;
     private SpriteRenderer sr;
     private string originalSortingLayer;
 
@@ -20,6 +21,7 @@ public class PickUpObject : MonoBehaviour
         {
             originalSortingLayer = sr.sortingLayerName;
         }
+        highlightParticles.Play();
     }
 
     public void PickUp(Transform holdPoint)
@@ -53,6 +55,8 @@ public class PickUpObject : MonoBehaviour
         {
             rb.isKinematic = true; // Disable physics while held
         }
+        
+        highlightParticles.Clear();
     }
 
     public void Drop()
@@ -83,5 +87,7 @@ public class PickUpObject : MonoBehaviour
         {
             rb.isKinematic = false; // Re-enable physics after drop
         }
+        
+        highlightParticles.Play();
     }
 }

@@ -4,6 +4,9 @@ using Dialogue;
 using UnityEngine;
 using Environment;
 using Combat;
+using System.Collections;
+using FunkyCode.Utilities;
+using UnityEngine.UIElements;
 
 namespace Characters.Player {
     public class PlayerController : MonoBehaviour
@@ -33,10 +36,12 @@ namespace Characters.Player {
         [SerializeField] float moveLimiter = 0.7f;
         [SerializeField] private float sprintSpeedMultiplier = 1.5f;  // Sprint speed multiplier
         [SerializeField] RainController weather;
+        [SerializeField] private float jumpForce = 5f;
         private float horizontal;
         private float vertical;
         private bool _isSprinting;
         private GameObject _heldObject;
+        private bool isJumping = false;
 
         [Header("Components")]
         private Rigidbody2D body;
@@ -89,11 +94,14 @@ namespace Characters.Player {
             goItem.transform.parent = holdPoint.transform;
             goItem.transform.position = holdPoint.position;
             
-            Book book = goItem.GetComponent<Book>();
-            if (book != null)
+            Book bookFromInventory = goItem.GetComponent<Book>();
+            if (bookFromInventory != null)
             {
                 isHoldingBook = true;
                 heldBook = goItem;
+
+                // stop highlight VFX on first pickup
+                bookFromInventory.OnPickedUp();
             }
         }
     
@@ -109,13 +117,14 @@ namespace Characters.Player {
             CheckForBookInteraction();
             CheckForDialogue();
             CheckForAttack();
+    
 
             Animate();
         }
     
         private void OnMove()
         {
-            // Read raw float input (this keeps it compatible with the rest of your team’s code)
+         
             horizontal = Input.GetAxisRaw("Horizontal");
             vertical = Input.GetAxisRaw("Vertical");
 
@@ -134,13 +143,15 @@ namespace Characters.Player {
             anim.SetFloat("MoveMagnitude", new Vector2(horizontal, vertical).magnitude);
             anim.SetFloat("LastMoveX", lastMoveDirection.x);
             anim.SetFloat("LastMoveY", lastMoveDirection.y);
+            anim.SetBool("isJumping", isJumping);
         }
 
         private void CheckForSprint() {
             // Check if the Shift key is held down to enable sprinting
             _isSprinting = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         }
-    
+ 
+        
         // Updated at a fixed framerate; used for physics calculations
         private void FixedUpdate() {
             if (isFrozen)
@@ -153,7 +164,7 @@ namespace Characters.Player {
 
             Vector2 input = new Vector2(horizontal, vertical);
 
-            // If moving diagonally, apply limiter
+      
             if (horizontal != 0 && vertical != 0)
             {
                 input *= moveLimiter;
@@ -185,11 +196,12 @@ namespace Characters.Player {
                         hasKey = true;
                         heldKey = hitCollider.gameObject;
                         
-                        Book book = hitCollider.GetComponent<Book>();
-                        if (book != null)
+                        Book bookInWorld = hitCollider.GetComponent<Book>();
+                        if (bookInWorld != null)
                         {
                             isHoldingBook = true;
                             heldBook = hitCollider.gameObject;
+                            bookInWorld.OnPickedUp();
                         }
                         
                         PickupObject(hitCollider.gameObject);
@@ -197,6 +209,9 @@ namespace Characters.Player {
                     }
                 }
             } else if (_heldObject != null && Input.GetKeyDown(KeyCode.R)) {
+                Book bookBeingHeld = _heldObject.GetComponent<Book>();
+                if (bookBeingHeld != null)
+                    bookBeingHeld.OnDropped();
                 DropObject();
                 
             }
@@ -204,8 +219,11 @@ namespace Characters.Player {
 
         private void PickupObject(GameObject obj) {
             _heldObject = obj;
+            
+            
             PickUpObject target = obj.GetComponent<PickUpObject>();
             target.PickUp(holdPoint);
+            
         }
 
         private void DropObject() {
@@ -239,10 +257,14 @@ namespace Characters.Player {
                     inventory.AddItem(item);
                     
                     Book book = _heldObject.GetComponent<Book>();
-                    if (book != null) { 
-                        isHoldingBook = false; 
+                    if (book != null)
+                    {
+                        book.OnDropped();     
                     }
-                    
+
+                    _heldObject.SetActive(false);
+
+                    if (book != null) isHoldingBook = false;
                     _heldObject = null;
                 }
             }

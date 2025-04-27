@@ -485,6 +485,7 @@ MonoBehaviour:
   moveLimiter: 0.7
   sprintSpeedMultiplier: 1.5
   weather: {fileID: 0}
+  jumpForce: 5
   holdPoint: {fileID: 3525987265052427598}
   pickupRange: 0.5
   dropDistance: 0.25
