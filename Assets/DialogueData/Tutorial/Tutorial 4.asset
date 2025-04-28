@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial 4
   m_EditorClassIdentifier: 
   dialogue:
-  - Avoid the thick fog. It might try to pull you in.
+  - "Avoid the thick fog \u2014 it hides dangers, and standing in it will slowly
+    damage you."
   responses: []
   npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}

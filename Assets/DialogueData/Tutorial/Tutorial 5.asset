@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Tutorial 5
   m_EditorClassIdentifier: 
   dialogue:
-  - "You shouldn\u2019t linger in the fog. It\u2019ll eat away at you if you do."
+  - Take this cloaking potion. Drink it so enemies won't be able to see or hear you.
+  - "There's a strong enemy ahead. Drink this to sneak past \u2014 but its effect
+    won't last forever."
   responses: []
   npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
