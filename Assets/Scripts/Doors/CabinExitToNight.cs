@@ -45,14 +45,14 @@ public class CabinExitToNight : MonoBehaviour
             Debug.Log("F Pressed! Leaving Cabin to Night Scene...");
             if (promptText != null)
                 promptText.SetActive(false);
-            SceneManager.LoadScene("SfarzanaForest 1");
+            SceneManager.LoadScene("ForestNight");
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == "SfarzanaForest 1")
+        if (scene.name == "ForestNight")
         {
             GameObject spawnPoint = GameObject.Find("CabinBackForest"); // place this GameObject in Town
 
@@ -64,7 +64,7 @@ public class CabinExitToNight : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("CabinBackForest not found in SfarzanaForest 1!");
+                Debug.LogWarning("CabinBackForest not found in ForestNight!");
             }
         }
 

@@ -21,10 +21,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Introduction/Forest - Day Scene.unity
     guid: 88214f190aa6e41b185928e8c438ab8c
   - enabled: 1
-    path: Assets/Scenes/Test Scenes/SfarzanaForest 1.unity
+    path: Assets/Scenes/Levels/ForestNight.unity
     guid: 3c5500e7faac6c946bbfbcee90e50671
   - enabled: 1
-    path: Assets/Scenes/Test Scenes/CabinMain.unity
+    path: Assets/Scenes/Levels/CabinMain.unity
     guid: db032b284d807ec4fb38ed70ff1f4aa6
   - enabled: 1
     path: Assets/Scenes/Levels/Town_Main.unity
