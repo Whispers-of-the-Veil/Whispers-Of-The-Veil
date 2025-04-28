@@ -3,7 +3,7 @@ using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
 using Characters.NPC.Commands;
 using UnityEngine;
-using Characters.Player.Voice;
+using Characters.Player.Speech;
 
 namespace Characters.NPC {
     public class VoiceExpert : MonoBehaviour, IExpert {

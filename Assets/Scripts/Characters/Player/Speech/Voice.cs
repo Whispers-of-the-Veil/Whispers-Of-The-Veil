@@ -7,10 +7,10 @@ using Audio.SFX;
 using Characters.NPC;
 using UnityEngine.UI;
 
-namespace Characters.Player.Voice {
+namespace Characters.Player.Speech {
     public class Voice : MonoBehaviour {
         public bool useSpeechModel = true;
-        private bool displayBubble;
+        [HideInInspector] public bool displayBubble;
         
         // API settings
         private API api {
@@ -96,7 +96,7 @@ namespace Characters.Player.Voice {
                 }
             }
             else {
-                if (Input.GetKeyDown(KeyCode.T)) displayBubble = !displayBubble;
+                if (Input.GetKeyDown(KeyCode.BackQuote)) displayBubble = !displayBubble;
                 speechBubble.SetActive(displayBubble);
 
                 if (displayBubble) {

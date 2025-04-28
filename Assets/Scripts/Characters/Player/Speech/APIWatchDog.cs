@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Diagnostics;
 using Debug = UnityEngine.Debug;
 
-namespace Characters.Player.Voice {
+namespace Characters.Player.Speech {
     public class APIWatchDog : MonoBehaviour {
         public static bool Running = false;
         public static bool Timeout = false;
