@@ -8,12 +8,14 @@ using Characters.Player.Speech;
 
 public class SwitchInputButton : MonoBehaviour
 {
-    public Voice playerVoice; // Drag the Player (with Voice script) here
+    public Voice playerVoice;
 
     private Text buttonText;
 
     void Start()
     {
+        playerVoice = GameObject.Find("Player").GetComponent<Voice>();
+        
         GetComponent<Button>().onClick.AddListener(ToggleInputMethod);
         buttonText = GetComponentInChildren<Text>();
         UpdateButtonText();
