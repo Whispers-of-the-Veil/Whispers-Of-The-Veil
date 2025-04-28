@@ -16,7 +16,7 @@ namespace Characters.NPC {
         Blackboard blackboard;
         private Dictionary<string, ICommand> commands;
         
-        BlackboardKey followKey, moveKey, stayKey, movedKey, barkedKey, whineKey, happyKey;
+        BlackboardKey followKey, moveKey, stayKey, movedKey, barkedKey, whineKey, happyKey, hasRecordedKey;
 
         void Awake() {
             if (instance == null) {
@@ -42,24 +42,21 @@ namespace Characters.NPC {
             whineKey = blackboard.GetOrRegisterKey("HasWhined");
             happyKey = blackboard.GetOrRegisterKey("HasHappy");
 
+            hasRecordedKey = blackboard.GetOrRegisterKey("HasRecorded");
+
             commands = new Dictionary<string, ICommand>() {
                 { "follow", new FollowCommand(followKey) },
                 { "move", new MoveCommand(moveKey) },
                 { "stay", new StayCommand(stayKey) },
                 { "reset", new ResetCommand(new List<BlackboardKey>() {
-                    followKey, moveKey, stayKey, movedKey, barkedKey, whineKey, happyKey
+                    followKey, moveKey, stayKey, movedKey, barkedKey, whineKey, happyKey, hasRecordedKey
                     })
                 },
             };
         }
         
-        void OnEnable() {
-            Voice.OnCommandRecognized += OnVoiceCommand;
-        }
-
-        void OnDisable() {
-            Voice.OnCommandRecognized -= OnVoiceCommand;
-        }
+        void OnEnable() => Voice.OnCommandRecognized += OnVoiceCommand;
+        void OnDisable() => Voice.OnCommandRecognized -= OnVoiceCommand;
 
         private void OnVoiceCommand(string command) {
             if (commands.TryGetValue(command, out var cmd)) {

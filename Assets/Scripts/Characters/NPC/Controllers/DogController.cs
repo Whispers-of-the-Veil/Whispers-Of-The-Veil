@@ -1,5 +1,6 @@
 //Lucas Davis & Sasha Koroleva
 
+using System.Collections;
 using System.Collections.Generic;
 using Audio.SFX;
 using UnityEngine;
@@ -13,9 +14,7 @@ using UnityEngine.SceneManagement;
 namespace Characters.NPC.Controllers
 {
     public class DogController : MonoBehaviour {
-        private DogController instance;
-        private Scene scene;
-        private Vector2 stayPosition;
+        private static DogController instance;
         
         [Header("Animation")]
         private Animator animator;
@@ -46,6 +45,10 @@ namespace Characters.NPC.Controllers
         
         GameObject exit;
         
+        public NPCManager npcManager {
+            get => NPCManager.instance;
+        }
+        
         void Awake() {
             exit = GameObject.Find("Door Out");
             exit.GetComponent<CabinExit>().enabled = false;
@@ -66,48 +69,30 @@ namespace Characters.NPC.Controllers
             stayKey = blackboard.GetOrRegisterKey("StayCommand");
 
             DefineBehavior();
+            
+            // Register this NPC with the Manager
+            NPCInfo dogInfo = new NPCInfo();
+            dogInfo.id = "DogNPC";
+            dogInfo.reference = gameObject;
+            dogInfo.agent = agent;
+            dogInfo.target = target;
+            dogInfo.savedScene = SceneManager.GetActiveScene().name;
+            dogInfo.savedPosition = transform.position;
+            
+            npcManager.Register(dogInfo);
         }
-
         
         void Start() {
-            scene = SceneManager.GetActiveScene();
-            
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(this);
+                DontDestroyOnLoad(gameObject);
             }
             else {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
             
             animator = GetComponentInChildren<Animator>();
         }
-
-        void OnEnable() {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
-
-        void OnDisable() {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-            // If we are following the player, set the position of the dog to that of the player
-            // when we are starting a new scene
-            if (blackboard.TryGetValue(followKey, out bool follow) && follow) {
-                transform.position = target.position;
-            }
-            else if (blackboard.TryGetValue(stayKey, out bool stay) && stay) {
-                if (scene != SceneManager.GetActiveScene()) {
-                    gameObject.SetActive(false);
-                }
-                else {
-                    gameObject.SetActive(true);
-                    transform.position = stayPosition;
-                }
-            }
-        }
-
         
         void Update() {
             UpdateAnimation();
@@ -149,15 +134,15 @@ namespace Characters.NPC.Controllers
             //sit sequence
             Sequence sit = new Sequence("Stay", 10);
             sit.AddChild(new Leaf("commandStay?", new Condition( () => blackboard.TryGetValue(stayKey, out bool value) && value)));
-            sit.AddChild(new Leaf("record scene and poition", new ActionStrategy(() => {
-                scene = SceneManager.GetActiveScene();
-                stayPosition = transform.position;
-            })));
             sit.AddChild(new Leaf("SFX", new SingleFire(
                 new ActionStrategy( () => sfxManager.PlaySFX(barkSfx, transform, 1f )),
                 blackboard.GetOrRegisterKey("HasBarked")
                 )
             ));
+            sit.AddChild(new Leaf("Record Position", new SingleFire(
+                new ActionStrategy(RecordPosition), 
+                blackboard.GetOrRegisterKey("HasRecorded")
+            )));
             sit.AddChild(new Leaf("Make the dog stay", new ActionStrategy( () => { agent.ResetPath(); agent.velocity = Vector3.zero; })));
             sit.AddChild(new Leaf("Wait", new WaitSeconds(0.5f)));
             actions.AddChild(sit);
@@ -169,7 +154,6 @@ namespace Characters.NPC.Controllers
             actions.AddChild(idle);
             
             tree.AddChild(actions);
-
         }
         
         void UpdateAnimation() {
@@ -186,6 +170,16 @@ namespace Characters.NPC.Controllers
                 animator.SetFloat("LastMoveX", dir.x);
                 animator.SetFloat("LastMoveY", dir.y);
             }
+        }
+
+        void RecordPosition() {
+            int index = npcManager.GetIndex("DogNPC");
+
+            NPCInfo copy = npcManager.npcs[index];
+            copy.savedScene = SceneManager.GetActiveScene().name;
+            copy.savedPosition = transform.position;
+            
+            npcManager.npcs[index] = copy;
         }
     }
 }
