@@ -5,9 +5,13 @@ using System;
 using TMPro;
 using Audio.SFX;
 using Characters.NPC;
+using UnityEngine.UI;
 
 namespace Characters.Player.Voice {
     public class Voice : MonoBehaviour {
+        public bool useSpeechModel = true;
+        private bool displayBubble;
+        
         // API settings
         private API api {
             get => API.instance;
@@ -45,14 +49,16 @@ namespace Characters.Player.Voice {
         [HideInInspector] public bool spoke;
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
-        
+        private TMP_InputField inputField;
+
         public SoundExpert soundExpert {
             get => SoundExpert.instance;
         }
-        
+
         void Start () {
             speechBubble = GameObject.Find("SpeechBubble");
-            textField = GameObject.Find("SpeechBubble/Text").GetComponent<TextMeshProUGUI>();
+            textField = gameObject.GetComponentInChildren<TextMeshProUGUI>();
+            inputField = gameObject.GetComponentInChildren<TMP_InputField>();
 
             speechBubble.SetActive(false);
 
@@ -63,21 +69,44 @@ namespace Characters.Player.Voice {
 
                 canRecord = false;
             }
-
         }
 
         void Update () {
+            if (!useSpeechModel) {
+                textField.gameObject.SetActive(false);
+                inputField.gameObject.SetActive(true);
+            }
+            else {
+                textField.gameObject.SetActive(true);
+                inputField.gameObject.SetActive(false);
+            }
+            
             if (!isRecording && canRecord) {
                 StartCoroutine(HandleRecording());
             }
+            
+            if (useSpeechModel) {
+                if (recordings.Count > 0 && !isProcessing) {
+                    isProcessing = true;
 
-            if (recordings.Count > 0 && !isProcessing) {
-                isProcessing = true;
+                    float[] clip = recordings.Dequeue();
 
-                float[] clip = recordings.Dequeue();
+                    Debug.Log("Processing item in queue: " + recordings.Count + " items remaining");
+                    StartCoroutine(GetPrediction(clip));
+                }
+            }
+            else {
+                if (Input.GetKeyDown(KeyCode.T)) displayBubble = !displayBubble;
+                speechBubble.SetActive(displayBubble);
 
-                Debug.Log("Processing item in queue: " + recordings.Count + " items remaining");
-                StartCoroutine(GetPrediction(clip));
+                if (displayBubble) {
+                    if (Input.GetKeyDown(KeyCode.Return)) {
+                        if (!isProcessing) {
+                            StartCoroutine(CheckPrediction(inputField.text));
+                            soundExpert.ReportSound(transform.position);
+                        }
+                    }
+                }
             }
         }
 
@@ -107,7 +136,7 @@ namespace Characters.Player.Voice {
             Debug.Log(rmsValue);
 
             if (rmsValue > DetectVoiceThreshold) {
-                recordings.Enqueue(audio);
+                if (useSpeechModel) recordings.Enqueue(audio);
                 soundExpert.ReportSound(transform.position);
             }
 
@@ -203,6 +232,7 @@ namespace Characters.Player.Voice {
         /// <param name="audioData">The audio data collected from the microphone</param>
         private IEnumerator GetPrediction(float[] audioData) {
             string prediction = " ";
+            
             byte[] audioBytes = new byte[audioData.Length * sizeof(float)];
             System.Buffer.BlockCopy(audioData, 0, audioBytes, 0, audioBytes.Length);
             
@@ -223,7 +253,17 @@ namespace Characters.Player.Voice {
                     }
                 );
             }
+            
+            yield return CheckPrediction(prediction);
+            
+            StartCoroutine(ResetSpeechBubble(3));
 
+            isProcessing = false;
+        }
+
+        private IEnumerator CheckPrediction(string prediction) {
+            isProcessing = true;
+            
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
             
@@ -257,11 +297,8 @@ namespace Characters.Player.Voice {
                 catch (Exception e) {
                     Debug.Log(e.Message);
                 }
-                finally {
-                    StartCoroutine(ResetSpeechBubble(3));
-                }
             }
-
+            
             isProcessing = false;
         }
 
@@ -275,6 +312,7 @@ namespace Characters.Player.Voice {
             
             textField.text = "...";
             speechBubble.SetActive(false);
+            displayBubble = false;
         }
 
         /// <summary>
