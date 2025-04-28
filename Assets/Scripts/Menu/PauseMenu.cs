@@ -9,12 +9,23 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     private bool isPaused = false;
 
+    // --- NEW --- //
+    public Voice playerVoice; // Reference to the Voice script
+
     void Start()
     {
         if (pauseMenuUI == null) {
             pauseMenuUI = GameObject.Find("PauseMenu");
         }
         pauseMenuUI.SetActive(false);
+
+        // --- NEW --- //
+        if (playerVoice == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+                playerVoice = player.GetComponent<Voice>();
+        }
     }
 
     void Update()
@@ -44,25 +55,32 @@ public class PauseMenu : MonoBehaviour
 
     public void OpenSettings()
     {
-        // Store the scene the player is in before switching to settings
         Debug.Log("Settings Opened!");
     }
 
     public void OpenSaveFileScene()
     {
-        // Store the current scene before switching to Save File
         PlayerPrefs.SetString("PreviousScene", SceneManager.GetActiveScene().name);
         PlayerPrefs.Save();
 
         Debug.Log("Opening Save File Scene...");
-        Time.timeScale = 1f; // Ensure normal time flow in Save File Scene
-        SceneManager.LoadScene("SaveFiles"); // Replace with your actual Save File scene name
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("SaveFiles");
     }
-
 
     public void ExitGame()
     {
         Debug.Log("Exiting Game...");
         Application.Quit();
+    }
+
+    // --- NEW --- //
+    public void ToggleVoiceInput()
+    {
+        if (playerVoice != null)
+        {
+            playerVoice.useVoiceModel = !playerVoice.useVoiceModel;
+            Debug.Log("Voice input mode switched: " + (playerVoice.useVoiceModel ? "Voice Model" : "Text Input"));
+        }
     }
 }
