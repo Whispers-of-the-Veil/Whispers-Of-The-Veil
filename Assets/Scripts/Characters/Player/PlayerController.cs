@@ -128,6 +128,7 @@ namespace Characters.Player {
                 CheckForBookInteraction();
                 CheckForDialogue();
                 CheckForAttack();
+                UpdateHoldPointPosition();
         
     
                 Animate();
@@ -369,6 +370,41 @@ namespace Characters.Player {
         public GameObject GetHeldObject()
         {
             return _heldObject;
+        }
+        
+        private void UpdateHoldPointPosition()
+        {
+            if (lastMoveDirection == Vector2.zero)
+                return;
+
+            Vector2 offset = Vector2.zero;
+            
+            if (lastMoveDirection.x > 0 && lastMoveDirection.y > 0) {
+                offset = new Vector2(0.2f, -0.1f);
+            }
+            else if (lastMoveDirection.x < 0 && lastMoveDirection.y > 0) {
+                offset = new Vector2(-0.18f, -0.1f);
+            }
+            else if (lastMoveDirection.x > 0 && lastMoveDirection.y < 0) {
+                offset = new Vector2(0.1f, -0.2f);
+            }
+            else if (lastMoveDirection.x < 0 && lastMoveDirection.y < 0) {
+                offset = new Vector2(-0.21f, -0.15f);
+            }
+            else if (lastMoveDirection.y > 0.5f) {
+                offset = new Vector2(0.16f, -0.03f);
+            }
+            else if (lastMoveDirection.y < -0.6f) {
+                offset = new Vector2(-0.08f, -0.14f);
+            }
+            else if (lastMoveDirection.x > 0.5f) {
+                offset = new Vector2(0.2f, -0.05f);
+            }
+            else if (lastMoveDirection.x < -0.5f) {
+                offset = new Vector2(-0.15f, -0.06f);
+            }
+
+            holdPoint.localPosition = offset;
         }
 
     }
