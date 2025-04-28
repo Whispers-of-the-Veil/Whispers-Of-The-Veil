@@ -63,7 +63,7 @@ public class BossMovement : MonoBehaviour
         [SerializeField] public float hearingRange;     // How far can this enemy hear
         [SerializeField] public float searchRadius;
 
-    [SerializeField] List<Transform> points; 
+    [SerializeField] List<Vector2> points; 
 
     public BlackboardController controller {
             get => BlackboardController.instance;

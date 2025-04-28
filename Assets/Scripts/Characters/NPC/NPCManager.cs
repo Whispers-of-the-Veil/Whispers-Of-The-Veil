@@ -42,8 +42,6 @@ namespace Characters.NPC {
         public int GetIndex(string id) => npcs.FindIndex(n => n.id == id);
         
         private IEnumerator HandleSceneLoaded() {
-            yield return null; // Wait for a frame
-            
             foreach (var npc in npcs) {
                 if (blackboard.TryGetValue(followKey, out bool follow) && follow) {
                     ClearAgentsPath(npc);
@@ -55,7 +53,7 @@ namespace Characters.NPC {
                     
                     npc.agent.SetDestination(npc.target.position);
                 }
-                else if (blackboard.TryGetValue(stayKey, out bool stay) && stay) {
+                else {
                     if (npc.savedScene != SceneManager.GetActiveScene().name) {
                         ClearAgentsPath(npc);
                         
@@ -70,6 +68,8 @@ namespace Characters.NPC {
                         npc.agent.SetDestination(npc.savedPosition);
                     }
                 }
+                
+                yield return null; // Wait for a frame
             }
         }
 

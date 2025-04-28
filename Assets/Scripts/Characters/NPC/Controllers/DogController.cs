@@ -30,7 +30,7 @@ namespace Characters.NPC.Controllers
         [Header("Movement")]
         [SerializeField] float speed = 2f;
         [SerializeField] float stoppingDistance = 2.0f;
-        [SerializeField] List<Transform> points;
+        private List<Vector2> points = new List<Vector2>();
         private NavMeshAgent agent;
         
         BehaviorTree tree;
@@ -51,6 +51,16 @@ namespace Characters.NPC.Controllers
         }
         
         void Awake() {
+            if (instance == null) {
+                instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+            else {
+                Destroy(gameObject);
+            }
+            
+            RegesterPoints();
+            
             if (!hasMoved) {
                 exit = GameObject.Find("Door Out");
                 exit.GetComponent<CabinExit>().enabled = false;
@@ -86,14 +96,6 @@ namespace Characters.NPC.Controllers
         }
         
         void Start() {
-            if (instance == null) {
-                instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else {
-                Destroy(gameObject);
-            }
-            
             animator = GetComponentInChildren<Animator>();
         }
         
@@ -158,6 +160,11 @@ namespace Characters.NPC.Controllers
             actions.AddChild(idle);
             
             tree.AddChild(actions);
+        }
+
+        void RegesterPoints() {
+            points.Add(GameObject.Find("Point1").transform.position);
+            points.Add(GameObject.Find("Point2").transform.position);
         }
         
         void UpdateAnimation() {

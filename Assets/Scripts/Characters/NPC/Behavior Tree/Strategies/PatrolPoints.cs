@@ -8,12 +8,12 @@ using UnityEngine.AI;
 namespace Characters.NPC.Behavior_Tree.Strategies {
     public class PatrolPoints : IStrategy {
         readonly NavMeshAgent agent;
-        readonly List<Transform> points;
+        readonly List<Vector2> points;
         readonly float speed;
         private int counter;
         private bool isMoving;
         
-        public PatrolPoints(NavMeshAgent agent, List<Transform> points, float speed) {
+        public PatrolPoints(NavMeshAgent agent, List<Vector2> points, float speed) {
             this.agent = agent;
             this.points = points;
             this.speed = speed;
@@ -31,7 +31,7 @@ namespace Characters.NPC.Behavior_Tree.Strategies {
 
             NavMeshHit hit;
 
-            if (NavMesh.SamplePosition((Vector2)points[counter].position, out hit, 0.5f, NavMesh.AllAreas)) {
+            if (NavMesh.SamplePosition((Vector2)points[counter], out hit, 0.5f, NavMesh.AllAreas)) {
                 agent.SetDestination(hit.position);
                 agent.speed = speed;
                 

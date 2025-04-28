@@ -3,6 +3,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Characters.Player.Speech;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -79,8 +80,8 @@ public class PauseMenu : MonoBehaviour
     {
         if (playerVoice != null)
         {
-            playerVoice.useVoiceModel = !playerVoice.useVoiceModel;
-            Debug.Log("Voice input mode switched: " + (playerVoice.useVoiceModel ? "Voice Model" : "Text Input"));
+            playerVoice.useSpeechModel = !playerVoice.useSpeechModel;
+            Debug.Log("Voice input mode switched: " + (playerVoice.useSpeechModel ? "Voice Model" : "Text Input"));
         }
     }
 }
