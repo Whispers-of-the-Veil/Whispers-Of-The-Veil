@@ -1,5 +1,5 @@
 using Characters.Player;
-using Characters.Player.Voice;
+using Characters.Player.Speech;
 using UnityEngine;
 using UnityEngine.AI;
 

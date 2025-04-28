@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Characters.Player;
+using Characters.Player.Speech;
 
 namespace Dialogue
 {
@@ -13,6 +14,8 @@ namespace Dialogue
 
         public DialogueObject CurrentHint { get; private set; }
 
+        private Voice voice;
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
@@ -23,6 +26,10 @@ namespace Dialogue
                 return;
             }
             Instance = this;
+        }
+
+        void Start() {
+            voice = GameObject.Find("Player").GetComponent<Voice>();
         }
 
         private void OnEnable()
@@ -61,7 +68,7 @@ namespace Dialogue
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H) && CurrentHint != null)
+            if (!voice.displayBubble && Input.GetKeyDown(KeyCode.H) && CurrentHint != null)
             {
                 ShowHint();
             }

@@ -4,6 +4,7 @@ using Dialogue;
 using UnityEngine;
 using Environment;
 using Combat;
+using Characters.Player.Speech;
 using System.Collections;
 using FunkyCode.Utilities;
 using UnityEngine.UIElements;
@@ -59,7 +60,7 @@ namespace Characters.Player {
         [Header("Dialogue")]
         [SerializeField] private DialogueUI dialogueUI;
 
-
+        private Voice voice;
 
         public DialogueUI DialogueUI => dialogueUI;
         private bool isFrozen = false;
@@ -82,6 +83,8 @@ namespace Characters.Player {
 
             //animation
             anim = GetComponent<Animator>();
+            
+            voice = gameObject.GetComponent<Voice>();
         }
 
         private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
@@ -115,18 +118,20 @@ namespace Characters.Player {
         // Update is called once per frame
         private void Update()
         {
-            checkFrozen();
-            OnMove();
-            CheckForPickup();
-            CheckForSprint();
-            CheckForInventoryAdd();
-            CheckForChestInteraction();
-            CheckForBookInteraction();
-            CheckForDialogue();
-            CheckForAttack();
+            if (!voice.displayBubble) {
+                checkFrozen();
+                OnMove();
+                CheckForPickup();
+                CheckForSprint();
+                CheckForInventoryAdd();
+                CheckForChestInteraction();
+                CheckForBookInteraction();
+                CheckForDialogue();
+                CheckForAttack();
+        
     
-
-            Animate();
+                Animate();
+            }
         }
     
         private void OnMove()

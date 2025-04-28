@@ -4,7 +4,7 @@ using Config;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Characters.Player.Voice {
+namespace Characters.Player.Speech {
     [System.Serializable]
     public class ParseJson {
         public string prediction;
