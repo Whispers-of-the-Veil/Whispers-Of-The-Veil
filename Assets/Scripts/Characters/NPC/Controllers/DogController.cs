@@ -44,14 +44,17 @@ namespace Characters.NPC.Controllers
         BlackboardKey followKey, moveKey, stayKey;
         
         GameObject exit;
+        private bool hasMoved;
         
         public NPCManager npcManager {
             get => NPCManager.instance;
         }
         
         void Awake() {
-            exit = GameObject.Find("Door Out");
-            exit.GetComponent<CabinExit>().enabled = false;
+            if (!hasMoved) {
+                exit = GameObject.Find("Door Out");
+                exit.GetComponent<CabinExit>().enabled = false;
+            }
             
             // Navmesh agent
             agent = GetComponent<NavMeshAgent>();
@@ -128,6 +131,7 @@ namespace Characters.NPC.Controllers
                 blackboard.GetOrRegisterKey("HasMoved")
                 )
             ));
+            moveAway.AddChild(new Leaf("Register Moved", new ActionStrategy(() => hasMoved = true)));
             moveAway.AddChild(new Leaf("Delay", new WaitSeconds(0.5f)));
             actions.AddChild(moveAway);
             
