@@ -20,7 +20,7 @@ public class CabinExit : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             exitAllowed = true;
-            Debug.Log("Near Exit: Press 'F' to go outside.");
+            Debug.Log("Near Exit: Press 'G' to go outside.");
             if (promptText != null)
                 promptText.SetActive(true);
         }
@@ -41,7 +41,7 @@ public class CabinExit : MonoBehaviour
     {
         if (exitAllowed && Input.GetKeyDown(KeyCode.G))
         {
-            Debug.Log("F Pressed! Leaving Cabin to Town...");
+            Debug.Log("G Pressed! Leaving Cabin to Town...");
             if (promptText != null)
                 promptText.SetActive(false);
             SceneManager.LoadScene("Town_Main");
@@ -58,7 +58,6 @@ public class CabinExit : MonoBehaviour
             if (spawnPoint != null && player != null)
             {
                 player.transform.position = spawnPoint.transform.position;
-                //player.transform.localScale = new Vector3(1.7f, 1.7f, 1.7f); // match whatever scale you use
                 Debug.Log("Player moved to CabinBackExit.");
             }
             else

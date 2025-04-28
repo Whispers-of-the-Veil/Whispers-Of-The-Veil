@@ -21,7 +21,7 @@ public class CabinDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             enterAllowed = true;
-            Debug.Log("Near Door: Press 'F' to enter.");
+            Debug.Log("Near Door: Press 'G' to enter.");
             if (promptText != null)
                 promptText.SetActive(true);
         }
@@ -46,7 +46,7 @@ public class CabinDoor : MonoBehaviour
             if (promptText != null)
                 promptText.SetActive(false);
             SceneManager.LoadScene("CabinMain");
-            SceneManager.sceneLoaded += OnSceneLoaded; // Subscribe to scene load event
+            SceneManager.sceneLoaded += OnSceneLoaded; 
         }
     }
 
@@ -54,7 +54,7 @@ public class CabinDoor : MonoBehaviour
     {
         if (scene.name == "CabinMain")
         {
-            GameObject spawnPoint = GameObject.Find("CabinSpawn_MainDoor"); // Find the spawn point
+            GameObject spawnPoint = GameObject.Find("CabinSpawn_MainDoor"); 
 
             if (spawnPoint != null && player != null)
             {

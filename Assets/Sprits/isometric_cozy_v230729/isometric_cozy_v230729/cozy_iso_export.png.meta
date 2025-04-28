@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 8192
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 0
@@ -1357,7 +1357,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.48789912, y: 0.5301223}
+      pivot: {x: 0.48789886, y: 0.6775961}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1373,12 +1373,12 @@ TextureImporter:
       name: cozy_iso_export_65
       rect:
         serializedVersion: 2
-        x: 33
+        x: 32
         y: 160
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.49999976, y: 0.54222345}
+      pivot: {x: 0.5054616, y: 0.6896968}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1588,7 +1588,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.5000032, y: 0.4618864}
+      pivot: {x: 0.4845829, y: 0.43104362}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1609,7 +1609,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.48015547, y: 0.45038605}
+      pivot: {x: 0.47244513, y: 0.32702446}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1630,7 +1630,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.4900787, y: 0.44046354}
+      pivot: {x: 0.46694827, y: 0.3710723}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1651,7 +1651,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 9
-      pivot: {x: 0.46031117, y: 0.48015308}
+      pivot: {x: 0.47573113, y: 0.35679197}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
