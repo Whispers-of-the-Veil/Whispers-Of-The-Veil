@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tutorial 6
   m_EditorClassIdentifier: 
   dialogue:
-  - Rest at the campfire and wait for the fog to pass by.
+  - "Let\u2019s rest at the campfire and wait for the danger to pass. It's safer
+    that way."
   responses: []
   npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
