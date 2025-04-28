@@ -87,22 +87,29 @@ namespace Characters.Player {
         private void Inventory_ItemUsed(object sender, InventoryEventArgs e)
         {
             IInventoryItem item = e.Item;
-
             GameObject goItem = (item as MonoBehaviour).gameObject;
+
             goItem.SetActive(true);
-            
-            goItem.transform.parent = holdPoint.transform;
-            goItem.transform.position = holdPoint.position;
-            
+
+            var pickupComp = goItem.GetComponent<PickUpObject>();
+            if (pickupComp != null)
+            {
+                pickupComp.PickUp(holdPoint);
+            }
+            else
+            {
+                goItem.transform.parent   = holdPoint;
+                goItem.transform.position = holdPoint.position;
+            }
+
             Book bookFromInventory = goItem.GetComponent<Book>();
             if (bookFromInventory != null)
             {
-                isHoldingBook = true;
-                heldBook = goItem;
-
-                // stop highlight VFX on first pickup
                 bookFromInventory.OnPickedUp();
+                isHoldingBook = true;
+                heldBook     = goItem;
             }
+            
         }
     
         // Update is called once per frame

@@ -57,6 +57,8 @@ public class PickUpObject : MonoBehaviour
         }
         
         highlightParticles.Clear();
+        highlightParticles.Stop();
+        highlightParticles.Clear();
     }
 
     public void Drop()

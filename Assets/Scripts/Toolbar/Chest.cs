@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Characters.Player;
 using UnityEngine;
-using Characters.Player.Voice; // To access RecordAudio event
+using Characters.Player.Voice; 
 
 public class Chest : MonoBehaviour
 {
@@ -87,7 +87,7 @@ public class Chest : MonoBehaviour
             GameObject player = GameObject.FindWithTag("Player");
             if (player != null)
             {
-                Vector3 spawnOffset = new Vector3(.1f, 0.1f, 0); 
+                Vector3 spawnOffset = new Vector3(.1f, -0.1f, 0); 
                 Vector3 spawnPosition = player.transform.position + spawnOffset;
 
                 Instantiate(antidotePrefab, spawnPosition, Quaternion.identity);
