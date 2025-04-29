@@ -372,39 +372,66 @@ namespace Characters.Player {
             return _heldObject;
         }
         
-        private void UpdateHoldPointPosition()
+                private void UpdateHoldPointPosition()
         {
             if (lastMoveDirection == Vector2.zero)
                 return;
 
             Vector2 offset = Vector2.zero;
-            
-            if (lastMoveDirection.x > 0 && lastMoveDirection.y > 0) {
+            string sortingLayer = "Pickup";
+            bool flipX = false;
+
+            if (lastMoveDirection.x > 0 && lastMoveDirection.y > 0)
+            {
                 offset = new Vector2(0.2f, -0.1f);
+                sortingLayer = "BehindPlayer";
             }
-            else if (lastMoveDirection.x < 0 && lastMoveDirection.y > 0) {
+            else if (lastMoveDirection.x < 0 && lastMoveDirection.y > 0)
+            {
                 offset = new Vector2(-0.18f, -0.1f);
+                sortingLayer = "BehindPlayer";
             }
-            else if (lastMoveDirection.x > 0 && lastMoveDirection.y < 0) {
+            else if (lastMoveDirection.x > 0 && lastMoveDirection.y < 0)
+            {
                 offset = new Vector2(0.1f, -0.2f);
+                sortingLayer = "Pickup";
             }
-            else if (lastMoveDirection.x < 0 && lastMoveDirection.y < 0) {
+            else if (lastMoveDirection.x < 0 && lastMoveDirection.y < 0)
+            {
                 offset = new Vector2(-0.21f, -0.15f);
+                sortingLayer = "Pickup";
             }
-            else if (lastMoveDirection.y > 0.5f) {
+            else if (lastMoveDirection.y > 0.5f)
+            {
                 offset = new Vector2(0.16f, -0.03f);
+                sortingLayer = "BehindPlayer";
             }
-            else if (lastMoveDirection.y < -0.6f) {
+            else if (lastMoveDirection.y < -0.6f)
+            {
                 offset = new Vector2(-0.08f, -0.14f);
+                sortingLayer = "Pickup";
             }
-            else if (lastMoveDirection.x > 0.5f) {
+            else if (lastMoveDirection.x > 0.5f)
+            {
                 offset = new Vector2(0.2f, -0.05f);
             }
-            else if (lastMoveDirection.x < -0.5f) {
+            else if (lastMoveDirection.x < -0.5f)
+            {
                 offset = new Vector2(-0.15f, -0.06f);
             }
 
             holdPoint.localPosition = offset;
+
+            if (_heldObject != null)
+            {
+                SpriteRenderer childRenderer = _heldObject.GetComponentInChildren<SpriteRenderer>();
+                if (childRenderer != null)
+                {
+                    childRenderer.flipX = lastMoveDirection.x < 0;
+
+                    childRenderer.sortingLayerName = sortingLayer;
+                }
+            }
         }
 
     }

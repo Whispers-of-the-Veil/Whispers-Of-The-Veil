@@ -90,4 +90,13 @@ public class PickUpObject : MonoBehaviour
         
         highlightParticles.Play();
     }
+    
+    public void SetSortingLayer(string layerName)
+    {
+        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (childRenderer != null)
+        {
+            childRenderer.sortingLayerName = layerName;
+        }
+    }
 }
