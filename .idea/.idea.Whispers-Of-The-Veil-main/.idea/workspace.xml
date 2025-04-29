@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Dog_Book.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Dog_Book.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/ForestNight.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/ForestNight.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,7 +169,7 @@
       <workItem from="1745723563303" duration="1511000" />
       <workItem from="1745801731047" duration="5705000" />
       <workItem from="1745882281768" duration="853000" />
-      <workItem from="1745883193141" duration="3232000" />
+      <workItem from="1745883193141" duration="3831000" />
     </task>
     <servers />
   </component>
