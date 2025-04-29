@@ -325,7 +325,7 @@ GameObject:
   - component: {fileID: 7693958247753076589}
   m_Layer: 0
   m_Name: FogMonster
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -467,8 +467,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathSfx: {fileID: 8300000, guid: 653c593658c4fa14492f443a1c7e8017, type: 3}
-  health: 0
-  damage: 1
+  health: 50
+  damage: 0.5
   canAttack: 1
   attackSpeed: 1.5
   isDead: 0

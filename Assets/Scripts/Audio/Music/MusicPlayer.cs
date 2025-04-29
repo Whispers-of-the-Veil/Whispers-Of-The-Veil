@@ -12,7 +12,7 @@ namespace Audio.Music {
     public class MusicPlayer : MonoBehaviour {
         [SerializeField] private bool singleton;
         
-        private MusicPlayer instance;
+        public static MusicPlayer instance;
         
         [Header("Audio Clips")] 
         [SerializeField] AudioClip combatClip;
@@ -32,17 +32,19 @@ namespace Audio.Music {
         Blackboard blackboard;
         BlackboardKey combatKey;
 
-        private void Start() {
+        void Awake() {
             if (singleton) {
                 if (instance == null) {
                     instance = this;
-                    DontDestroyOnLoad(this);
+                    DontDestroyOnLoad(gameObject);
                 }
                 else {
                     Destroy(gameObject);
                 }
             }
-            
+        }
+
+        private void Start() {
             blackboard = controller.GetBlackboard();
             combatKey = blackboard.GetOrRegisterKey("InCombat");
             
