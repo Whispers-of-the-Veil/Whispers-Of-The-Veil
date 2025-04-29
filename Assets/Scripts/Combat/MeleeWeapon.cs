@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Characters.NPC;
 
@@ -9,86 +10,57 @@ namespace Combat
         public int damage = 10;
         public float attackCooldown = 0.5f;
         public float knockbackForce = 3f;
-        public float knockbackDuration = 0.2f; // Time the knockback lasts
-        public int durability = 5; // Starting durability of the weapon
+        public float knockbackDuration = 0.2f;
 
-        private bool isAttacking = false; // Combined flag for attack state and cooldown
-
-        private void Update()
-        {
-            // Check if the weapon is being held (has a parent) and the player clicks to attack
-            if (transform.parent != null && Input.GetMouseButtonDown(0) && !isAttacking)
-            {
-                Attack();
-            }
-        }
+        private bool canAttack = true;
 
         public void Attack()
         {
-            // Prevent attack if already in the attacking state (either in cooldown or just attacked)
-            isAttacking = true;
-
-            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, 0.5f);
-            foreach (Collider2D enemy in hitEnemies)
+            if (!canAttack)
             {
-                if (enemy.CompareTag("Enemy"))
+                return;
+            }
+            
+            canAttack = false;
+            StartCoroutine(AttackCooldown());
+
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.5f);
+            HashSet<Collider2D> hitEnemies = new HashSet<Collider2D>();
+
+            foreach (Collider2D enemy in hits)
+            {
+                if (enemy.CompareTag("Enemy") && !hitEnemies.Contains(enemy))
                 {
                     Enemy entity = enemy.GetComponent<Enemy>();
-                    Rigidbody2D enemyRigidbody = enemy.GetComponent<Rigidbody2D>();
+                    Rigidbody2D rb = enemy.GetComponent<Rigidbody2D>();
 
-                    if (entity != null && enemyRigidbody != null)
+                    if (entity != null && rb != null)
                     {
                         entity.TakeDamage(damage);
+                        hitEnemies.Add(enemy);
 
-                        // Apply knockback force immediately
-                        Vector2 knockbackDirection = (enemy.transform.position - transform.position).normalized;
-                        enemyRigidbody.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                        Vector2 knockbackDir = (enemy.transform.position - transform.position).normalized;
+                        rb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
 
-                        // Start knockback coroutine
-                        StartCoroutine(ApplyKnockbackAndDestroy(enemyRigidbody, enemy));
+                        StartCoroutine(ResetKnockback(rb));
                     }
                 }
-            }
-
-            // Start cooldown coroutine after attack
-            StartCoroutine(AttackCooldown());
-        }
-
-        private IEnumerator ApplyKnockbackAndDestroy(Rigidbody2D enemyRigidbody, Collider2D enemy)
-        {
-            yield return new WaitForSeconds(knockbackDuration); // Wait for knockback duration
-
-            // Ensure enemy stops moving after knockback
-            if (enemyRigidbody != null)
-            {
-                enemyRigidbody.velocity = Vector2.zero;
-            }
-
-            // // Re-enable enemy movement if it was stopped
-            // Enemy entity = enemy.GetComponent<Enemy>();
-            // if (entity != null)
-            // {
-            //     entity.agent.isStopped = false;
-            //     entity.agent.ResetPath(); // Reset pathfinding to avoid getting stuck
-            // }
-
-            // Decrease durability only once, ensure it happens only if not already destroyed
-            if (durability > 0)
-            {
-                durability--; // Decrease durability by 1
-            }
-
-            // Destroy the weapon if durability reaches 0
-            if (durability <= 0)
-            {
-                Destroy(gameObject);
             }
         }
 
         private IEnumerator AttackCooldown()
         {
             yield return new WaitForSeconds(attackCooldown);
-            isAttacking = false; // Reset the attack state after cooldown
+            canAttack = true;
+        }
+
+        private IEnumerator ResetKnockback(Rigidbody2D enemyRigidbody)
+        {
+            yield return new WaitForSeconds(knockbackDuration);
+            if (enemyRigidbody != null)
+            {
+                enemyRigidbody.velocity = Vector2.zero;
+            }
         }
 
         private void OnDrawGizmosSelected()
