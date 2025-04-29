@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Test Scenes/CabinMain.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Dialogue/HelperHintZone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Dialogue/HelperHintZone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,10 +87,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="7496">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21720">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="7496" />
+      <option name="pid" value="21720" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -164,6 +163,8 @@
       <workItem from="1745712484947" duration="7508000" />
       <workItem from="1745723563303" duration="1511000" />
       <workItem from="1745801731047" duration="5705000" />
+      <workItem from="1745882281768" duration="853000" />
+      <workItem from="1745883193141" duration="3232000" />
     </task>
     <servers />
   </component>
@@ -225,6 +226,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Toolbar/ItemClickHandler.cs</url>
+          <line>21</line>
+          <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Toolbar\ItemClickHandler.cs" containingFunctionPresentation="Method 'OnItemClicked'">
+            <startOffsets>
+              <option value="417" />
+            </startOffsets>
+            <endOffsets>
+              <option value="418" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs</url>
+          <line>51</line>
+          <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Characters\Player\PlayerController.cs" containingFunctionPresentation="Property 'inventory'">
+            <startOffsets>
+              <option value="1573" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1591" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
