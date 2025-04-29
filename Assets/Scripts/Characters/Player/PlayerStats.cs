@@ -18,12 +18,16 @@ namespace Characters.Player
         private Vector3 defaultHeartScale = Vector3.one;
         private float damageEffectScale = 1.2f;
         private float scaleDuration = 0.1f;
+        private SpriteRenderer[] spriteRenderers;
+
 
         private void Start()
         {
             health = maxHealth;
             FindHearts();
             UpdateHealth();
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+
         }
 
         private void OnEnable()
@@ -154,7 +158,8 @@ namespace Characters.Player
         public void SetInvisibility(bool state, float duration)
         {
             if (isInvisible) return;
-            isInvisible = state;
+            isInvisible = true;
+            SetAlphaForAll(0.4f);
             StartCoroutine(ResetInvisibility(duration));
         }
 
@@ -162,6 +167,22 @@ namespace Characters.Player
         {
             yield return new WaitForSeconds(duration);
             isInvisible = false;
+            SetAlphaForAll(1f);
+        }
+
+        private void SetAlphaForAll(float alpha)
+        {
+            if (spriteRenderers == null) return;
+
+            foreach (var renderer in spriteRenderers)
+            {
+                if (renderer != null)
+                {
+                    Color c = renderer.color;
+                    c.a = alpha;
+                    renderer.color = c;
+                }
+            }
         }
         
         public void Heal(float amount)
@@ -180,18 +201,10 @@ namespace Characters.Player
         {
             isDead = true;
 
-            // Ensure DeathScreenUI is ready before calling ShowDeathScreen
             if (menu.DeathScreenUI.Instance != null)
             {
-                Debug.Log("DeathScreenUI Instance found, calling ShowDeathScreen...");
                 menu.DeathScreenUI.Instance.ShowDeathScreen();
             }
-            else
-            {
-                Debug.LogError("DeathScreenUI instance not found! It may not have been initialized before the player died.");
-            }
         }
-
-
     }
 }
