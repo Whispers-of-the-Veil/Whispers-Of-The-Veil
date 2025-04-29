@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b59feaf6515f7479736e485883b0e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestID: fe58dba7-078b-4c5c-9e4b-bce73b6e4e21
+  chestID: chestKitchen
   openChestSprite: {fileID: 21300000, guid: 8c28b71e6eeb8fc4ca95e0e7195476e0, type: 3}
   antidotePrefab: {fileID: 1194819627280106466, guid: fc7f95d858ae3874187309f9be125380, type: 3}
 --- !u!1 &6158553469440390521

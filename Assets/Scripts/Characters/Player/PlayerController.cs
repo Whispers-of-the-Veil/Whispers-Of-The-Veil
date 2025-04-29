@@ -205,9 +205,13 @@ namespace Characters.Player {
                         continue;
 
                     if (hitCollider.CompareTag("Pickup") && hitCollider.isTrigger) {
-                        Key key = hitCollider.GetComponent<Key>();
-                        hasKey = true;
-                        heldKey = hitCollider.gameObject;
+                        Key keyScript = hitCollider.GetComponent<Key>();
+                        if (keyScript != null) {
+                            keyScript.OnPickedUp();                  
+                            DontDestroyOnLoad(hitCollider.gameObject);       
+                            hasKey = true;
+                            heldKey = hitCollider.gameObject;
+                        }
                         
                         Book bookInWorld = hitCollider.GetComponent<Book>();
                         if (bookInWorld != null)
@@ -287,7 +291,6 @@ namespace Characters.Player {
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
-                // Check for objects within interaction range
                 Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, (float).25);
                 foreach (var hitCollider in hitColliders)
                 {
@@ -299,7 +302,6 @@ namespace Characters.Player {
                             if (hasKey)
                             {
                                 chest.Open(transform);
-                                hasKey = false;
                             }
                             else
                             {

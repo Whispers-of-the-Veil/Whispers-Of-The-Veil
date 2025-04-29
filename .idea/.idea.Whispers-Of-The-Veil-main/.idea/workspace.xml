@@ -6,16 +6,28 @@
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DialogueData/EchoHelp/C_Chest.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DialogueData/EchoHelp/C_Chest.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/DialogueData/EchoHelp/C_Dog.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/DialogueData/EchoHelp/C_Dog.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chest.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chest.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chest_Cabin.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chest_Cabin.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Chest_Kitchen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Chest_Kitchen.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FuckME.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FuckME.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/HealthPotion.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/HealthPotion.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/InvisibilityPotion.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/InvisibilityPotion.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Key.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Key.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Player.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room1.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PickUpObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PickUpObject.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Antidote.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Antidote.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/karsiori/Pixel Potion Pack - Animated/Sprites/Big Vial/ORANGE/Sprites/Big Vial - ORANGE - 0001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/karsiori/Pixel Potion Pack - Animated/Sprites/Big Vial/ORANGE/Sprites/Big Vial - ORANGE - 0001.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Key.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Key.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +46,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/GameBootstrap.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lore/Lore.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sprits/Cainos/Pixel Art Platformer - Village Props/Script/Chest.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@14.0.11/Shaders/Lit.shader" root0="SKIP_HIGHLIGHTING" />
@@ -96,10 +109,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21720">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="19212">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="21720" />
+      <option name="pid" value="19212" />
       <option name="projectPathOnTarget" />
       <option name="runtimes">
         <list>
@@ -174,6 +187,7 @@
       <workItem from="1745801731047" duration="5705000" />
       <workItem from="1745882281768" duration="853000" />
       <workItem from="1745883193141" duration="15448000" />
+      <workItem from="1745947172664" duration="7609000" />
     </task>
     <servers />
   </component>
@@ -235,19 +249,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="20" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs</url>
-          <line>51</line>
-          <properties documentPath="C:\Users\alexa\Downloads\Whispers-Of-The-Veil-main\Whispers-Of-The-Veil-main\Assets\Scripts\Characters\Player\PlayerController.cs" containingFunctionPresentation="Property 'inventory'">
-            <startOffsets>
-              <option value="1573" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1591" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

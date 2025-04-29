@@ -57,6 +57,12 @@ public class PickUpObject : MonoBehaviour
         highlightParticles.Clear();
         highlightParticles.Stop();
         highlightParticles.Clear();
+        
+        if (TryGetComponent<Key>(out var key))
+        {
+            key.OnPickedUp();  
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     public void Drop()
