@@ -4,8 +4,6 @@ using Combat;
 using UnityEngine;
 
 
-using UnityEngine;
-
 public class PickUpObject : MonoBehaviour
 {
     [SerializeField] private ParticleSystem highlightParticles;

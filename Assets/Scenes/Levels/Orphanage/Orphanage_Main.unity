@@ -132,11 +132,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1658171}
   - component: {fileID: 1658170}
-  - component: {fileID: 1658169}
   - component: {fileID: 1658168}
+  - component: {fileID: 1658172}
   m_Layer: 0
   m_Name: Hint_Hall
-  m_TagString: Pickup
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -154,21 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightParticles: {fileID: 373125920}
---- !u!114 &1658169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 768ac314ff672c849885564246548017, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Image: {fileID: 21300000, guid: 32f286ba8c9e0da4fb8dbe409fb492c5, type: 3}
-  bookCanvas: {fileID: 1676242567}
-  openPromptUI: {fileID: 814071278}
 --- !u!61 &1658170
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -232,6 +217,20 @@ Transform:
   - {fileID: 1410063495}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1658172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb37a6cf0153ac46990978f9c59c98e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loreCanvas: {fileID: 1676242567}
+  openPromptUI: {fileID: 814071278}
 --- !u!1 &58723470
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,9 +1200,9 @@ ParticleSystem:
         m_RotationOrder: 4
     startColor:
       serializedVersion: 2
-      minMaxState: 2
-      minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.93719625, b: 0, a: 1}
+      minMaxState: 0
+      minColor: {r: 0, g: 0.07465794, b: 0.9622642, a: 1}
+      maxColor: {r: 0, g: 0.22687483, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1532,7 +1531,7 @@ ParticleSystem:
     startRotation:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.08726646
+      scalar: 0.034906585
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -5818,13 +5817,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373125919}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 2.07, z: -1.01}
-  m_LocalScale: {x: 0.43873, y: 0.43873, z: 0.43873}
+  m_LocalRotation: {x: -0, y: -0, z: -0.22202899, w: 0.9750401}
+  m_LocalPosition: {x: 0.56, y: 0.78, z: -1.42}
+  m_LocalScale: {x: 0.23320253, y: 0.23320253, z: 0.23320253}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1658171}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -25.656}
 --- !u!1 &478699526
 GameObject:
   m_ObjectHideFlags: 0
@@ -6180,7 +6179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press 'F' to open
+  m_text: Press 'F' to read
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
   m_sharedMaterial: {fileID: 2384030057181765765, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
@@ -14192,14 +14191,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Speak if you must, but heed my plea:
+  m_text: 'Behind these doors no voice prevails,
 
-    Let every footstep quiet be,
+    The calm you seek in whispered
+    tales.
 
-    For
-    here within these orphaned halls,
+    Invoke the stillness, draw a fence,
 
-    Our refuge lies in _ _ _ _ _ _ _ .'
+    And seal the sound with
+    _ _ _ E _ C _ .'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
   m_sharedMaterial: {fileID: 2384030057181765765, guid: 728d4fb1c4afed94eaacea73bd621f12, type: 2}
