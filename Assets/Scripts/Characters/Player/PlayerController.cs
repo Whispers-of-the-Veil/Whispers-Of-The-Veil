@@ -298,8 +298,8 @@ namespace Characters.Player {
                         {
                             if (hasKey)
                             {
-                                chest.Open();
-                                hasKey = false; // Use the key
+                                chest.Open(transform);
+                                hasKey = false;
                             }
                             else
                             {

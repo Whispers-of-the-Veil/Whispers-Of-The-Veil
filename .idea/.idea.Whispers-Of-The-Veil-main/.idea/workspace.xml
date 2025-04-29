@@ -6,10 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="010c9f3e-ac3a-4861-b958-a3b4b26f9dc2" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Whispers-Of-The-Veil-main/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Introduction/Forest - Day Scene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/Orphanage_Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Town_Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PickUpObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PickUpObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/FunkyCode/Demos - SmartLighting2D/Demos - Intermediate/1 - Demo Dungeon/Resources/Prefabs/Antidote.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Antidote.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Levels/Orphanage/O_Room3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Characters/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Antidote.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Antidote.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Toolbar/Chest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/karsiori/Pixel Potion Pack - Animated/Sprites/Big Vial/ORANGE/Sprites/Big Vial - ORANGE - 0001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/karsiori/Pixel Potion Pack - Animated/Sprites/Big Vial/ORANGE/Sprites/Big Vial - ORANGE - 0001.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +173,7 @@
       <workItem from="1745723563303" duration="1511000" />
       <workItem from="1745801731047" duration="5705000" />
       <workItem from="1745882281768" duration="853000" />
-      <workItem from="1745883193141" duration="7816000" />
+      <workItem from="1745883193141" duration="15448000" />
     </task>
     <servers />
   </component>

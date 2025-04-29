@@ -11,6 +11,8 @@ public class Antidote : InventoryItemBase
     {
         get { return "Antidote"; }
     }
+    
+    public static Antidote instance;
 
     public override void OnUse()
     {

@@ -1,108 +1,121 @@
-//Sasha Koroleva
-using System.Collections;
-using System.Collections.Generic;
-using Characters.Player;
 using UnityEngine;
-using Characters.Player.Speech; 
+using Characters.Player;
+using Characters.Player.Speech;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Chest : MonoBehaviour
 {
+    [Header("Persistence")]
+    [Tooltip("Auto-generated ID for this chest")]
+    [SerializeField] private string chestID;
+
+    [Header("Contents")]
     [SerializeField] private Sprite openChestSprite;
     [SerializeField] private GameObject antidotePrefab;
-    private bool isOpen = false;
 
+    private bool isOpen = false;
     private const string playerTag = "Player";
-    public Key key
+
+    public Key key => Key.instance;
+
+    #if UNITY_EDITOR
+    private void OnValidate()
     {
-        get => Key.instance;
+        if (string.IsNullOrWhiteSpace(chestID))
+        {
+            chestID = System.Guid.NewGuid().ToString();
+            EditorUtility.SetDirty(this);
+        }
+    }
+    #endif
+
+    void Start()
+    {
+#if UNITY_EDITOR
+        PlayerPrefs.DeleteKey("chest_open_" + chestID);
+#endif
+
+        if (PlayerPrefs.GetInt("chest_open_" + chestID, 0) == 1)
+            ForceOpen();
     }
 
-
-    void OnEnable()
+    private void OnEnable()
     {
         Voice.OnCommandRecognized += OnVoiceCommand;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Voice.OnCommandRecognized -= OnVoiceCommand;
     }
 
-    // Callback triggered when a command is recognized.
     private void OnVoiceCommand(string command)
     {
-        if (command.ToLower().Trim() == "open chest")
+        if (command.ToLower().Trim() != "open chest") return;
+
+        var playerGO = GameObject.FindWithTag(playerTag);
+        if (playerGO == null)
         {
-            // Attempt to find the player.
-            GameObject player = GameObject.FindWithTag(playerTag);
-            if (player != null)
-            {
-                // Access the player's controller to check if they have the key.
-                PlayerController controller = player.GetComponent<PlayerController>();
-                if (controller != null)
-                {
-                    if (controller.hasKey)
-                    {
-                        // Open the chest and consume the key.
-                        Open();
-                        controller.hasKey = false;
-                        
-                    }
-                    else
-                    {
-                        Debug.Log("Cannot open chest: You are not holding the key!");
-                    }
-                }
-                else
-                {
-                    Debug.LogError("PlayerController component not found on the player!");
-                }
-            }
-            else
-            {
-                Debug.LogError("Player not found in the scene. Make sure the player has the tag 'Player'.");
-            }
+            Debug.LogError("Player not found in scene!");
+            return;
         }
+
+        var controller = playerGO.GetComponent<PlayerController>();
+        if (controller == null)
+        {
+            Debug.LogError("PlayerController missing on Player!");
+            return;
+        }
+
+        if (!controller.hasKey)
+        {
+            Debug.Log("Cannot open chest: You are not holding the key!");
+            return;
+        }
+
+        controller.hasKey = false;
+
+        Open(controller.transform);
+    }
+    public void Open(Transform playerT = null)
+    {
+        if (isOpen) return;
+
+        if (antidotePrefab != null)
+        {
+            Vector3 spawnPos = playerT.position + new Vector3(0.1f, -0.1f, 0);
+            Instantiate(antidotePrefab, spawnPos, Quaternion.identity);
+        }
+
+        PlayerPrefs.SetInt("chest_open_" + chestID, 1);
+        PlayerPrefs.Save();
+        ForceOpen();
+
+        if (Key.instance != null)
+            Destroy(Key.instance);
+
+        Debug.Log("Chest opened via voice command!");
     }
 
-
-    public void Open()
+    private void ForceOpen()
     {
-        if (!isOpen)
+        var spriteTransform = transform.Find("chest_sprite");
+        if (spriteTransform != null)
         {
-            Transform chestSpriteTransform = transform.Find("chest_sprite");
-            if (chestSpriteTransform != null)
-            {
-                SpriteRenderer spriteRenderer = chestSpriteTransform.GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null)
-                {
-                    spriteRenderer.sprite = openChestSprite;
-                }
-                else
-                {
-                    Debug.LogError("No SpriteRenderer found on chest_sprite!");
-                    return;
-                }
-            }
-            GameObject player = GameObject.FindWithTag("Player");
-            if (player != null)
-            {
-                Vector3 spawnOffset = new Vector3(.1f, -0.1f, 0); 
-                Vector3 spawnPosition = player.transform.position + spawnOffset;
-
-                Instantiate(antidotePrefab, spawnPosition, Quaternion.identity);
-            }
+            var sr = spriteTransform.GetComponent<SpriteRenderer>();
+            if (sr != null)
+                sr.sprite = openChestSprite;
             else
-            {
-                Debug.LogError("chest_sprite child not found!");
-                return;
-            }
-            
-            
-            // Destroy the key after using it to open the chest.
-            Destroy(Key.instance);
-            isOpen = true;
-            Debug.Log("Chest opened via voice command!");
+                Debug.LogError("No SpriteRenderer on chest_sprite!");
         }
+        else
+        {
+            Debug.LogError("child 'chest_sprite' not found!");
+        }
+
+        isOpen = true;
     }
 }
