@@ -19,7 +19,7 @@ public class SettingsManager : MonoBehaviour
     public TMP_Dropdown microphoneDropdown;
 
     private Resolution[] resolutions;
-    private string selectedMicrophone;
+    public string selectedMicrophone;
 
     private void Awake()
     {

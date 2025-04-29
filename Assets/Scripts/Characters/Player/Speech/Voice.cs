@@ -55,6 +55,10 @@ namespace Characters.Player.Speech {
             get => SoundExpert.instance;
         }
 
+        public SettingsManager settingsManager {
+            get => SettingsManager.instance;
+        }
+
         void Start () {
             speechBubble = GameObject.Find("SpeechBubble");
             textField = gameObject.GetComponentInChildren<TextMeshProUGUI>();
@@ -63,7 +67,7 @@ namespace Characters.Player.Speech {
             speechBubble.SetActive(false);
 
             try {
-                microphoneDevice = Microphone.devices[0];
+                microphoneDevice = settingsManager.selectedMicrophone;
             } catch (IndexOutOfRangeException) {
                 Debug.LogError("No microphone detected!");
 
@@ -72,6 +76,8 @@ namespace Characters.Player.Speech {
         }
 
         void Update () {
+            microphoneDevice = settingsManager.selectedMicrophone;
+            
             if (!useSpeechModel) {
                 textField.gameObject.SetActive(false);
                 inputField.gameObject.SetActive(true);
