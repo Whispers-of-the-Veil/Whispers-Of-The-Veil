@@ -1,16 +1,24 @@
-// Sasha Koroleva
+//Sasha Koroleva
 
 using Combat;
 using UnityEngine;
+
 
 public class PickUpObject : MonoBehaviour
 {
     [SerializeField] private ParticleSystem highlightParticles;
     private SpriteRenderer sr;
+    private string originalSortingLayer;
+
+    private const string pickedUpSortingLayer = "Pickup";
 
     private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
+        if (sr != null)
+        {
+            originalSortingLayer = sr.sortingLayerName;
+        }
         highlightParticles.Play();
     }
 
@@ -20,6 +28,11 @@ public class PickUpObject : MonoBehaviour
         transform.position = holdPoint.position;
         transform.rotation = holdPoint.rotation;
         transform.parent = holdPoint;
+
+        if (sr != null)
+        {
+            sr.sortingLayerName = pickedUpSortingLayer;
+        }
 
         // Disable the BoxCollider2D so it doesn't interfere while held
         BoxCollider2D box = GetComponent<BoxCollider2D>();
@@ -51,6 +64,11 @@ public class PickUpObject : MonoBehaviour
         // Detach the object from the hold point
         transform.parent = null;
 
+        if (sr != null)
+        {
+            sr.sortingLayerName = originalSortingLayer;
+        }
+
         BoxCollider2D box = GetComponent<BoxCollider2D>();
         if (box != null)
         {
@@ -72,13 +90,4 @@ public class PickUpObject : MonoBehaviour
         
         highlightParticles.Play();
     }
-    public void SetSortingLayer(string layerName)
-    {
-        SpriteRenderer childRenderer = GetComponentInChildren<SpriteRenderer>();
-        if (childRenderer != null)
-        {
-            childRenderer.sortingLayerName = layerName;
-        }
-    }
-
 }
