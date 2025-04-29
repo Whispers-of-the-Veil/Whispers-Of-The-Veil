@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4222763804917520878}
   - component: {fileID: 1354860564651488756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Frustrated
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3940077431202119440}
   - component: {fileID: 583741985912547162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Alert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2662439145928501055}
   - component: {fileID: 4168590160625554710}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Angry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 5104154232920024147}
   - component: {fileID: 8610141530315026792}
   - component: {fileID: 2212853577649696419}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1072581336126329411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Emotes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,15 +401,16 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8336042214540749050}
+  - component: {fileID: 1773576994644797552}
   - component: {fileID: 8920168312851946210}
   - component: {fileID: 5119818296889525502}
   - component: {fileID: 6461728676863873379}
   - component: {fileID: 6715475366463280296}
   - component: {fileID: 4585153085480649966}
   - component: {fileID: 7523317296716067785}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -431,6 +432,41 @@ Transform:
   - {fileID: 1072581336126329411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!70 &1773576994644797552
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6529925565148656903}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 0.5}
+  m_Direction: 0
 --- !u!61 &8920168312851946210
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -513,7 +549,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -552,7 +588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deathSfx: {fileID: 8300000, guid: dfa0d27e363573a4fa6b30b63422b4dc, type: 3}
   health: 100
-  damage: 3
+  damage: 2
   canAttack: 1
   attackSpeed: 1.5
   isDead: 0
@@ -573,11 +609,12 @@ MonoBehaviour:
   alertSfx: {fileID: 8300000, guid: 7c6a417b70f5986418998ce65bca388d, type: 3}
   angrySfx: {fileID: 8300000, guid: 4efef687b06e34cda9ff7ca4c5f2078c, type: 3}
   attackSfx: {fileID: 8300000, guid: 3aafcdda4fbfb46808116ccc321fba17, type: 3}
-  stoppingDistance: 0.25
+  stunnedSfx: {fileID: 8300000, guid: d1b48425fb1704042b5856e354f33c41, type: 3}
+  stoppingDistance: 0.5
   attackRange: 2
   attackSpeed: 4
   attackInterval: 2
-  hurtDistance: 1
+  hurtDistance: 2
   speed: 2
   patrolRadius: 5
   minIvenstigateDistance: 0
@@ -585,4 +622,5 @@ MonoBehaviour:
   sightRange: 5
   hearingRange: 2
   searchRadius: 3
-  points: []
+  stunnedDuration: 15
+  pointList: []

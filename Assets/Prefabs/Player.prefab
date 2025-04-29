@@ -876,6 +876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useSpeechModel: 1
+  displayBubble: 0
   correctClip: {fileID: 8300000, guid: ae21e378e6b9f364aa9246290fdef9b8, type: 3}
   wrongClip: {fileID: 0}
   DetectVoiceThreshold: 0.01
@@ -884,8 +885,9 @@ MonoBehaviour:
   - follow
   - move
   - stay
+  - silence
   threshold: 3
-  PuzzleInRange: 3
+  PuzzleInRange: 5
   SampleRate: 16000
   RecordingLength: 5
   spoke: 0

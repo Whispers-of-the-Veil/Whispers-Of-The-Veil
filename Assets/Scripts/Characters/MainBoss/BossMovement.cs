@@ -14,7 +14,9 @@ using Characters.NPC.BlackboardSystem.Control;
 using Characters.Player;
 using UnityEngine.AI;
 using Audio.SFX;
+using Characters.MainBoss;
 using Characters.NPC;
+using Environment;
 
 public class BossMovement : MonoBehaviour
 {
@@ -34,6 +36,7 @@ public class BossMovement : MonoBehaviour
         [SerializeField] AudioClip alertSfx;
         [SerializeField] AudioClip angrySfx;
         [SerializeField] AudioClip attackSfx;
+        [SerializeField] private AudioClip stunnedSfx;
         private SFXManager sfxManager {
             get => SFXManager.instance;
         }
@@ -62,19 +65,23 @@ public class BossMovement : MonoBehaviour
         [SerializeField] public float sightRange;       // How far can this enemy see
         [SerializeField] public float hearingRange;     // How far can this enemy hear
         [SerializeField] public float searchRadius;
+        [SerializeField] public float stunnedDuration = 15f;
 
-    [SerializeField] List<Transform> points = new List<Transform>();
-    private List<Vector2> pointList = new List<Vector2>();
+    [SerializeField] List<Vector2> pointList = new List<Vector2>();
 
     public BlackboardController controller {
             get => BlackboardController.instance;
         }
         Blackboard blackboard;
-        BlackboardKey soundKey, positionKey;
+        BlackboardKey soundKey, positionKey, stunnedKey;
 
     public CombatExpert combatExpert {
             get => CombatExpert.instance;
         }
+
+    public StunnedExpert stunnedExpert {
+        get => StunnedExpert.instance;
+    }
 
     private Transform player;
 
@@ -83,10 +90,6 @@ public class BossMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // make sure player has "Player" tag
-
-        for (int i = 0; i < points.Count; i++) {
-            pointList.Add((Vector2)points[i].position);
-        }
     }
 
     void Update()
@@ -97,6 +100,18 @@ public class BossMovement : MonoBehaviour
 
     void Awake()
     {
+        for(int i = 1; i <= 14; i++){
+            GameObject point = GameObject.Find("Point" + i);
+            
+            if (point != null) {
+                Debug.Log("Adding Point" + i);
+                pointList.Add(point.transform.position);
+            } 
+            else {
+                Debug.LogWarning("Missing Point" + i);
+            }
+        }
+        
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
@@ -105,10 +120,19 @@ public class BossMovement : MonoBehaviour
         {
             target = GameObject.Find("Player").GetComponent<Transform>();
         }
+        
+        alertEmote = GameObject.Find("Emotes/Alert");
+        angryEmote = GameObject.Find("Emotes/Angry");
+        frustratedEmote = GameObject.Find("Emotes/Frustrated");
+            
+        alertEmote.SetActive(false);
+        angryEmote.SetActive(false);
+        frustratedEmote.SetActive(false);
 
         blackboard = controller.GetBlackboard();
         soundKey = blackboard.GetOrRegisterKey("SoundMade");
         positionKey = blackboard.GetOrRegisterKey("SoundPosition");
+        stunnedKey = blackboard.GetOrRegisterKey("Stunned");
 
         enemy = GetComponent<EnemyStats>();
 
@@ -119,6 +143,14 @@ public class BossMovement : MonoBehaviour
     {
         tree = new BehaviorTree("MainBoss");
         PrioritySelector actions = new PrioritySelector("logic");
+
+        // Should be the highest priority
+        Sequence stunned = new Sequence("stunned", 200);
+        stunned.AddChild(new Leaf("commandSilence", new Condition(() => blackboard.TryGetValue(stunnedKey, out bool value) && value)));
+        stunned.AddChild(new Leaf("SFX", new ActionStrategy(() => sfxManager.PlaySFX(stunnedSfx, transform, 1f))));
+        stunned.AddChild(new Leaf("Stunned; wait", new WaitSeconds(stunnedDuration)));
+        stunned.AddChild(new Leaf("Reset Stunned", new ActionStrategy(() => stunnedExpert.Reset())));
+        actions.AddChild(stunned);
 
         actions.AddChild(CombatLogic());
 
