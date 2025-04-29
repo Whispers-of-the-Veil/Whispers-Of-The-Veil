@@ -63,7 +63,8 @@ public class BossMovement : MonoBehaviour
         [SerializeField] public float hearingRange;     // How far can this enemy hear
         [SerializeField] public float searchRadius;
 
-    [SerializeField] List<Vector2> points; 
+    [SerializeField] List<Transform> points = new List<Transform>();
+    private List<Vector2> pointList = new List<Vector2>();
 
     public BlackboardController controller {
             get => BlackboardController.instance;
@@ -80,32 +81,18 @@ public class BossMovement : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         player = GameObject.FindGameObjectWithTag("Player").transform; // make sure player has "Player" tag
+
+        for (int i = 0; i < points.Count; i++) {
+            pointList.Add((Vector2)points[i].position);
+        }
     }
 
     void Update()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal"); // TEMPORARY input for testing
-
-        // flip based on moving left or right
-        if (horizontal > 0)
-            spriteRenderer.flipX = false;
-        else if (horizontal < 0)
-            spriteRenderer.flipX = true;
-
-        // update MoveX parameter
-        animator.SetFloat("MoveX", horizontal);
-
+        UpdateAnimation();
         tree.Process();
-    }
-
-    bool PlayerInAttackRange()
-    {
-        if (player == null) return false;
-
-        float distance = Vector2.Distance(transform.position, player.position);
-        return distance <= attackRange;
     }
 
     void Awake()
@@ -155,7 +142,7 @@ public class BossMovement : MonoBehaviour
 
         Sequence patrol = new Sequence ("patrol");
         patrol.AddChild(new Leaf("Leaf not in combat", new ActionStrategy(() => combatExpert.ReportCombat(false))));
-        patrol.AddChild(new Leaf("Move between points", new PatrolPoints(agent, points, speed)));
+        patrol.AddChild(new Leaf("Move between points", new PatrolPoints(agent, pointList, speed)));
         patrol.AddChild(new Leaf("Delay", new WaitSeconds(1)));
         actions.AddChild(patrol);
 
@@ -196,6 +183,22 @@ public class BossMovement : MonoBehaviour
         attackPlayer.AddChild(randomAttack);
 
         return attackPlayer;
+    }
+    
+    void UpdateAnimation() {
+        Vector2 velocity = agent.velocity;
+        float magnitude = velocity.magnitude;
+            
+        Vector2 dir = magnitude > 0.1f ? velocity.normalized : Vector2.zero;
+            
+        animator.SetFloat("MoveX", dir.x);
+        animator.SetFloat("MoveY", dir.y);
+        animator.SetFloat("MoveMagnitude", magnitude);
+
+        if (magnitude < 0.1f && dir == Vector2.zero) {
+            animator.SetFloat("LastMoveX", dir.x);
+            animator.SetFloat("LastMoveY", dir.y);
+        }
     }
 
     IEnumerator ShowEmote(GameObject emote) {
