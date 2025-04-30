@@ -1,4 +1,4 @@
-//Owen Ingram
+// Owen Ingram
 
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +11,12 @@ namespace Dialogue
     public class TypeWriteEffect : MonoBehaviour
     {
         [SerializeField] private float typewriterSpeed = 50f;
-        
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip shortPitchClip;
+        [SerializeField] private AudioClip longPitchClip;
+        [SerializeField] private Vector2 pitchRange = new Vector2(0.9f, 1.1f);
+        [SerializeField] private int characterSoundFrequency = 2;
+
         public bool IsRunning { get; private set; }
 
         private readonly List<Punctuation> punctuations = new List<Punctuation>()
@@ -19,9 +24,9 @@ namespace Dialogue
             new Punctuation(new HashSet<char>() { '.', '!', '?' }, 0.2f),
             new Punctuation(new HashSet<char>() { ',', ';', ':' }, 0.15f)
         };
-        
+
         private Coroutine typingCoroutine;
-        
+
         public void Run(string textToType, TMP_Text textLabel)
         {
             typingCoroutine = StartCoroutine(TypeText(textToType, textLabel));
@@ -29,7 +34,10 @@ namespace Dialogue
 
         public void Stop()
         {
-            StopCoroutine(typingCoroutine);
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
             IsRunning = false;
         }
 
@@ -37,23 +45,31 @@ namespace Dialogue
         {
             IsRunning = true;
             textLabel.text = string.Empty;
-            
+
             float t = 0;
             int charIndex = 0;
 
             while (charIndex < textToType.Length)
             {
                 int lastCharIndex = charIndex;
-                
+
                 t += Time.deltaTime * typewriterSpeed;
                 charIndex = Mathf.FloorToInt(t);
                 charIndex = Mathf.Clamp(charIndex, 0, textToType.Length);
 
                 for (int i = lastCharIndex; i < charIndex; i++)
                 {
-                     bool isLast = i >= textToType.Length - 1;
-                    
+                    bool isLast = i >= textToType.Length - 1;
+
                     textLabel.text = textToType.Substring(0, i + 1);
+
+                    // Play gibberish only for letters/numbers at defined intervals
+                    if (char.IsLetterOrDigit(textToType[i]) && i % characterSoundFrequency == 0 && !audioSource.isPlaying)
+                    {
+                        audioSource.pitch = Random.Range(pitchRange.x, pitchRange.y);
+                        AudioClip clipToPlay = Random.value < 0.5f ? shortPitchClip : longPitchClip;
+                        audioSource.PlayOneShot(clipToPlay);
+                    }
 
                     if (IsPunctuation(textToType[i], out float waitTime) && !isLast &&
                         !IsPunctuation(textToType[i + 1], out _))
@@ -61,9 +77,10 @@ namespace Dialogue
                         yield return new WaitForSeconds(waitTime);
                     }
                 }
-                
+
                 yield return null;
             }
+
             IsRunning = false;
         }
 
