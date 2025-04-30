@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
   - Press 'E' to pick up this health potion. You can store it by pressing 'Q' or
-    drop it with 'R.
+    drop it with 'R'.
   - Left-click an inventory item to equip it. Hold left-click while equipped to consume.
   - Head down this path. Hold Left Shift to sprint.
   responses: []

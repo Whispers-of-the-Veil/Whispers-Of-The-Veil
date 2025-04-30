@@ -23,7 +23,10 @@ namespace Characters.Player
 
         private void Start()
         {
-            health = maxHealth;
+            if (health <= 0f || health > maxHealth) // Only reset if uninitialized
+            {
+                //health = maxHealth;
+            }
             FindHearts();
             UpdateHealth();
             spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
@@ -42,6 +45,12 @@ namespace Characters.Player
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            StartCoroutine(DelayedUIUpdate());
+        }
+        
+        private IEnumerator DelayedUIUpdate()
+        {
+            yield return null;
             FindHearts();
             UpdateHealth();
         }
@@ -55,9 +64,13 @@ namespace Characters.Player
                 if (healthCanvas != null)
                 {
                     hearts = healthCanvas.GetComponentsInChildren<Image>();
+                    Debug.Log("Hearts found: " + hearts.Length);
+                    UpdateHealth(); // Force refresh immediately
                 }
             }
         }
+
+
 
         private void Update()
         {
@@ -69,24 +82,27 @@ namespace Characters.Player
 
         public void UpdateHealth()
         {
-            if (hearts == null) return;
+            if (hearts == null || hearts.Length == 0)
+            {
+                return;
+            }
 
             for (int i = 0; i < hearts.Length; i++)
             {
+                if (hearts[i] == null)
+                {
+                    continue;
+                }
+                
                 if (health >= i + 1)
-                {
                     hearts[i].sprite = fullHeart;
-                }
                 else if (health >= i + 0.5f)
-                {
                     hearts[i].sprite = halfHeart;
-                }
                 else
-                {
                     hearts[i].sprite = emptyHeart;
-                }
             }
         }
+
 
         public void TakeDamage(float damage)
         {
