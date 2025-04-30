@@ -10,15 +10,17 @@ namespace menu
     {
         public static DeathScreenUI Instance;
   
-
-        [Header("UI References")] public GameObject deathScreenPanel;
+        [Header("UI References")] 
+        public GameObject deathScreenPanel;
         public Button respawnButton;
         public Button mainMenuButton;
         public Button loadSaveButton;
 
-        [Header("Gameplay References")] public GameObject player;
+        [Header("Gameplay References")] 
+        public GameObject player;
 
-        [Header("HUD References")] public GameObject HUD;
+        [Header("HUD References")] 
+        public GameObject HUD;
 
         private void Awake()
         {
@@ -49,6 +51,7 @@ namespace menu
         {
             HideDeathScreen();
             FindPlayerReference();
+            FindHUDReference();
 
             var stats = player?.GetComponent<PlayerStats>();
             if (stats != null && stats.health <= 0)
@@ -57,7 +60,6 @@ namespace menu
                 stats.UpdateHealth();
             }
         }
-
 
         private void Start()
         {
@@ -70,6 +72,7 @@ namespace menu
             loadSaveButton.onClick.AddListener(OpenLoadMenu);
 
             FindPlayerReference();
+            FindHUDReference();
         }
         
         private void FindPlayerReference()
@@ -79,14 +82,23 @@ namespace menu
                 player = GameObject.FindGameObjectWithTag("Player");
             }
         }
+
+        private void FindHUDReference()
+        {
+            if (HUD == null)
+            {
+                HUD = GameObject.FindGameObjectWithTag("HUD");
+            }
+        }
         
         public void ShowDeathScreen()
         {
             FindPlayerReference();
+            FindHUDReference();
+
             deathScreenPanel.SetActive(true);
             if (HUD != null) HUD.SetActive(false);
             Time.timeScale = 0f;
-            
         }
 
         public void HideDeathScreen()
