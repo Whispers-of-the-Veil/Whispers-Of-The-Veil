@@ -15,4 +15,4 @@ MonoBehaviour:
   dialogue:
   - "Here\u2019s a more powerful weapon; you\u2019ll probably need it in there."
   responses: []
-  npcSprite: {fileID: 0}
+  npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
