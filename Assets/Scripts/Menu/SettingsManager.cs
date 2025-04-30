@@ -9,9 +9,11 @@ public class SettingsManager : MonoBehaviour
     public static SettingsManager instance;
 
     [Header("UI Elements")]
-    public GameObject settingsCanvas; // drag your full SettingsCanvas here
+    public GameObject settingsCanvas; 
     public GameObject controlsPopup;
     public GameObject controlsButton;
+    public GameObject guidePopup;  
+    public GameObject guideButton;  
     public Button closeSettingsButton;
 
     public Slider volumeSlider;
@@ -45,6 +47,12 @@ public class SettingsManager : MonoBehaviour
 
         if (controlsButton != null)
             controlsButton.SetActive(true);
+
+        if (guidePopup != null)  
+            guidePopup.SetActive(false);
+
+        if (guideButton != null)  
+            guideButton.SetActive(true);
 
         if (closeSettingsButton != null)
             closeSettingsButton.onClick.AddListener(CloseSettings);
@@ -101,6 +109,27 @@ public class SettingsManager : MonoBehaviour
 
         if (controlsButton != null)
             controlsButton.SetActive(true);
+    }
+
+    public void ShowGuidePopup() 
+    {
+        if (guidePopup != null)
+        {
+            guidePopup.transform.SetAsLastSibling();
+            guidePopup.SetActive(true);
+        }
+
+        if (guideButton != null)
+            guideButton.SetActive(false);
+    }
+
+    public void HideGuidePopup() 
+    {
+        if (guidePopup != null)
+            guidePopup.SetActive(false);
+
+        if (guideButton != null)
+            guideButton.SetActive(true);
     }
 
     public void SetVolume(float volume)
