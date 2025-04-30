@@ -234,12 +234,17 @@ namespace Characters.Player {
             }
         }
 
-        private void PickupObject(GameObject obj) {
+        public void PickupObject(GameObject obj) {
             _heldObject = obj;
             
             
             PickUpObject target = obj.GetComponent<PickUpObject>();
             target.PickUp(holdPoint);
+            
+            MeleeWeapon weapon = obj.GetComponent<MeleeWeapon>();
+            if (weapon != null) {
+                weapon.EquipWeapon();
+            }
             
         }
 
@@ -250,6 +255,11 @@ namespace Characters.Player {
                 PickUpObject target = _heldObject.GetComponent<PickUpObject>();
                 if (target != null) {
                     target.Drop();
+                }
+                
+                MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
+                if (weapon != null) {
+                    weapon.UnequipWeapon();
                 }
 
                 _heldObject.transform.parent = null;
@@ -277,6 +287,12 @@ namespace Characters.Player {
                     if (book != null)
                     {
                         book.OnDropped();     
+                    }
+                    
+                    MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
+                    if (weapon != null)
+                    {
+                        weapon.UnequipWeapon();
                     }
 
                     _heldObject.SetActive(false);

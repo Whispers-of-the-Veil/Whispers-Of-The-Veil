@@ -54,6 +54,7 @@ public class ItemClickHandler : MonoBehaviour
         itemObj.transform.rotation = _playerManager.holdPoint.transform.rotation;
 
         playerController.SetHeldObject(itemObj);
+        playerController.PickupObject(itemObj);
 
         Image itemImage = transform.Find("ItemImage").GetComponent<Image>();
         itemImage.enabled = false;
