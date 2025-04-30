@@ -3,6 +3,7 @@ using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
 using Characters.NPC.Commands;
 using Characters.Player.Speech;
+using Management;
 using UnityEngine;
 
 namespace Characters.MainBoss {
@@ -18,11 +19,15 @@ namespace Characters.MainBoss {
         BlackboardKey stunnedKey;
 
         private bool reset;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(this);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -68,6 +73,10 @@ namespace Characters.MainBoss {
                 pendingCommand?.Execute(blackboard);
                 pendingCommand = null;
             }
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

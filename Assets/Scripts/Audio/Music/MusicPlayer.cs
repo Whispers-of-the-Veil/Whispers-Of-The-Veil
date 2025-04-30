@@ -3,6 +3,7 @@
 using System.Collections;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
+using Management;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,12 +32,16 @@ namespace Audio.Music {
 
         Blackboard blackboard;
         BlackboardKey combatKey;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (singleton) {
                 if (instance == null) {
                     instance = this;
-                    DontDestroyOnLoad(gameObject);
+                    dontDestroyManager.Track(this.gameObject);
                 }
                 else {
                     Destroy(gameObject);
@@ -80,6 +85,10 @@ namespace Audio.Music {
 
         private AudioClip GetRandomClip() {
             return clips[Random.Range(0, clips.Length)];
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

@@ -1,5 +1,6 @@
 // Farzana Tanni
 
+using Management;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,6 +8,10 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager instance;
     public GameObject holdPoint;
+    
+    public DontDestroyManager dontDestroyManager {
+        get => DontDestroyManager.instance;
+    }
 
     void Awake()
     {
@@ -14,7 +19,7 @@ public class PlayerManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            dontDestroyManager.Track(gameObject);
         }
         else
         {

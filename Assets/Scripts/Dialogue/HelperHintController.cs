@@ -1,7 +1,9 @@
+using System.CodeDom;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Characters.Player;
 using Characters.Player.Speech;
+using Management;
 
 namespace Dialogue
 {
@@ -15,6 +17,10 @@ namespace Dialogue
         public DialogueObject CurrentHint { get; private set; }
 
         private Voice voice;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         private void Awake()
         {
@@ -25,7 +31,7 @@ namespace Dialogue
                 Destroy(gameObject);
                 return;
             }
-            Instance = this;
+            dontDestroyManager.Track(gameObject);
         }
 
         void Start() {
@@ -44,6 +50,8 @@ namespace Dialogue
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (Instance == null) return;
+            
             if (player == null)
                 player = FindObjectOfType<PlayerController>();
 
@@ -124,6 +132,8 @@ namespace Dialogue
             }
         }
 
-
+        private void OnDestroy() {
+            if (Instance == this) Instance = null;
+        }
     }
 }

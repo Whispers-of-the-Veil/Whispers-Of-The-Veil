@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Management;
 
 public class Inventory : MonoBehaviour
 {
@@ -16,23 +17,25 @@ public class Inventory : MonoBehaviour
     public static event EventHandler<InventoryEventArgs> ItemAdded;
     public event EventHandler<InventoryEventArgs> ItemRemoved;
     public event EventHandler<InventoryEventArgs> ItemUsed;
+    
+    public DontDestroyManager dontDestroyManager {
+        get => DontDestroyManager.instance;
+    }
 
     protected void Awake()
     {
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = this;
-            DontDestroyOnLoad(this);
+            dontDestroyManager.Track(this.gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
         }
     }
 
     private void OnDestroy()
     {
-        instance = null;
+        if (instance == this) instance = null;
     }
 
     public void AddItem(IInventoryItem item)
@@ -87,6 +90,4 @@ public class Inventory : MonoBehaviour
             ItemUsed(this, new InventoryEventArgs(item));
         }
     }
-    
-  
 }

@@ -445,6 +445,5 @@ namespace Characters.Player {
                 }
             }
         }
-
     }
 }

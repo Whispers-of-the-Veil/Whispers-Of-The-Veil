@@ -1,5 +1,6 @@
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
+using Management;
 using UnityEngine;
 
 namespace Characters.NPC {
@@ -17,11 +18,15 @@ namespace Characters.NPC {
         private States state;
 
         private bool inCombat;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(this);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -52,6 +57,10 @@ namespace Characters.NPC {
             blackboard.AddAction(() => {
                 blackboard.SetValue(combatKey, inCombat);
             });
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

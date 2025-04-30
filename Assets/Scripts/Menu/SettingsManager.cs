@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Audio;
 using System.Collections.Generic;
+using Management;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -27,18 +28,19 @@ public class SettingsManager : MonoBehaviour
 
     private Resolution[] resolutions;
     public string selectedMicrophone;
-
+    
+    public DontDestroyManager dontDestroyManager {
+        get => DontDestroyManager.instance;
+    }
+    
     private void Awake()
     {
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            dontDestroyManager.Track(this.gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
-            return;
         }
 
         if (settingsCanvas != null)
@@ -321,5 +323,9 @@ public class SettingsManager : MonoBehaviour
                 cam.rect = rect;
             }
         }
+    }
+    
+    private void OnDestroy() {
+        if (instance == this) instance = null;
     }
 }

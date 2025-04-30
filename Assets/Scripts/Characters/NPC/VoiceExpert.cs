@@ -4,6 +4,7 @@ using Characters.NPC.BlackboardSystem.Control;
 using Characters.NPC.Commands;
 using UnityEngine;
 using Characters.Player.Speech;
+using Management;
 
 namespace Characters.NPC {
     public class VoiceExpert : MonoBehaviour, IExpert {
@@ -17,11 +18,15 @@ namespace Characters.NPC {
         private Dictionary<string, ICommand> commands;
         
         BlackboardKey followKey, moveKey, stayKey, movedKey, barkedKey, whineKey, happyKey, hasRecordedKey;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(this);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -73,6 +78,10 @@ namespace Characters.NPC {
             commands["reset"].Execute(blackboard);  // Reset all of the flags
             pendingCommand?.Execute(blackboard);    // Set the approriate flag
             pendingCommand = null;                  // Clear pending commmand
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

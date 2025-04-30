@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
+using Management;
 using UnityEngine;
 
 namespace Characters.NPC {
@@ -14,11 +15,15 @@ namespace Characters.NPC {
             get => BlackboardController.instance;
         }
         Blackboard blackboard;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -38,6 +43,10 @@ namespace Characters.NPC {
             Action action = actions.Dequeue();
 
             blackboard.AddAction(action);
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

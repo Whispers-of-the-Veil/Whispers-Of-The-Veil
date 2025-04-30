@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Characters.Player;
+using Management;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
 
@@ -21,13 +22,17 @@ namespace menu
 
         [Header("HUD References")] 
         public GameObject HUD;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         private void Awake()
         {
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
+                dontDestroyManager.Track(this.gameObject);
                 Debug.Log("DeathScreenUI instance created.");
             }
             else
@@ -130,6 +135,7 @@ namespace menu
         private void ReturnToMainMenu()
         {
             Time.timeScale = 1f;
+            dontDestroyManager.ResetAll();
             SceneManager.LoadScene("Main Menu");
         }
 
@@ -137,6 +143,10 @@ namespace menu
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene("SaveFiles");
+        }
+        
+        private void OnDestroy() {
+            if (Instance == this) Instance = null;
         }
     }
 }

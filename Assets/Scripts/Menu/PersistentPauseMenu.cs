@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 using Characters.Player.Speech;
+using Management;
 
 public class PersistentPauseMenu : MonoBehaviour
 {
@@ -23,16 +24,18 @@ public class PersistentPauseMenu : MonoBehaviour
     public Voice playerVoice;
 
     private bool isPaused = false;
+    
+    public DontDestroyManager dontDestroyManager {
+        get => DontDestroyManager.instance;
+    }
 
     private void Awake()
     {
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            dontDestroyManager.Track(this.gameObject);
         }
-        else
-        {
+        else {
             Destroy(gameObject);
             return;
         }
@@ -129,6 +132,7 @@ public class PersistentPauseMenu : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         Debug.Log("Returning to Title Screen...");
+        dontDestroyManager.ResetAll();
         SceneManager.LoadScene("Main Menu");
     }
 

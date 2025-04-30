@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Audio.SFX;
+using Management;
 
 namespace Characters.MainBoss {
     public class BossManager : MonoBehaviour {
@@ -21,6 +22,10 @@ namespace Characters.MainBoss {
 
         private string townMainSceneName = "Town_Main";
         private Scene currentScene;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
         
         void OnEnable() => SceneManager.sceneLoaded += OnSceneLoaded;
         void OnDisable() => SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -43,11 +48,10 @@ namespace Characters.MainBoss {
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(this);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
-                return;
             }
 
             currentScene = SceneManager.GetActiveScene();
@@ -96,6 +100,10 @@ namespace Characters.MainBoss {
                 currentBossInstance = null;
             }
             bossSpawned = false;
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

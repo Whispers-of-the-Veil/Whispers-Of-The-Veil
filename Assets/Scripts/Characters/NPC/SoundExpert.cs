@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
+using Management;
 using UnityEngine;
 
 namespace Characters.NPC {
@@ -20,11 +21,15 @@ namespace Characters.NPC {
         
         enum States { Idle, Reporting, WaitingToReset }
         States state;
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -72,6 +77,10 @@ namespace Characters.NPC {
                     
                     break;
             }
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }

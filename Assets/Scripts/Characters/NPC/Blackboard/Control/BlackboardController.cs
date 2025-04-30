@@ -1,3 +1,4 @@
+using Management;
 using UnityEngine;
 namespace Characters.NPC.BlackboardSystem.Control {
     public class BlackboardController : MonoBehaviour {
@@ -6,11 +7,15 @@ namespace Characters.NPC.BlackboardSystem.Control {
         [SerializeField] BlackboardData blackboardData;
         readonly Blackboard blackboard = new Blackboard();
         readonly Arbiter arbiter = new Arbiter();
+        
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
 
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -31,6 +36,10 @@ namespace Characters.NPC.BlackboardSystem.Control {
             foreach (var action in arbiter.BlackboardIteration(blackboard)) {
                 action();
             }
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }
