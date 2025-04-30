@@ -1,81 +1,105 @@
-//Farzana Tanni
+// Farzana Tanni
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class SaveManager : MonoBehaviour
 {
-    [Header("UI Elements")]
-    public GameObject saveSlotsPanel;
-    public GameObject optionsMenu;
+    public static SaveManager instance;
 
-    private int currentSaveSlot = -1;
-    private string previousScene;
+    [Header("UI Panels")]
+    public GameObject savePanel;
+
+    [Header("Slot UI References")]
+    public Button[] loadButtons; 
+    public Button[] saveButtons; 
+    public TMP_Text[] slotTexts;
+
+    [Header("Back Button")]
+    public Button backButton; 
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
     private void Start()
     {
-        if (saveSlotsPanel != null)
-        {
-            saveSlotsPanel.SetActive(false);
-        }
+        UpdateSlotDisplay();
 
-         previousScene = PlayerPrefs.GetString("PreviousScene", "Main Menu");
+        if (savePanel != null)
+            savePanel.SetActive(false);
+
+        if (backButton != null)
+            backButton.onClick.AddListener(CloseSavePanel);
     }
 
-    public void ShowSaveSlots()
+    public void OpenSavePanel()
     {
-        if (saveSlotsPanel != null)
-        {
-            saveSlotsPanel.SetActive(true);
-        }
+        UpdateSlotDisplay();
 
-        if (optionsMenu != null)
-        {
-            optionsMenu.SetActive(false);
-        }
-
-        Debug.Log("Save slots panel opened");
+        if (savePanel != null)
+            savePanel.SetActive(true);
     }
 
-    public void SaveToSlot(int slotNumber)
+    public void CloseSavePanel()
     {
-        Debug.Log($"Save Slot {slotNumber} clicked!");
+        if (savePanel != null)
+            savePanel.SetActive(false);
 
+        PersistentPauseMenu.instance?.PauseGame();
+    }
+
+    public void SaveToSlot(int slot)
+    {
+        DataPersistenceManager.Instance.SaveGame(slot);
+        UpdateSlotDisplay();
+    }
+
+    public void LoadFromSlot(int slot)
+    {
+        DataPersistenceManager.Instance.LoadGame(slot);
+    }
+
+    private void UpdateSlotDisplay()
+    {
         if (DataPersistenceManager.Instance == null)
         {
-            Debug.LogError("DataPersistenceManager is missing! Make sure it's in the scene.");
+            Debug.LogWarning("DataPersistenceManager not found yet. Skipping slot update.");
             return;
         }
 
-        DataPersistenceManager.Instance.SaveGame(slotNumber);
-        Debug.Log($"Game saved to slot {slotNumber}!");
-    }
-
-    public void CloseSaveSlots()
-    {
-        if (saveSlotsPanel != null)
+        for (int i = 0; i < slotTexts.Length; i++)
         {
-            saveSlotsPanel.SetActive(false);
-        }
+            SaveData data = DataPersistenceManager.Instance.GetSaveSlotData(i + 1);
 
-        if (optionsMenu != null)
-        {
-            optionsMenu.SetActive(true);
+            if (data != null && !string.IsNullOrEmpty(data.savedTime))
+            {
+                slotTexts[i].text = $"Saved on {data.savedTime}";
+                loadButtons[i].interactable = true;
+            }
+            else
+            {
+                slotTexts[i].text = "Empty";
+                loadButtons[i].interactable = false;
+            }
         }
-
-        Debug.Log("Save slots panel closed");
     }
 
-    public void LoadFromSlot(int slotNumber)
+    public void DeleteAllSaves()
     {
-        Debug.Log($"Loading game from slot {slotNumber}");
-
-        DataPersistenceManager.Instance.LoadGame(slotNumber);
-    }
-
-    public void BackToPreviousScene()
-    {
-        Debug.Log($"Returning to {previousScene}...");
-        SceneManager.LoadScene(previousScene);
+        DataPersistenceManager.Instance.DeleteAllSaves();
+        UpdateSlotDisplay();
+        Debug.Log("All save files cleared!");
     }
 }

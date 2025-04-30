@@ -7,27 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField]
-    private FadeController sceneController;
 
     public void PlayGame()
     {
-        sceneController.LoadScene("Grassy Plans"); 
-    }
-
-    public void OpenSettings()
-    {
-        sceneController.LoadScene("Settings");
-    }
-
-    public void OpenSaveFiles()
-    {
-        sceneController.LoadScene("SaveFiles");
-    }
-
-    public void BackButton()
-    {
-        sceneController.LoadScene("Main Menu");
+        SceneManager.LoadScene("Grassy Plans");
     }
 
     public void ExitGame()

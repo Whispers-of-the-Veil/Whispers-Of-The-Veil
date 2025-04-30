@@ -1,5 +1,5 @@
 //Farzana Tanni
-
+/*
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -62,3 +62,5 @@ public class FadeScene : MonoBehaviour
         sceneFadeImage.color = targetColor;
     }
 }
+
+*/

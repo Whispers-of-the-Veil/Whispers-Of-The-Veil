@@ -1,55 +1,74 @@
-using System.Collections;
-using System.Collections.Generic;
+// Farzana Tanni
+
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class FadeController : MonoBehaviour
 {
-    [SerializeField] private float sceneFadeDuration;
-    private FadeScene sceneFade;
+    public static FadeController instance;
 
-    private IEnumerator Start()
+    [SerializeField] private float fadeDuration = 1f;
+    private CanvasGroup canvasGroup;
+
+    private void Awake()
     {
-        //yield return new WaitForSeconds(0.1f);
-
-        sceneFade = FindObjectOfType<FadeScene>();
-
-        if (sceneFade == null)
+        // Singleton logic
+        if (instance == null)
         {
-            Debug.LogError("No FadeScene found! Make sure the prefab exists in the scene.");
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.Log("FadeScene successfully assigned.");
-            yield return sceneFade.FadeInCoroutine(sceneFadeDuration);
+            Destroy(gameObject);
+            return;
+        }
+
+        canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+        {
+            Debug.LogError("FadeController needs a CanvasGroup!");
+            return;
+        }
+
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this)
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
 
-    public void LoadScene(string sceneName)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StartCoroutine(LoadSceneCoroutine(sceneName));
+
+        gameObject.SetActive(true);
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        StartCoroutine(FadeInCoroutine());
     }
 
-    private IEnumerator LoadSceneCoroutine(string sceneName)
+    private IEnumerator FadeInCoroutine()
     {
-        sceneFade = FindObjectOfType<FadeScene>();
+        float timer = 0f;
 
-        if (sceneFade == null)
+        while (timer < fadeDuration)
         {
-            Debug.LogError("No FadeScene found before fading out! Ensure the prefab exists in the scene.");
-            yield break;
+            timer += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+            yield return null;
         }
 
-        yield return sceneFade.FadeOutCoroutine(sceneFadeDuration, sceneName);
-        yield return SceneManager.LoadSceneAsync(sceneName);
-        sceneFade = FindObjectOfType<FadeScene>(); 
-
-        if (sceneFade == null)
-        {
-            Debug.LogError("No FadeScene found in the new scene!");
-            yield break;
-        }
-
-        yield return sceneFade.FadeInCoroutine(sceneFadeDuration);
+        canvasGroup.alpha = 0f;
+        canvasGroup.blocksRaycasts = false;
+        gameObject.SetActive(false); 
     }
 }

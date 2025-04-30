@@ -49,7 +49,6 @@ public class PersistentPauseMenu : MonoBehaviour
         quitButton.onClick.AddListener(QuitToMainMenu);
         toggleVoiceButton.onClick.AddListener(ToggleVoiceInput);
 
-        // find player voice if not assigned
         if (playerVoice == null)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -85,7 +84,17 @@ public class PersistentPauseMenu : MonoBehaviour
 
     public void SaveGame()
     {
-        Debug.Log("Save button clicked! Call your save manager here.");
+        Debug.Log("Save button clicked!");
+
+        if (SaveManager.instance != null)
+        {
+            SaveManager.instance.OpenSavePanel(); 
+            pauseUI.SetActive(false);  
+        }
+        else
+        {
+            Debug.LogWarning("SaveManager instance not found!");
+        }
     }
 
     public void OpenSettings()
@@ -93,24 +102,31 @@ public class PersistentPauseMenu : MonoBehaviour
         Debug.Log("Opening Settings from Pause Menu...");
 
         if (pauseUI != null)
-            pauseUI.SetActive(false); // hide pause menu
+            pauseUI.SetActive(false);
 
         if (SettingsManager.instance != null)
-            SettingsManager.instance.OpenSettings(); // show settings menu
+            SettingsManager.instance.OpenSettings();
         else
             Debug.LogWarning("SettingsManager not found!");
+    }
+
+    public void CloseSavePanel()
+    {
+        if (SaveManager.instance != null)
+            SaveManager.instance.CloseSavePanel();
+            
     }
 
     public void CloseSettings()
     {
         if (SettingsManager.instance != null)
-            SettingsManager.instance.CloseSettings(); // close settings menu and resume
-
-        PauseGame(); // bring back the pause menu
+            SettingsManager.instance.CloseSettings();
+            PauseGame();
     }
 
     public void QuitToMainMenu()
     {
+        isPaused = false;
         Time.timeScale = 1f;
         Debug.Log("Returning to Title Screen...");
         SceneManager.LoadScene("Main Menu");
@@ -121,7 +137,7 @@ public class PersistentPauseMenu : MonoBehaviour
         if (playerVoice != null)
         {
             playerVoice.useSpeechModel = !playerVoice.useSpeechModel;
-            Debug.Log("voice input  " + (playerVoice.useSpeechModel ? "on" : "off"));
+            Debug.Log("voice input " + (playerVoice.useSpeechModel ? "on" : "off"));
             UpdateToggleVoiceText();
         }
         else
