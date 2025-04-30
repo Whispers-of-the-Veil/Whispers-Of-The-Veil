@@ -364,9 +364,7 @@ namespace Characters.Player {
                 MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
                 if (weapon != null)
                 {
-                    sfxManager.PlaySFX(weaponSwingSfx, transform, 1f);
                     weapon.Attack();
-                    soundExpert.ReportSound(transform.position);
                 }
             }
         }

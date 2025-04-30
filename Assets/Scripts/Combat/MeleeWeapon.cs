@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Characters.NPC;
+using Audio.SFX;
 
 namespace Combat
 {
@@ -16,6 +17,15 @@ namespace Combat
         [Header("Swing Settings")]
         public float swingAngle = 45f;
         public float swingDuration = 0.2f;
+        
+        [Header("Audio")] 
+        [SerializeField] AudioClip weaponSwingSfx;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
+        public SoundExpert soundExpert {
+            get => SoundExpert.instance;
+        }
 
         private bool canAttack = true;
         private bool isSwinging = false;
@@ -66,12 +76,19 @@ namespace Combat
             }
 
             Debug.Log("Weapon attack triggered.");
+
+            if (weaponSwingSfx != null && sfxManager != null)
+            {
+                sfxManager.PlaySFX(weaponSwingSfx, transform, 1f);
+            }
+
+            soundExpert.ReportSound(transform.position);
+
             StartCoroutine(SwingWeapon());
             canAttack = false;
             StartCoroutine(AttackCooldown());
             StartCoroutine(HandleAttackHit());
         }
-
 
         private IEnumerator HandleAttackHit()
         {
@@ -79,7 +96,7 @@ namespace Combat
             PerformAttackHits();
         }
 
-        private void PerformAttackHits()
+        protected virtual void PerformAttackHits()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 0.5f);
             HashSet<Collider2D> hitEnemies = new HashSet<Collider2D>();
@@ -111,7 +128,7 @@ namespace Combat
             canAttack = true;
         }
 
-        private IEnumerator ResetKnockback(Rigidbody2D enemyRigidbody)
+        public IEnumerator ResetKnockback(Rigidbody2D enemyRigidbody)
         {
             yield return new WaitForSeconds(knockbackDuration);
             if (enemyRigidbody != null)
