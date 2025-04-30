@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogue:
   - Welcome to Whispers of the Veil! I'm your helper, Echo. Press 'Space' to continue.
-  - "I\u2019ll be your guide on this journey. Press 'H' anytime, and I\u2019ll appear
-    with a helpful tip!"
+  - "I\u2019ll pop up next to your inventory whenever I have a helpful tip for you!"
   responses: []
   npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}

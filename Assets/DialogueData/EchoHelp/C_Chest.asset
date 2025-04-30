@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: C_Chest
   m_EditorClassIdentifier: 
   dialogue:
-  - 'This old chest answers only to two keys: metal teth to turn the lock, and a
-    voice, strong and true. Find the key, then speak your command to claim its prize.'
+  - 'This old chest answers only to two keys: cold metal teeth, and a voice strong
+    and true.'
+  - Find the key, then speak your command aloud to claim the prize locked within.
   responses: []
-  npcSprite: {fileID: 21300000, guid: 46a56414f096adf44b1750cb551f8571, type: 3}
+  npcSprite: {fileID: -2001111412, guid: 0d543e6dcdd2b3e45ad08d2becf4d4b5, type: 3}
