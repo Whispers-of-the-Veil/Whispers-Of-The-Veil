@@ -360,7 +360,6 @@ namespace Characters.Player {
                 if (weapon != null)
                 {
                     weapon.Attack();
-                    soundExpert.ReportSound(transform.position);
                 }
             }
         }
