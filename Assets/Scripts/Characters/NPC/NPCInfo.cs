@@ -7,7 +7,6 @@ namespace Characters.NPC {
         public string id;
         public GameObject reference;
         public NavMeshAgent agent;
-        public Transform target;
         public string savedScene;
         public Vector2 savedPosition;
     };

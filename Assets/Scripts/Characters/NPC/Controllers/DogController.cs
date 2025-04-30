@@ -50,6 +50,10 @@ namespace Characters.NPC.Controllers
             get => NPCManager.instance;
         }
         
+        void OnEnable() => NPCManager.ResetBehavior += ResetBehavior;
+        void OnDisable() => NPCManager.ResetBehavior -= ResetBehavior;
+        void ResetBehavior() => tree.Reset();
+        
         void Awake() {
             if (instance == null) {
                 instance = this;
@@ -60,11 +64,6 @@ namespace Characters.NPC.Controllers
             }
             
             RegesterPoints();
-            
-            if (!hasMoved) {
-                exit = GameObject.Find("Door Out");
-                exit.GetComponent<CabinExit>().enabled = false;
-            }
             
             // Navmesh agent
             agent = GetComponent<NavMeshAgent>();
@@ -88,7 +87,6 @@ namespace Characters.NPC.Controllers
             dogInfo.id = "DogNPC";
             dogInfo.reference = gameObject;
             dogInfo.agent = agent;
-            dogInfo.target = target;
             dogInfo.savedScene = SceneManager.GetActiveScene().name;
             dogInfo.savedPosition = transform.position;
             
@@ -96,6 +94,11 @@ namespace Characters.NPC.Controllers
         }
         
         void Start() {
+            if (!hasMoved) {
+                exit = GameObject.Find("Door Out");
+                exit.GetComponent<CabinExit>().enabled = false;
+            }
+            
             animator = GetComponentInChildren<Animator>();
         }
         

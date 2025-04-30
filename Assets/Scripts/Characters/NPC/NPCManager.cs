@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace Characters.NPC {
         }
         Blackboard blackboard;
         BlackboardKey followKey, moveKey, stayKey;
+        
+        public static event Action ResetBehavior;
         
         void OnEnable() => SceneManager.activeSceneChanged += OnSceneLoaded;
         void OnDisable() => SceneManager.activeSceneChanged -= OnSceneLoaded;
@@ -42,16 +45,18 @@ namespace Characters.NPC {
         public int GetIndex(string id) => npcs.FindIndex(n => n.id == id);
         
         private IEnumerator HandleSceneLoaded() {
+            yield return new WaitForSeconds(1f);
+            
+            ResetBehavior?.Invoke();
+            
             foreach (var npc in npcs) {
                 if (blackboard.TryGetValue(followKey, out bool follow) && follow) {
                     ClearAgentsPath(npc);
     
                     // Disable the agent to set its position manually
                     npc.agent.enabled = false;
-                    npc.reference.transform.position = npc.target.position;
+                    npc.reference.transform.position = GameObject.Find("Player").transform.position;
                     npc.agent.enabled = true;
-                    
-                    npc.agent.SetDestination(npc.target.position);
                 }
                 else {
                     if (npc.savedScene != SceneManager.GetActiveScene().name) {
@@ -68,8 +73,6 @@ namespace Characters.NPC {
                         npc.agent.SetDestination(npc.savedPosition);
                     }
                 }
-                
-                yield return null; // Wait for a frame
             }
         }
 
