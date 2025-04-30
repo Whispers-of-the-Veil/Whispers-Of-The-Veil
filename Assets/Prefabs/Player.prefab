@@ -889,7 +889,7 @@ MonoBehaviour:
   threshold: 3
   PuzzleInRange: 5
   SampleRate: 16000
-  RecordingLength: 5
+  RecordingLength: 10
   spoke: 0
 --- !u!95 &1782169197200679582
 Animator:
