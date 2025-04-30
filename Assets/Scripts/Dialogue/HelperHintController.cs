@@ -24,14 +24,14 @@ namespace Dialogue
 
         private void Awake()
         {
-            DontDestroyOnLoad(gameObject);
+            dontDestroyManager.Track(gameObject);
 
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
                 return;
             }
-            dontDestroyManager.Track(gameObject);
+            Instance = this;
         }
 
         void Start() {
@@ -50,8 +50,6 @@ namespace Dialogue
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-            if (Instance == null) return;
-            
             if (player == null)
                 player = FindObjectOfType<PlayerController>();
 

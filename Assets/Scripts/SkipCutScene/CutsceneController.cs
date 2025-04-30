@@ -1,6 +1,7 @@
 //Sasha Koroleva
 using System.Collections;
 using System.Collections.Generic;
+using Management;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
@@ -12,6 +13,10 @@ public class CutsceneController : MonoBehaviour
 
     [Tooltip("Name (or build index) of the gameplay scene to load")]
     public string gameplaySceneName;
+    
+    public DontDestroyManager dontDestroyManager {
+        get => DontDestroyManager.instance;
+    }
 
     void Start()
     {
@@ -44,6 +49,7 @@ public class CutsceneController : MonoBehaviour
 
     void LoadGameplay()
     {
+        if (gameplaySceneName == "EndTitleScene") dontDestroyManager.ResetAll();
         SceneManager.LoadScene(gameplaySceneName);
     }
 }

@@ -8,6 +8,7 @@ using Characters.NPC.Behavior_Tree;
 using Characters.NPC.Behavior_Tree.Strategies;
 using Characters.NPC.BlackboardSystem;
 using Characters.NPC.BlackboardSystem.Control;
+using Management;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
@@ -46,6 +47,10 @@ namespace Characters.NPC.Controllers
         GameObject exit;
         private bool hasMoved;
         
+        public DontDestroyManager dontDestroyManager {
+            get => DontDestroyManager.instance;
+        }
+        
         public NPCManager npcManager {
             get => NPCManager.instance;
         }
@@ -57,7 +62,7 @@ namespace Characters.NPC.Controllers
         void Awake() {
             if (instance == null) {
                 instance = this;
-                DontDestroyOnLoad(gameObject);
+                dontDestroyManager.Track(this.gameObject);
             }
             else {
                 Destroy(gameObject);
@@ -194,6 +199,10 @@ namespace Characters.NPC.Controllers
             copy.savedPosition = transform.position;
             
             npcManager.npcs[index] = copy;
+        }
+        
+        private void OnDestroy() {
+            if (instance == this) instance = null;
         }
     }
 }
