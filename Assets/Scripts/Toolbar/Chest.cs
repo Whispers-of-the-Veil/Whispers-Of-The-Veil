@@ -39,7 +39,6 @@ public class Chest : MonoBehaviour
 
         if (!controller.hasKey) return;
 
-        controller.hasKey = false;
         Open(playerGO.transform);
     }
 

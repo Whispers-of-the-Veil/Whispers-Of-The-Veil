@@ -586,6 +586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff572e3491d6cc64e97d85bc804301e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMainBoss: 1
+  victorySceneName: Killed-Monster-CS
   deathSfx: {fileID: 8300000, guid: dfa0d27e363573a4fa6b30b63422b4dc, type: 3}
   health: 100
   damage: 2

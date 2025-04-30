@@ -16,6 +16,7 @@ TagManager:
   - HUD
   - LittleBrother
   - HelperSprite
+  - Agatha
   layers:
   - Default
   - TransparentFX

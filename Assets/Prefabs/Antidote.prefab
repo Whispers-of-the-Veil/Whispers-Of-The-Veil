@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4152391950189984703}
   - component: {fileID: 4749751499713395670}
   - component: {fileID: 7224760921291555059}
+  - component: {fileID: 6510127626806555045}
   m_Layer: 0
   m_Name: Antidote
   m_TagString: Pickup
@@ -107,6 +108,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highlightParticles: {fileID: 6884834493486562589}
+--- !u!114 &6510127626806555045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194819627280106466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b828d788a58297d45bb95c30d279f0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdDuration: 2
+  bounceAmplitude: 0.1
+  bounceSpeed: 5
+  bossObjectName: Boss
+  effectRadius: 2
+  cutsceneSceneName: CS - Good End
 --- !u!1 &1820831551447099731
 GameObject:
   m_ObjectHideFlags: 0
