@@ -1,13 +1,15 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Characters.Player;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
 
 namespace menu
 {
     public class DeathScreenUI : MonoBehaviour
     {
         public static DeathScreenUI Instance;
+  
 
         [Header("UI References")] public GameObject deathScreenPanel;
         public Button respawnButton;
@@ -15,6 +17,8 @@ namespace menu
         public Button loadSaveButton;
 
         [Header("Gameplay References")] public GameObject player;
+
+        [Header("HUD References")] public GameObject HUD;
 
         private void Awake()
         {
@@ -80,12 +84,15 @@ namespace menu
         {
             FindPlayerReference();
             deathScreenPanel.SetActive(true);
+            if (HUD != null) HUD.SetActive(false);
             Time.timeScale = 0f;
+            
         }
 
         public void HideDeathScreen()
         {
             deathScreenPanel.SetActive(false);
+            if (HUD != null) HUD.SetActive(true);
             Time.timeScale = 1f;
         }
 
