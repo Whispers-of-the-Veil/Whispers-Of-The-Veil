@@ -3,6 +3,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Audio;
+using System.Collections.Generic;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -19,6 +21,9 @@ public class SettingsManager : MonoBehaviour
     public Slider volumeSlider;
     public TMP_Dropdown resolutionDropdown;
     public TMP_Dropdown microphoneDropdown;
+
+    [Header("Audio")]
+    public AudioMixer mainMixer; // Drag your MainMixer here
 
     private Resolution[] resolutions;
     public string selectedMicrophone;
@@ -57,14 +62,31 @@ public class SettingsManager : MonoBehaviour
         if (closeSettingsButton != null)
             closeSettingsButton.onClick.AddListener(CloseSettings);
 
-        Debug.Log("Resolution Dropdown: " + (resolutionDropdown != null ? "Assigned" : "NULL"));
-        Debug.Log("Microphone Dropdown: " + (microphoneDropdown != null ? "Assigned" : "NULL"));
-
         InitializeResolutions();
         InitializeMicrophones();
-        LoadSettings();
         AdjustCamera();
+
+        if (!PlayerPrefs.HasKey("Volume"))
+        {
+            Debug.Log("No saved volume found. Setting to 0.5f.");
+            PlayerPrefs.SetFloat("Volume", 0.5f);
+            PlayerPrefs.Save();
+        }
+
+        if (volumeSlider != null)
+        {
+            float defaultSlider = PlayerPrefs.GetFloat("Volume");
+            volumeSlider.value = defaultSlider;
+
+            float dbVolume = Mathf.Log10(Mathf.Max(defaultSlider, 0.001f)) * 20f;
+            mainMixer.SetFloat("MasterVolume", dbVolume);
+        }
+
+        mainMixer.SetFloat("MasterVolume", 0f);
+
+        LoadSettings();
     }
+
 
     public void OpenSettings()
     {
@@ -132,10 +154,11 @@ public class SettingsManager : MonoBehaviour
             guideButton.SetActive(true);
     }
 
-    public void SetVolume(float volume)
+    public void SetVolume(float sliderValue)
     {
-        AudioListener.volume = volume;
-        PlayerPrefs.SetFloat("Volume", volume);
+        float volume = Mathf.Log10(Mathf.Max(sliderValue, 0.001f)) * 20f;
+        mainMixer.SetFloat("MasterVolume", volume);
+        PlayerPrefs.SetFloat("Volume", sliderValue); 
     }
 
     private void InitializeResolutions()
@@ -149,20 +172,36 @@ public class SettingsManager : MonoBehaviour
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
-        var resolutionOptions = new System.Collections.Generic.List<string>();
+        var resolutionOptions = new List<string>();
+        List<Resolution> validResolutions = new List<Resolution>();
         int currentResolutionIndex = 0;
+        float targetAspect = 16f / 9f;
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = $"{resolutions[i].width} x {resolutions[i].height}";
-            resolutionOptions.Add(option);
+            float aspect = (float)resolutions[i].width / resolutions[i].height;
 
-            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+            if (Mathf.Abs(aspect - targetAspect) < 0.02f)
             {
-                currentResolutionIndex = i;
+                validResolutions.Add(resolutions[i]);
+
+                string option = $"{resolutions[i].width} x {resolutions[i].height}";
+                resolutionOptions.Add(option);
+
+                if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+                {
+                    currentResolutionIndex = validResolutions.Count - 1;
+                }
             }
         }
 
+        if (validResolutions.Count == 0)
+        {
+            Debug.LogWarning("No valid 16:9 resolutions found.");
+            return;
+        }
+
+        resolutions = validResolutions.ToArray();
         resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
@@ -192,13 +231,13 @@ public class SettingsManager : MonoBehaviour
 
         if (devices.Length > 0)
         {
-            microphoneDropdown.AddOptions(new System.Collections.Generic.List<string>(devices));
+            microphoneDropdown.AddOptions(new List<string>(devices));
             selectedMicrophone = devices[0];
             microphoneDropdown.interactable = true;
         }
         else
         {
-            microphoneDropdown.AddOptions(new System.Collections.Generic.List<string> { "No Microphone Found" });
+            microphoneDropdown.AddOptions(new List<string> { "No Microphone Found" });
             microphoneDropdown.interactable = false;
         }
 
@@ -221,11 +260,13 @@ public class SettingsManager : MonoBehaviour
 
     public void LoadSettings()
     {
-        if (PlayerPrefs.HasKey("Volume") && volumeSlider != null)
+        if (volumeSlider != null)
         {
-            float savedVolume = PlayerPrefs.GetFloat("Volume");
-            volumeSlider.value = savedVolume;
-            AudioListener.volume = savedVolume;
+            float savedSlider = PlayerPrefs.HasKey("Volume") ? PlayerPrefs.GetFloat("Volume") : 0.5f;
+            volumeSlider.value = savedSlider;
+
+            float dbVolume = Mathf.Log10(Mathf.Max(savedSlider, 0.001f)) * 20f;
+            mainMixer.SetFloat("MasterVolume", dbVolume);
         }
 
         if (PlayerPrefs.HasKey("Resolution") && resolutionDropdown != null)
