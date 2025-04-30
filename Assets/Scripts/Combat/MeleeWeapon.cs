@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Audio.SFX;
 using UnityEngine;
 using Characters.NPC;
 
@@ -7,6 +8,12 @@ namespace Combat
 {
     public class MeleeWeapon : MonoBehaviour
     {
+        [Header("Audio")]
+        [SerializeField] private AudioClip attackSFX;
+        private SFXManager sfxManager {
+            get => SFXManager.instance;
+        }
+        
         [Header("Combat Settings")]
         public int damage = 10;
         public float attackCooldown = 0.5f;
@@ -66,6 +73,7 @@ namespace Combat
             }
 
             Debug.Log("Weapon attack triggered.");
+            sfxManager.PlaySFX(attackSFX, transform, 1f);
             StartCoroutine(SwingWeapon());
             canAttack = false;
             StartCoroutine(AttackCooldown());

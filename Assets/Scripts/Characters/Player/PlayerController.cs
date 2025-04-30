@@ -22,11 +22,6 @@ namespace Characters.Player {
         private Vector2 lastMoveDirection;
         private bool facingLeft = true;
         
-        [Header("Audio")] 
-        [SerializeField] AudioClip weaponSwingSfx;
-        private SFXManager sfxManager {
-            get => SFXManager.instance;
-        }
         public SoundExpert soundExpert {
             get => SoundExpert.instance;
         }
@@ -364,7 +359,6 @@ namespace Characters.Player {
                 MeleeWeapon weapon = _heldObject.GetComponent<MeleeWeapon>();
                 if (weapon != null)
                 {
-                    sfxManager.PlaySFX(weaponSwingSfx, transform, 1f);
                     weapon.Attack();
                     soundExpert.ReportSound(transform.position);
                 }
