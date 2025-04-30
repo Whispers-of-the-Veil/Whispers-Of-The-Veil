@@ -1,34 +1,47 @@
-//Farzana Tanni
+// Farzana Tanni
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SetGameResolution : MonoBehaviour
 {
+    // Reference resolution
+    private const int baseWidth = 1920;
+    private const int baseHeight = 1080;
+    private const float targetAspect = 16f / 9f;
+    private const int padding = 0; 
+
     void Awake()
     {
         int screenWidth = Display.main.systemWidth;
         int screenHeight = Display.main.systemHeight;
 
-        int padding = 40; // pixels to shrink so it fits nicely and avoids taskbars
+        float screenAspect = (float)screenWidth / screenHeight;
 
-        if (screenWidth >= 1920 && screenHeight >= 1080)
+        int finalWidth = baseWidth;
+        int finalHeight = baseHeight;
+
+        if (screenWidth >= baseWidth && screenHeight >= baseHeight)
         {
-            // big monitors
-            Screen.SetResolution(1920 - padding, 1080 - padding, false);
-        }
-        else if (screenWidth >= 1366 && screenHeight >= 768)
-        {
-            // medium 
-            Screen.SetResolution(1366 - padding, 768 - padding, false);
+            finalWidth = baseWidth;
+            finalHeight = baseHeight;
         }
         else
         {
-            // smaller
-            Screen.SetResolution(1280 - padding, 720 - padding, false);
+            if (screenAspect >= targetAspect)
+            {
+                finalHeight = screenHeight - padding;
+                finalWidth = Mathf.RoundToInt(finalHeight * targetAspect);
+            }
+            else
+            {
+                finalWidth = screenWidth - padding;
+                finalHeight = Mathf.RoundToInt(finalWidth / targetAspect);
+            }
         }
 
-        DontDestroyOnLoad(gameObject); //stays alive between scenes
+        Screen.SetResolution(finalWidth, finalHeight, false);
+        Debug.Log($"[Resolution Set] {finalWidth} x {finalHeight}, Monitor: {screenWidth} x {screenHeight}");
+
+        DontDestroyOnLoad(gameObject);
     }
 }
