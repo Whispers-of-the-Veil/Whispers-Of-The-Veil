@@ -74,10 +74,6 @@ namespace Characters.Player
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                TakeDamage(0.5f);
-            }
         }
 
         public void UpdateHealth()
