@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chestID: chestKitchen
   openChestSprite: {fileID: 21300000, guid: 8c28b71e6eeb8fc4ca95e0e7195476e0, type: 3}
-  antidotePrefab: {fileID: 1194819627280106466, guid: fc7f95d858ae3874187309f9be125380, type: 3}
+  antidotePrefab: {fileID: 2895941572803888646, guid: 849be193fd176b24ba9f32e5b7c1bc86, type: 3}
 --- !u!1 &6158553469440390521
 GameObject:
   m_ObjectHideFlags: 0

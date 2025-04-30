@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Audio.SFX;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 using Characters.Player;
 
 namespace Characters.NPC
@@ -10,6 +11,10 @@ namespace Characters.NPC
     {
         [Header("Animation")]
         private Animator animator;
+        
+        [Header("Victory")]
+        [SerializeField] private bool   isMainBoss = false;
+        [SerializeField] private string victorySceneName;
         
         [Header("Audio")]
         [SerializeField] AudioClip deathSfx;
@@ -66,6 +71,10 @@ namespace Characters.NPC
             sfxManager.PlaySFX(deathSfx, transform, 1);
             
             isDead = true;
+            if (isMainBoss && !string.IsNullOrEmpty(victorySceneName))
+            {
+                SceneManager.LoadScene(victorySceneName);
+            }
             Debug.Log("Enemy defeated");
             Destroy(gameObject);
         }
