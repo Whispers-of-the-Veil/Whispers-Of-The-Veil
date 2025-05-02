@@ -3,6 +3,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Management;
+using UnityEngine.UI;
 
 public class FadeController : MonoBehaviour
 {
@@ -11,13 +13,15 @@ public class FadeController : MonoBehaviour
     [SerializeField] private float fadeDuration = 1f;
     private CanvasGroup canvasGroup;
 
+    public DontDestroyManager dontDestroyManager {
+    get => DontDestroyManager.instance;
+    }
+
     private void Awake()
     {
-        // Singleton logic
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -48,11 +52,11 @@ public class FadeController : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-
         gameObject.SetActive(true);
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
+        StopAllCoroutines();
         StartCoroutine(FadeInCoroutine());
     }
 
@@ -69,6 +73,5 @@ public class FadeController : MonoBehaviour
 
         canvasGroup.alpha = 0f;
         canvasGroup.blocksRaycasts = false;
-        gameObject.SetActive(false); 
     }
 }

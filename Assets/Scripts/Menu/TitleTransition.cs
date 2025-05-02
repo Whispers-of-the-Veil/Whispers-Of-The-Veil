@@ -11,7 +11,7 @@ public class TitleTransition : MonoBehaviour
 
     void Start()
     {
-        Invoke("LoadNextScene", 3f);
+        Invoke("LoadNextScene", 4f);
     }
 
     void LoadNextScene()
