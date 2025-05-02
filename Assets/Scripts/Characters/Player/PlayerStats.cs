@@ -65,7 +65,7 @@ namespace Characters.Player
                 {
                     hearts = healthCanvas.GetComponentsInChildren<Image>();
                     Debug.Log("Hearts found: " + hearts.Length);
-                    UpdateHealth(); // Force refresh immediately
+                    UpdateHealth();
                 }
             }
         }
@@ -105,6 +105,7 @@ namespace Characters.Player
             health -= damage;
             health = Mathf.Clamp(health, 0f, maxHealth);
             Debug.Log($"Player took {damage} damage. Remaining health: {health}");
+            GetComponent<DamageFlash>().FlashRed();
 
             UpdateHealth();
             StartCoroutine(ScaleHeartEffect());
@@ -169,10 +170,22 @@ namespace Characters.Player
 
         public void SetInvisibility(bool state, float duration)
         {
-            if (isInvisible) return;
-            isInvisible = true;
-            SetAlphaForAll(0.4f);
-            StartCoroutine(ResetInvisibility(duration));
+            if (isInvisible == state) return;
+            isInvisible = state;
+        
+            if (isInvisible)
+            {
+                SetAlphaForAll(0.4f);
+            }
+            else
+            {
+                SetAlphaForAll(1f);
+            }
+
+            if (isInvisible)
+            {
+                StartCoroutine(ResetInvisibility(duration));
+            }
         }
 
         private IEnumerator ResetInvisibility(float duration)

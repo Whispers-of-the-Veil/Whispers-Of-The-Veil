@@ -493,6 +493,7 @@ GameObject:
   - component: {fileID: 4585153085480649966}
   - component: {fileID: 7523317296716067785}
   - component: {fileID: 877378781254663947}
+  - component: {fileID: 4295168889731046611}
   m_Layer: 8
   m_Name: Boss
   m_TagString: Enemy
@@ -726,3 +727,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emote: {fileID: 2982853754417142768}
   range: 2
+--- !u!114 &4295168889731046611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6529925565148656903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1833232d9813a24f8655eb0c247abe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashDuration: 0.1

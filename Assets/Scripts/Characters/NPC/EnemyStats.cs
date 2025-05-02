@@ -52,6 +52,7 @@ namespace Characters.NPC
         {
             health -= damageAmount;
             Debug.Log($"Enemy took {damageAmount} damage. Remaining health: {health}");
+            GetComponent<DamageFlash>().FlashRed();
 
             if (health <= 0)
             {

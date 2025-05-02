@@ -4879,13 +4879,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5730623982374b44aaa3400e58fb1728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSFX: {fileID: 8300000, guid: f7f56f6b76894465b946f81b5ae45d57, type: 3}
   damage: 5
   attackCooldown: 0.6
-  knockbackForce: 2.5
+  knockbackForce: 3
   knockbackDuration: 0.2
   swingAngle: 45
   swingDuration: 0.4
+  weaponSwingSfx: {fileID: 0}
 --- !u!61 &5366059510527987329
 BoxCollider2D:
   m_ObjectHideFlags: 0
