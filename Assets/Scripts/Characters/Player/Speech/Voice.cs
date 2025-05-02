@@ -6,6 +6,7 @@ using TMPro;
 using Audio.SFX;
 using Characters.NPC;
 using UnityEngine.UI;
+using UnityEngine.UI;
 
 namespace Characters.Player.Speech {
     public class Voice : MonoBehaviour {
@@ -50,6 +51,11 @@ namespace Characters.Player.Speech {
         private GameObject speechBubble;
         private TextMeshProUGUI textField;
         private TMP_InputField inputField;
+        
+        [Header("Progress Sprites")]
+        [SerializeField] Sprite[] progressSprites;
+        private Image image;
+        private GameObject microphone;
 
         public SoundExpert soundExpert {
             get => SoundExpert.instance;
@@ -73,9 +79,16 @@ namespace Characters.Player.Speech {
 
                 canRecord = false;
             }
+
+            microphone = transform.Find("Microphone").gameObject;
+            image = transform.Find("Microphone/Image").GetComponent<Image>();
+            
+            microphone.SetActive(false);
         }
 
         void Update () {
+            microphone.SetActive(isRecording);
+            
             microphoneDevice = settingsManager.selectedMicrophone;
             
             if (!useSpeechModel) {
@@ -87,11 +100,14 @@ namespace Characters.Player.Speech {
                 inputField.gameObject.SetActive(false);
             }
             
-            if (!isRecording && canRecord) {
-                StartCoroutine(HandleRecording());
-            }
-            
             if (useSpeechModel) {
+                if (Input.GetKeyDown(KeyCode.BackQuote)) {
+                    if (!isRecording && canRecord) {
+                        StartCoroutine(HandleRecording());
+                        StartCoroutine(AnimateProgress());
+                    }
+                }
+                
                 if (recordings.Count > 0 && !isProcessing) {
                     isProcessing = true;
 
@@ -106,12 +122,17 @@ namespace Characters.Player.Speech {
                 speechBubble.SetActive(displayBubble);
 
                 if (displayBubble) {
+                    Time.timeScale = 0f;
+                    
                     if (Input.GetKeyDown(KeyCode.Return)) {
                         if (!isProcessing) {
                             StartCoroutine(CheckPrediction(inputField.text));
                             soundExpert.ReportSound(transform.position);
                         }
                     }
+                }
+                else {
+                    Time.timeScale = 1f;
                 }
             }
         }
@@ -148,6 +169,27 @@ namespace Characters.Player.Speech {
 
             Debug.Log("Stoped Recording");
             isRecording = false;
+            
+            image.sprite = progressSprites[0];
+        }
+
+        private IEnumerator AnimateProgress() {
+            float timer = 0f;
+            int totalFrames = progressSprites.Length;
+
+            while (timer < RecordingLength) {
+                float progress = timer / RecordingLength;
+
+                int frameIndex = Mathf.FloorToInt(progress * (totalFrames - 1));
+                
+                image.sprite = progressSprites[frameIndex];
+                
+                yield return null;
+                
+                timer += Time.deltaTime;
+            }
+            
+            image.sprite = progressSprites[totalFrames - 1];
         }
         
         /// <summary>
@@ -273,13 +315,15 @@ namespace Characters.Player.Speech {
             Debug.Log("You said: " + prediction);
             textField.text = prediction;
             
+            speechBubble.SetActive(true);
+            
             // Check if we are near a puzzle. if we are, check the prediction agains the
             // keys array
             if (CheckIfNearPuzzle()) {
-                speechBubble.SetActive(true);
-                
                 Debug.Log("Near puzzle");
                 yield return StartCoroutine(CheckExpected(prediction));
+                
+                yield return new WaitForSeconds(1f);
 
                 try {
                     if (index == -1) {
