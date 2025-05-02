@@ -4968,7 +4968,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   attackCooldown: 0.6
-  knockbackForce: 3
+  knockbackForce: 3.5
   knockbackDuration: 0.2
   swingAngle: 45
   swingDuration: 0.4

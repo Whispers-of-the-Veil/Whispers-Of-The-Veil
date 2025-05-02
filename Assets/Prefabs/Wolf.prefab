@@ -323,6 +323,7 @@ GameObject:
   - component: {fileID: 5402877136380890986}
   - component: {fileID: 5878886106723055925}
   - component: {fileID: 325491419113996834}
+  - component: {fileID: -758373549933791554}
   m_Layer: 0
   m_Name: Wolf
   m_TagString: Enemy
@@ -439,6 +440,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff572e3491d6cc64e97d85bc804301e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMainBoss: 0
+  victorySceneName: 
   deathSfx: {fileID: 8300000, guid: 5c0625e37994adf9e8a1b0b2c26ab750, type: 3}
   health: 50
   damage: 0.5
@@ -472,7 +475,6 @@ MonoBehaviour:
   minIvenstigateDistance: 0
   maxIvenstigateDistance: 0
   patrolArea: {fileID: 0}
-  agent: {fileID: 0}
   sightRange: 3
   hearingRange: 7
   searchRadius: 4
@@ -503,6 +505,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &-758373549933791554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5252939899297856101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1833232d9813a24f8655eb0c247abe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashDuration: 0.1
 --- !u!1 &5299180349553638771
 GameObject:
   m_ObjectHideFlags: 0

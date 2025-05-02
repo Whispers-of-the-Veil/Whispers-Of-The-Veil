@@ -7,6 +7,7 @@ public class InvisibilityPotion : InventoryItemBase
     public float holdDuration = 2f;
     public float bounceAmplitude = 0.1f;
     public float bounceSpeed = 5f;
+    public AudioClip consumeSound;
 
     private Transform lastParent;
     private PlayerStats playerStats;
@@ -14,8 +15,15 @@ public class InvisibilityPotion : InventoryItemBase
     private float holdTimer = 0f;
     private bool isConsuming = false;
     private Vector3 originalLocalPosition;
+    
+    private AudioSource audioSource;
 
     public override string Name => "Invisibility Potion";
+    
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
@@ -38,6 +46,12 @@ public class InvisibilityPotion : InventoryItemBase
                 if (!isConsuming)
                 {
                     isConsuming = true;
+                    
+                    if (consumeSound != null && audioSource != null)
+                    {
+                        audioSource.clip = consumeSound;
+                        audioSource.Play();
+                    }
                 }
 
                 float bounceOffset = Mathf.Sin(Time.time * bounceSpeed) * bounceAmplitude;
@@ -56,6 +70,11 @@ public class InvisibilityPotion : InventoryItemBase
                 holdTimer = 0f;
                 isConsuming = false;
                 transform.localPosition = originalLocalPosition;
+                
+                if (audioSource != null && audioSource.isPlaying)
+                {
+                    audioSource.Stop();
+                }
             }
         }
         else
