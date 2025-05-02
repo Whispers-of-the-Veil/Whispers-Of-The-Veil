@@ -878,7 +878,7 @@ MonoBehaviour:
   useSpeechModel: 1
   displayBubble: 0
   correctClip: {fileID: 8300000, guid: ae21e378e6b9f364aa9246290fdef9b8, type: 3}
-  wrongClip: {fileID: 0}
+  wrongClip: {fileID: 8300000, guid: 619b09fd320f44983a22f572fe992875, type: 3}
   DetectVoiceThreshold: 0.01
   keys:
   - open chest
