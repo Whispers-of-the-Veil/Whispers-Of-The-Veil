@@ -86,3 +86,7 @@ dist/
 
 #Ignore spec file
 ASR_API.spec
+
+# Ignore temporaries from GameCI
+/[Aa]rtifacts/
+/[Cc]odeCoverage/
