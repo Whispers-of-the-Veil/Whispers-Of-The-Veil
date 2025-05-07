@@ -1,3 +1,5 @@
+// Lucas
+
 using UnityEngine;
 
 namespace Characters.Player.Speech {

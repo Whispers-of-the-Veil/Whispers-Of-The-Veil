@@ -1,5 +1,4 @@
-
-// Contains all the logic for different stragies that the AI can execute
+// Lucas
 
 using System;
 

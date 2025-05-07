@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Lucas Davis
+
+using System;
 using System.Collections;
 using UnityEngine;
 

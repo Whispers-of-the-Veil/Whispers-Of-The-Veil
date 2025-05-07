@@ -1,3 +1,5 @@
+// Lucas
+
 public static class StringExtensions {
     /// <summary>
     /// Extension method to the string type to compute the FNV-1a has for the input string.
